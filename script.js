@@ -1,6 +1,8 @@
 "use strict";
 
-/* DATA MENU */
+/* ==============================
+   1. DATA MENU
+============================== */
 
 const menuData = [
   {id:1,name:"Kopi Nako",price:18000,category:"Kopi",image:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600"},
@@ -26,25 +28,30 @@ const tableData = [
   {id:8,occupied:false}
 ];
 
-/* PENYIMPANAN DATA */
+/* ==============================
+   2. PENYIMPANAN DATA
+============================== */
 
-function loadData(key,fallback) {
+function loadData(key, fallback) {
   try {
-    const saved=localStorage.getItem(key);
+    const saved = localStorage.getItem(key);
     return saved ? JSON.parse(saved) : fallback;
-  } catch(error) {
-    console.error(error);
+  } catch (error) {
+    console.error("Gagal membaca penyimpanan:", error);
     return fallback;
   }
 }
 
-let cart=loadData("kopinako_cart",[]);
-let orders=loadData("kopinako_orders",[]);
-let selectedTable=loadData("kopinako_selected_table",null);
-let currentRole="Kasir";
-let currentCategory="Semua";
-let currentTab="orders";
-let menuQuantities = {};
+let cart = loadData("kopinako_cart", []);
+let orders = loadData("kopinako_orders", []);
+let selectedTable = loadData("kopinako_selected_table", null);
+
+let currentRole = "Kasir";
+let currentCategory = "Semua";
+let currentTab = "orders";
+
+/* JUMLAH MENU DIMULAI DARI 0 */
+let menuQuantities = {
   1: 0,
   2: 0,
   3: 0,
@@ -58,44 +65,51 @@ let menuQuantities = {};
 };
 
 function saveData() {
-  localStorage.setItem("kopinako_cart",JSON.stringify(cart));
-  localStorage.setItem("kopinako_orders",JSON.stringify(orders));
-  localStorage.setItem("kopinako_selected_table",JSON.stringify(selectedTable));
+  localStorage.setItem("kopinako_cart", JSON.stringify(cart));
+  localStorage.setItem("kopinako_orders", JSON.stringify(orders));
+  localStorage.setItem("kopinako_selected_table", JSON.stringify(selectedTable));
 }
 
 function rupiah(number) {
-  return new Intl.NumberFormat("id-ID",{
-    style:"currency",
-    currency:"IDR",
-    maximumFractionDigits:0
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0
   }).format(number);
 }
 
 function getTotal() {
-  return cart.reduce((sum,item)=>sum+item.price*item.qty,0);
+  return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 }
 
-/* NAVIGASI */
+/* ==============================
+   3. NAVIGASI HALAMAN
+============================== */
 
 function showPage(pageId) {
-  const target=document.getElementById(pageId);
-  if(!target) return;
+  const target = document.getElementById(pageId);
+  if (!target) return;
 
-  document.querySelectorAll(".page").forEach(page=>{
+  document.querySelectorAll(".page").forEach(page => {
     page.classList.remove("active");
   });
 
   target.classList.add("active");
-  document.getElementById("navMenu").classList.remove("open");
-  window.scrollTo({top:0,behavior:"smooth"});
 
-  if(pageId==="menu") renderMenu();
-  if(pageId==="cart") renderCart();
-  if(pageId==="tables") renderTables();
-  if(pageId==="dashboard") renderDashboard();
+  const navMenu = document.getElementById("navMenu");
+  if (navMenu) navMenu.classList.remove("open");
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  if (pageId === "menu") renderMenu();
+  if (pageId === "cart") renderCart();
+  if (pageId === "tables") renderTables();
+  if (pageId === "dashboard") renderDashboard();
 }
 
-/* MENU */
+/* ==============================
+   4. MENU PRODUK
+============================== */
 
 function createProductCard(product) {
   const qty = menuQuantities[product.id] ?? 0;
@@ -121,6 +135,7 @@ function createProductCard(product) {
 
         <div class="menu-quantity">
           <button
+            type="button"
             class="quantity-btn"
             data-menu-qty="-1"
             data-id="${product.id}"
@@ -130,6 +145,7 @@ function createProductCard(product) {
           <span class="quantity-number">${qty}</span>
 
           <button
+            type="button"
             class="quantity-btn"
             data-menu-qty="1"
             data-id="${product.id}"
@@ -137,7 +153,7 @@ function createProductCard(product) {
           >+</button>
         </div>
 
-        <button class="add-btn menu-add-btn" data-add="${product.id}">
+        <button type="button" class="add-btn menu-add-btn" data-add="${product.id}">
           Tambah ke Keranjang
         </button>
       </div>
@@ -146,39 +162,51 @@ function createProductCard(product) {
 }
 
 function renderFeaturedMenu() {
-  document.getElementById("featuredMenu").innerHTML=
-    menuData.slice(0,4).map(createProductCard).join("");
+  const container = document.getElementById("featuredMenu");
+  if (!container) return;
+
+  container.innerHTML = menuData.slice(0, 4).map(createProductCard).join("");
 }
 
 function renderMenu() {
-  const keyword=document.getElementById("searchMenu").value.toLowerCase().trim();
+  const searchInput = document.getElementById("searchMenu");
+  const container = document.getElementById("menuList");
 
-  const filtered=menuData.filter(product=>{
-    const categoryMatch=currentCategory==="Semua" ||
-      product.category===currentCategory;
-    const searchMatch=product.name.toLowerCase().includes(keyword);
+  if (!searchInput || !container) return;
+
+  const keyword = searchInput.value.toLowerCase().trim();
+
+  const filtered = menuData.filter(product => {
+    const categoryMatch =
+      currentCategory === "Semua" ||
+      product.category === currentCategory;
+
+    const searchMatch = product.name.toLowerCase().includes(keyword);
+
     return categoryMatch && searchMatch;
   });
 
-  const container=document.getElementById("menuList");
-
-  container.innerHTML=filtered.length
+  container.innerHTML = filtered.length
     ? filtered.map(createProductCard).join("")
     : `<div class="empty-state">Menu tidak ditemukan.</div>`;
 
-  document.querySelectorAll(".filter-btn").forEach(button=>{
+  document.querySelectorAll(".filter-btn").forEach(button => {
     button.classList.toggle(
       "active",
-      button.dataset.category===currentCategory
+      button.dataset.category === currentCategory
     );
   });
 }
 
-/* KERANJANG */
+/* ==============================
+   5. KERANJANG
+============================== */
 
 function updateCartCount() {
-  document.getElementById("cartCount").textContent=
-    cart.reduce((sum,item)=>sum+item.qty,0);
+  const count = document.getElementById("cartCount");
+  if (!count) return;
+
+  count.textContent = cart.reduce((sum, item) => sum + item.qty, 0);
 }
 
 function addToCart(id) {
@@ -187,8 +215,8 @@ function addToCart(id) {
 
   const quantity = menuQuantities[product.id] ?? 0;
 
-  if (quantity === 0) {
-    alert("Jumlah menu tidak boleh 0.");
+  if (quantity <= 0) {
+    alert("Silakan pilih jumlah menu terlebih dahulu.");
     return;
   }
 
@@ -203,11 +231,11 @@ function addToCart(id) {
     });
   }
 
-  menuQuantities[product.id] = 1;
+  /* Setelah ditambahkan, jumlah kembali ke 0 */
+  menuQuantities[product.id] = 0;
 
   saveData();
   updateCartCount();
-
   renderMenu();
   renderFeaturedMenu();
 
@@ -218,11 +246,9 @@ function addToCart(id) {
   }
 }
 
-/* FUNGSI TOMBOL + DAN - PADA KARTU MENU */
-
 function changeMenuQuantity(id, change) {
   const productId = Number(id);
-  const currentQty = menuQuantities[productId] || 1;
+  const currentQty = menuQuantities[productId] ?? 0;
 
   menuQuantities[productId] = Math.max(
     0,
@@ -234,218 +260,254 @@ function changeMenuQuantity(id, change) {
 }
 
 function renderCart() {
-  const container=document.getElementById("cartItems");
+  const container = document.getElementById("cartItems");
+  if (!container) return;
 
-  if(cart.length===0) {
-    container.innerHTML=`
+  if (cart.length === 0) {
+    container.innerHTML = `
       <div class="empty-state">
         <h3>Keranjang masih kosong</h3>
         <p>Silakan pilih menu terlebih dahulu.</p>
         <br>
-        <button class="btn btn-primary" data-page="menu">Pilih Menu</button>
+        <button type="button" class="btn btn-primary" data-page="menu">Pilih Menu</button>
       </div>
     `;
   } else {
-    container.innerHTML=cart.map(item=>`
+    container.innerHTML = cart.map(item => `
       <div class="cart-item">
         <div>
           <h3>${item.name}</h3>
           <p>${rupiah(item.price)} × ${item.qty}</p>
-          <strong>${rupiah(item.price*item.qty)}</strong>
+          <strong>${rupiah(item.price * item.qty)}</strong>
         </div>
+
         <div class="cart-controls">
-          <button data-qty="-1" data-id="${item.id}">−</button>
+          <button type="button" data-qty="-1" data-id="${item.id}">−</button>
           <strong>${item.qty}</strong>
-          <button data-qty="1" data-id="${item.id}">+</button>
-          <button class="remove-btn" data-remove="${item.id}">Hapus</button>
+          <button type="button" data-qty="1" data-id="${item.id}">+</button>
+          <button type="button" class="remove-btn" data-remove="${item.id}">Hapus</button>
         </div>
       </div>
     `).join("");
   }
 
-  document.getElementById("cartTotal").textContent=rupiah(getTotal());
-  document.getElementById("cartTableInfo").textContent=selectedTable
-    ? "Meja yang dipilih: Meja "+String(selectedTable).padStart(2,"0")
+  document.getElementById("cartTotal").textContent = rupiah(getTotal());
+
+  document.getElementById("cartTableInfo").textContent = selectedTable
+    ? "Meja yang dipilih: Meja " + String(selectedTable).padStart(2, "0")
     : "Meja belum dipilih.";
 
   updateCartCount();
 }
 
-function changeQuantity(id,change) {
-  const item=cart.find(product=>product.id===Number(id));
-  if(!item) return;
+function changeQuantity(id, change) {
+  const item = cart.find(product => product.id === Number(id));
+  if (!item) return;
 
-  item.qty+=Number(change);
-  if(item.qty<=0) cart=cart.filter(product=>product.id!==Number(id));
+  item.qty += Number(change);
+
+  if (item.qty <= 0) {
+    cart = cart.filter(product => product.id !== Number(id));
+  }
 
   saveData();
   renderCart();
 }
 
 function removeFromCart(id) {
-  cart=cart.filter(item=>item.id!==Number(id));
+  cart = cart.filter(item => item.id !== Number(id));
   saveData();
   renderCart();
 }
 
-/* MEJA */
+/* ==============================
+   6. PILIH MEJA
+============================== */
 
 function renderTables() {
-  document.getElementById("tableList").innerHTML=tableData.map(table=>{
-    const selected=selectedTable===table.id;
-    const status=table.occupied?"Terisi":selected?"Dipilih":"Tersedia";
-    const css=table.occupied?"occupied":selected?"selected":"";
+  const container = document.getElementById("tableList");
+  const selectedText = document.getElementById("selectedTableText");
+
+  if (!container || !selectedText) return;
+
+  container.innerHTML = tableData.map(table => {
+    const selected = selectedTable === table.id;
+    const status = table.occupied
+      ? "Terisi"
+      : selected
+        ? "Dipilih"
+        : "Tersedia";
+
+    const css = table.occupied
+      ? "occupied"
+      : selected
+        ? "selected"
+        : "";
 
     return `
-      <button class="table-card ${css}" data-table="${table.id}"
-        ${table.occupied?"disabled":""}>
-        Meja ${String(table.id).padStart(2,"0")}
+      <button
+        type="button"
+        class="table-card ${css}"
+        data-table="${table.id}"
+        ${table.occupied ? "disabled" : ""}
+      >
+        Meja ${String(table.id).padStart(2, "0")}
         <small>${status}</small>
       </button>
     `;
   }).join("");
 
-  document.getElementById("selectedTableText").textContent=selectedTable
-    ? "Anda memilih Meja "+String(selectedTable).padStart(2,"0")
+  selectedText.textContent = selectedTable
+    ? "Anda memilih Meja " + String(selectedTable).padStart(2, "0")
     : "Belum ada meja yang dipilih.";
 }
 
 function chooseTable(id) {
-  const table=tableData.find(item=>item.id===Number(id));
-  if(!table || table.occupied) return;
+  const table = tableData.find(item => item.id === Number(id));
+  if (!table || table.occupied) return;
 
-  selectedTable=table.id;
+  selectedTable = table.id;
+
   saveData();
   renderTables();
 }
 
-/* CHECKOUT */
+/* ==============================
+   7. CHECKOUT
+============================== */
 
 function checkout() {
-  if(cart.length===0) {
+  if (cart.length === 0) {
     alert("Keranjang masih kosong.");
     showPage("menu");
     return;
   }
 
-  if(!selectedTable) {
+  if (!selectedTable) {
     alert("Silakan pilih meja terlebih dahulu.");
     showPage("tables");
     return;
   }
 
-  const order={
-    id:"KN-"+Date.now().toString().slice(-7),
-    date:new Date().toLocaleString("id-ID"),
-    table:selectedTable,
-    items:cart.map(item=>({...item})),
-    total:getTotal(),
-    status:"Menunggu",
-    payment:"Belum Dibayar"
+  const order = {
+    id: "KN-" + Date.now().toString().slice(-7),
+    date: new Date().toLocaleString("id-ID"),
+    table: selectedTable,
+    items: cart.map(item => ({ ...item })),
+    total: getTotal(),
+    status: "Menunggu",
+    payment: "Belum Dibayar"
   };
 
   orders.unshift(order);
   saveData();
 
-  document.getElementById("successDetail").innerHTML=`
+  document.getElementById("successDetail").innerHTML = `
     <p><strong>Nomor Pesanan:</strong> ${order.id}</p>
     <p><strong>Meja:</strong> ${order.table}</p>
     <p><strong>Total:</strong> ${rupiah(order.total)}</p>
     <p><strong>Waktu:</strong> ${order.date}</p>
     <hr style="margin:12px 0">
-    ${order.items.map(item=>`
-      <p>${item.name} × ${item.qty} — ${rupiah(item.price*item.qty)}</p>
+    ${order.items.map(item => `
+      <p>${item.name} × ${item.qty} — ${rupiah(item.price * item.qty)}</p>
     `).join("")}
     <p><strong>Status:</strong> ${order.status}</p>
   `;
 
-  cart=[];
-  selectedTable=null;
+  cart = [];
+  selectedTable = null;
+
   saveData();
   updateCartCount();
   showPage("success");
 }
 
-/* DASHBOARD */
+/* ==============================
+   8. DASHBOARD KARYAWAN
+============================== */
 
 function openDashboard(role) {
-  currentRole=role;
-  currentTab="orders";
+  currentRole = role;
+  currentTab = "orders";
 
-  const descriptions={
-    Kasir:"Kelola pesanan dan pembayaran pelanggan.",
-    Barista:"Pantau pembuatan minuman.",
-    Dapur:"Pantau pembuatan makanan.",
-    Waiter:"Pantau pesanan dan meja pelanggan.",
-    Owner:"Pantau laporan dan penjualan."
+  const descriptions = {
+    Kasir: "Kelola pesanan dan pembayaran pelanggan.",
+    Barista: "Pantau pembuatan minuman.",
+    Dapur: "Pantau pembuatan makanan.",
+    Waiter: "Pantau pesanan dan meja pelanggan.",
+    Owner: "Pantau laporan dan penjualan."
   };
 
-  document.getElementById("dashboardTitle").textContent="Dashboard "+role;
-  document.getElementById("dashboardDescription").textContent=descriptions[role];
+  document.getElementById("dashboardTitle").textContent = "Dashboard " + role;
+  document.getElementById("dashboardDescription").textContent =
+    descriptions[role] || "Dashboard karyawan.";
 
   showPage("dashboard");
-  renderDashboard();
 }
 
 function renderDashboard() {
-  const waiting=orders.filter(o=>o.status==="Menunggu").length;
-  const done=orders.filter(o=>o.status==="Selesai").length;
-  const sales=orders.filter(o=>o.payment==="Dibayar")
-    .reduce((sum,o)=>sum+o.total,0);
+  const waiting = orders.filter(o => o.status === "Menunggu").length;
+  const done = orders.filter(o => o.status === "Selesai").length;
 
-  document.getElementById("statOrders").textContent=orders.length;
-  document.getElementById("statWaiting").textContent=waiting;
-  document.getElementById("statDone").textContent=done;
-  document.getElementById("statSales").textContent=rupiah(sales);
+  const sales = orders
+    .filter(o => o.payment === "Dibayar")
+    .reduce((sum, o) => sum + o.total, 0);
 
-  document.querySelectorAll(".tab-btn").forEach(button=>{
-    button.classList.toggle("active",button.dataset.tab===currentTab);
+  document.getElementById("statOrders").textContent = orders.length;
+  document.getElementById("statWaiting").textContent = waiting;
+  document.getElementById("statDone").textContent = done;
+  document.getElementById("statSales").textContent = rupiah(sales);
+
+  document.querySelectorAll(".tab-btn").forEach(button => {
+    button.classList.toggle("active", button.dataset.tab === currentTab);
   });
 
-  if(currentTab==="orders") renderDashboardOrders();
-  if(currentTab==="tables") renderDashboardTables();
-  if(currentTab==="report") renderDashboardReport();
+  if (currentTab === "orders") renderDashboardOrders();
+  if (currentTab === "tables") renderDashboardTables();
+  if (currentTab === "report") renderDashboardReport();
 }
 
 function renderDashboardOrders() {
-  const container=document.getElementById("dashboardContent");
+  const container = document.getElementById("dashboardContent");
 
-  if(orders.length===0) {
-    container.innerHTML=`
+  if (orders.length === 0) {
+    container.innerHTML = `
       <div class="empty-state">Belum ada pesanan masuk.</div>
     `;
     return;
   }
 
-  container.innerHTML=orders.map(order=>`
+  container.innerHTML = orders.map(order => `
     <article class="order-card">
       <div class="order-top">
         <div>
           <h3>${order.id}</h3>
           <p>${order.date}</p>
-          <p>Meja ${String(order.table).padStart(2,"0")}</p>
+          <p>Meja ${String(order.table).padStart(2, "0")}</p>
         </div>
-        <span class="status ${order.status.toLowerCase().replaceAll(" ","-")}">
+
+        <span class="status ${order.status.toLowerCase().replaceAll(" ", "-")}">
           ${order.status}
         </span>
       </div>
 
       <p><strong>Pesanan:</strong>
-        ${order.items.map(item=>item.name+" × "+item.qty).join(", ")}
+        ${order.items.map(item => item.name + " × " + item.qty).join(", ")}
       </p>
+
       <p><strong>Total:</strong> ${rupiah(order.total)}</p>
       <p><strong>Pembayaran:</strong> ${order.payment}</p>
 
       <div class="order-actions">
         <select data-status="${order.id}">
-          ${["Menunggu","Diproses","Siap Disajikan","Selesai","Dibatalkan"].map(status=>`
-            <option value="${status}" ${order.status===status?"selected":""}>
+          ${["Menunggu", "Diproses", "Siap Disajikan", "Selesai", "Dibatalkan"].map(status => `
+            <option value="${status}" ${order.status === status ? "selected" : ""}>
               ${status}
             </option>
           `).join("")}
         </select>
 
-        <button class="btn btn-outline" data-payment="${order.id}">
+        <button type="button" class="btn btn-outline" data-payment="${order.id}">
           Tandai Dibayar
         </button>
       </div>
@@ -454,14 +516,14 @@ function renderDashboardOrders() {
 }
 
 function renderDashboardTables() {
-  document.getElementById("dashboardContent").innerHTML=`
+  document.getElementById("dashboardContent").innerHTML = `
     <h2>Informasi Meja</h2>
     <div class="table-grid">
-      ${tableData.map(table=>`
-        <div class="table-card ${table.occupied?"occupied":""}"
+      ${tableData.map(table => `
+        <div class="table-card ${table.occupied ? "occupied" : ""}"
           style="display:grid;place-content:center;text-align:center">
-          Meja ${String(table.id).padStart(2,"0")}
-          <small>${table.occupied?"Terisi":"Tersedia"}</small>
+          Meja ${String(table.id).padStart(2, "0")}
+          <small>${table.occupied ? "Terisi" : "Tersedia"}</small>
         </div>
       `).join("")}
     </div>
@@ -469,11 +531,11 @@ function renderDashboardTables() {
 }
 
 function renderDashboardReport() {
-  const paid=orders.filter(o=>o.payment==="Dibayar");
-  const unpaid=orders.filter(o=>o.payment!=="Dibayar");
-  const sales=paid.reduce((sum,o)=>sum+o.total,0);
+  const paid = orders.filter(o => o.payment === "Dibayar");
+  const unpaid = orders.filter(o => o.payment !== "Dibayar");
+  const sales = paid.reduce((sum, o) => sum + o.total, 0);
 
-  document.getElementById("dashboardContent").innerHTML=`
+  document.getElementById("dashboardContent").innerHTML = `
     <div class="report-card">
       <p>Total seluruh pesanan</p><strong>${orders.length}</strong>
     </div>
@@ -489,25 +551,37 @@ function renderDashboardReport() {
   `;
 }
 
-/* SEMUA EVENT TOMBOL */
+/* ==============================
+   9. EVENT SEMUA TOMBOL
+============================== */
 
-document.addEventListener("click",function(event) {
-  const page=event.target.closest("[data-page]");
-  if(page) {
+document.addEventListener("click", function(event) {
+  const target = event.target;
+
+  /* Tombol buka/tutup menu HP */
+  if (target.closest("#menuToggle")) {
+    document.getElementById("navMenu").classList.toggle("open");
+    return;
+  }
+
+  /* Navigasi halaman */
+  const page = target.closest("[data-page]");
+  if (page) {
     event.preventDefault();
     showPage(page.dataset.page);
     return;
   }
 
-  const add=event.target.closest("[data-add]");
-  if(add) {
+  /* Tambah produk ke keranjang */
+  const add = target.closest("[data-add]");
+  if (add) {
     addToCart(add.dataset.add);
     return;
   }
 
-  /* EVENT TOMBOL + DAN - KARTU MENU */
-  const menuQty=event.target.closest("[data-menu-qty]");
-  if(menuQty) {
+  /* Tombol jumlah menu */
+  const menuQty = target.closest("[data-menu-qty]");
+  if (menuQty) {
     changeMenuQuantity(
       menuQty.dataset.id,
       menuQty.dataset.menuQty
@@ -515,42 +589,49 @@ document.addEventListener("click",function(event) {
     return;
   }
 
-  const qty=event.target.closest("[data-qty]");
-  if(qty) {
-    changeQuantity(qty.dataset.id,qty.dataset.qty);
+  /* Tombol jumlah keranjang */
+  const qty = target.closest("[data-qty]");
+  if (qty) {
+    changeQuantity(qty.dataset.id, qty.dataset.qty);
     return;
   }
 
-  const remove=event.target.closest("[data-remove]");
-  if(remove) {
+  /* Hapus produk */
+  const remove = target.closest("[data-remove]");
+  if (remove) {
     removeFromCart(remove.dataset.remove);
     return;
   }
 
-  const table=event.target.closest("[data-table]");
-  if(table) {
+  /* Pilih meja */
+  const table = target.closest("[data-table]");
+  if (table) {
     chooseTable(table.dataset.table);
     return;
   }
 
-  const role=event.target.closest("[data-role]");
-  if(role) {
+  /* Pilih peran karyawan */
+  const role = target.closest("[data-role]");
+  if (role) {
     openDashboard(role.dataset.role);
     return;
   }
 
-  const tab=event.target.closest("[data-tab]");
-  if(tab) {
-    currentTab=tab.dataset.tab;
+  /* Tab dashboard */
+  const tab = target.closest("[data-tab]");
+  if (tab) {
+    currentTab = tab.dataset.tab;
     renderDashboard();
     return;
   }
 
-  const payment=event.target.closest("[data-payment]");
-  if(payment) {
-    const order=orders.find(o=>o.id===payment.dataset.payment);
-    if(order) {
-      order.payment="Dibayar";
+  /* Pembayaran */
+  const payment = target.closest("[data-payment]");
+  if (payment) {
+    const order = orders.find(o => o.id === payment.dataset.payment);
+
+    if (order) {
+      order.payment = "Dibayar";
       saveData();
       renderDashboard();
       alert("Pembayaran berhasil diperbarui.");
@@ -558,41 +639,51 @@ document.addEventListener("click",function(event) {
     return;
   }
 
-  const category=event.target.closest("[data-category]");
-  if(category) {
-    currentCategory=category.dataset.category;
+  /* Filter kategori */
+  const category = target.closest("[data-category]");
+  if (category) {
+    currentCategory = category.dataset.category;
     renderMenu();
     return;
   }
 
-  if(event.target.closest("#checkoutBtn")) {
+  /* Checkout */
+  if (target.closest("#checkoutBtn")) {
     checkout();
-    return;
-  }
-
-  if(event.target.closest("#menuToggle")) {
-    document.getElementById("navMenu").classList.toggle("open");
   }
 });
 
-/* EVENT INPUT DAN STATUS */
+/* ==============================
+   10. EVENT PENCARIAN MENU
+============================== */
 
-document.addEventListener("input",function(event) {
-  if(event.target.id==="searchMenu") renderMenu();
+document.addEventListener("input", function(event) {
+  if (event.target.id === "searchMenu") {
+    renderMenu();
+  }
 });
 
-document.addEventListener("change",function(event) {
-  if(event.target.matches("[data-status]")) {
-    const order=orders.find(o=>o.id===event.target.dataset.status);
-    if(order) {
-      order.status=event.target.value;
+/* ==============================
+   11. EVENT STATUS PESANAN
+============================== */
+
+document.addEventListener("change", function(event) {
+  if (event.target.matches("[data-status]")) {
+    const order = orders.find(
+      o => o.id === event.target.dataset.status
+    );
+
+    if (order) {
+      order.status = event.target.value;
       saveData();
       renderDashboard();
     }
   }
 });
 
-/* JALANKAN WEBSITE */
+/* ==============================
+   12. JALANKAN WEBSITE
+============================== */
 
 function initializeApp() {
   renderFeaturedMenu();
