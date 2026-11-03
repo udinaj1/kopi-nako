@@ -11,14 +11,14 @@
 
 <header class="navbar">
   <a href="#" class="logo" data-page="home">KOPI <span>NAKO.</span></a>
-  <button class="menu-toggle" id="menuToggle">☰</button>
+  <button class="menu-toggle" id="menuToggle" type="button" aria-label="Buka menu">☰</button>
 
   <nav id="navMenu">
-    <button data-page="home">Beranda</button>
-    <button data-page="menu">Menu</button>
-    <button data-page="tables">Pilih Meja</button>
-    <button data-page="cart">Keranjang (<span id="cartCount">0</span>)</button>
-    <button data-page="staff">Karyawan</button>
+    <button type="button" data-page="home">Beranda</button>
+    <button type="button" data-page="menu">Menu</button>
+    <button type="button" data-page="tables">Pilih Meja</button>
+    <button type="button" data-page="cart">Keranjang (<span id="cartCount">0</span>)</button>
+    <button type="button" data-page="staff">Karyawan</button>
   </nav>
 </header>
 
@@ -28,18 +28,18 @@
   <section id="home" class="page active">
     <div class="hero">
       <div class="hero-background"></div>
-      
+
       <div class="hero-content">
         <p class="eyebrow">SELAMAT DATANG DI KOPI NAKO SOLO</p>
         <h1 class="hero-title">
           <span>Tempat Cerita,</span>
-          <span>Secangkir Kopi</span>
+          <span>Secangkir Kopi.</span>
         </h1>
         <p>Nikmati waktu santai bersama kopi dan hidangan favorit.</p>
 
         <div class="hero-actions">
-          <button class="btn btn-primary" data-page="menu">Lihat Menu</button>
-          <button class="btn btn-outline" data-page="tables">Pilih Meja</button>
+          <button type="button" class="btn btn-primary" data-page="menu">Lihat Menu</button>
+          <button type="button" class="btn btn-outline" data-page="tables">Pilih Meja</button>
         </div>
       </div>
 
@@ -58,7 +58,7 @@
       <h2>Menu Pilihan Kami</h2>
       <div class="product-grid" id="featuredMenu"></div>
       <div class="center">
-        <button class="btn btn-primary" data-page="menu">Lihat Semua Menu</button>
+        <button type="button" class="btn btn-primary" data-page="menu">Lihat Semua Menu</button>
       </div>
     </section>
 
@@ -79,10 +79,10 @@
       placeholder="Cari nama menu...">
 
     <div class="filter-list">
-      <button class="filter-btn active" data-category="Semua">Semua</button>
-      <button class="filter-btn" data-category="Kopi">Kopi</button>
-      <button class="filter-btn" data-category="Non Kopi">Non Kopi</button>
-      <button class="filter-btn" data-category="Makanan">Makanan</button>
+      <button type="button" class="filter-btn active" data-category="Semua">Semua</button>
+      <button type="button" class="filter-btn" data-category="Kopi">Kopi</button>
+      <button type="button" class="filter-btn" data-category="Non Kopi">Non Kopi</button>
+      <button type="button" class="filter-btn" data-category="Makanan">Makanan</button>
     </div>
 
     <div class="product-grid" id="menuList"></div>
@@ -102,7 +102,7 @@
 
     <div class="table-grid" id="tableList"></div>
     <p id="selectedTableText" class="selected-info"></p>
-    <button class="btn btn-primary" data-page="cart">Lanjut ke Keranjang</button>
+    <button type="button" class="btn btn-primary" data-page="cart">Lanjut ke Keranjang</button>
   </section>
 
   <!-- KERANJANG -->
@@ -120,10 +120,10 @@
 
       <p id="cartTableInfo" class="muted">Meja belum dipilih.</p>
 
-      <button class="btn btn-primary full" id="checkoutBtn">
+      <button type="button" class="btn btn-primary full" id="checkoutBtn">
         Checkout Sekarang
       </button>
-      <button class="btn btn-outline full" data-page="menu">
+      <button type="button" class="btn btn-outline full" data-page="menu">
         Tambah Menu
       </button>
     </div>
@@ -136,8 +136,8 @@
     <h1>Terima Kasih!</h1>
     <p>Pesanan Anda berhasil dibuat.</p>
     <div class="success-card" id="successDetail"></div>
-    <button class="btn btn-primary" data-page="home">Kembali ke Beranda</button>
-    <button class="btn btn-outline" data-page="menu">Pesan Lagi</button>
+    <button type="button" class="btn btn-primary" data-page="home">Kembali ke Beranda</button>
+    <button type="button" class="btn btn-outline" data-page="menu">Pesan Lagi</button>
   </section>
 
   <!-- KARYAWAN -->
@@ -147,27 +147,27 @@
     <p class="muted">Pilih peran untuk membuka dashboard.</p>
 
     <div class="role-grid">
-      <button class="role-card" data-role="Kasir">
+      <button type="button" class="role-card" data-role="Kasir">
         <span>💳</span><strong>Kasir</strong>
         <small>Pesanan dan pembayaran</small>
       </button>
 
-      <button class="role-card" data-role="Barista">
+      <button type="button" class="role-card" data-role="Barista">
         <span>☕</span><strong>Barista</strong>
         <small>Pembuatan minuman</small>
       </button>
 
-      <button class="role-card" data-role="Dapur">
+      <button type="button" class="role-card" data-role="Dapur">
         <span>🍳</span><strong>Dapur / Kitchen</strong>
         <small>Pembuatan makanan</small>
       </button>
 
-      <button class="role-card" data-role="Waiter">
+      <button type="button" class="role-card" data-role="Waiter">
         <span>🛎️</span><strong>Waiter</strong>
         <small>Pelayanan pelanggan</small>
       </button>
 
-      <button class="role-card" data-role="Owner">
+      <button type="button" class="role-card" data-role="Owner">
         <span>📊</span><strong>Owner</strong>
         <small>Laporan penjualan</small>
       </button>
@@ -182,7 +182,7 @@
         <h1 id="dashboardTitle">Dashboard</h1>
         <p class="muted" id="dashboardDescription"></p>
       </div>
-      <button class="btn btn-outline" data-page="staff">Ganti Peran</button>
+      <button type="button" class="btn btn-outline" data-page="staff">Ganti Peran</button>
     </div>
 
     <div class="stats-grid">
@@ -201,9 +201,9 @@
     </div>
 
     <div class="dashboard-tabs">
-      <button class="tab-btn active" data-tab="orders">Pesanan</button>
-      <button class="tab-btn" data-tab="tables">Meja</button>
-      <button class="tab-btn" data-tab="report">Laporan</button>
+      <button type="button" class="tab-btn active" data-tab="orders">Pesanan</button>
+      <button type="button" class="tab-btn" data-tab="tables">Meja</button>
+      <button type="button" class="tab-btn" data-tab="report">Laporan</button>
     </div>
 
     <div id="dashboardContent"></div>
