@@ -87,7 +87,7 @@ function showPage(pageId) {
 /* MENU */
 
 function createProductCard(product) {
-  const qty = menuQuantities[product.id] ?? 1;
+  const qty = menuQuantities[product.id] ?? 0;
 
   return `
     <article class="product-card">
@@ -174,7 +174,7 @@ function addToCart(id) {
   const product = menuData.find(item => item.id === Number(id));
   if (!product) return;
 
-  const quantity = menuQuantities[product.id] ?? 1;
+  const quantity = menuQuantities[product.id] ?? 0;
 
   if (quantity === 0) {
     alert("Jumlah menu tidak boleh 0.");
