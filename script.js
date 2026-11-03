@@ -87,7 +87,7 @@ function showPage(pageId) {
 /* MENU */
 
 function createProductCard(product) {
-  const qty = menuQuantities[product.id] ?? || 1;
+  const qty = menuQuantities[product.id] ?? 1;
 
   return `
     <article class="product-card">
@@ -201,22 +201,6 @@ function addToCart(id) {
   }
 }
 
-  
-  menuQuantities[product.id] = 1;
-
-  saveData();
-  updateCartCount();
-
-  renderMenu();
-  renderFeaturedMenu();
-
-  alert(quantity + " " + product.name + " berhasil ditambahkan.");
-
-  if (document.getElementById("cart").classList.contains("active")) {
-    renderCart();
-  }
-}
-
 /* FUNGSI TOMBOL + DAN - PADA KARTU MENU */
 
 function changeMenuQuantity(id, change) {
@@ -226,7 +210,7 @@ function changeMenuQuantity(id, change) {
   menuQuantities[productId] = Math.max(
     1,
     currentQty + Number(change)
-    );
+  );
 
   renderMenu();
   renderFeaturedMenu();
