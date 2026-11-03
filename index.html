@@ -144,58 +144,31 @@
 
   <!-- KARYAWAN -->
    <section id="staff" class="page section">
-
-  <div class="staff-login-header">
-    <p class="eyebrow">KOPI NAKO SOLO</p>
-    <h1>Login Staff</h1>
-    <p class="muted">
-      Silakan pilih bagian pekerjaan untuk masuk
-      ke dashboard karyawan.
-    </p>
-  </div>
+  <h2>Login Staff Kopi Nako</h2>
+  <p>Pilih bagian pekerjaan kamu</p>
 
   <div class="role-grid">
+    <button class="role-card" data-role="Barista">☕ Barista</button>
+    <button class="role-card" data-role="Kasir">💳 Kasir</button>
+    <button class="role-card" data-role="Dapur">🍳 Dapur / Kitchen</button>
+    <button class="role-card" data-role="Waiter">🛎️ Waiter</button>
+    <button class="role-card" data-role="Owner">📊 Owner</button>
+  </div>
+</section>
 
-    <button type="button" class="role-card"
-      data-role="Barista">
-      <span>☕</span>
-      <strong>Barista</strong>
-      <small>Kelola pembuatan minuman</small>
-      <b>Masuk Dashboard →</b>
-    </button>
-
-    <button type="button" class="role-card"
-      data-role="Kasir">
-      <span>💳</span>
-      <strong>Kasir</strong>
-      <small>Kelola pesanan dan pembayaran</small>
-      <b>Masuk Dashboard →</b>
-    </button>
-
-    <button type="button" class="role-card"
-      data-role="Dapur">
-      <span>🍳</span>
-      <strong>Dapur / Kitchen</strong>
-      <small>Kelola pembuatan makanan</small>
-      <b>Masuk Dashboard →</b>
-    </button>
-
-    <button type="button" class="role-card"
-      data-role="Waiter">
-      <span>🛎️</span>
-      <strong>Waiter</strong>
-      <small>Kelola pelayanan pelanggan</small>
-      <b>Masuk Dashboard →</b>
-    </button>
-
-    <button type="button" class="role-card"
-      data-role="Owner">
-      <span>📊</span>
-      <strong>Owner</strong>
-      <small>Lihat laporan penjualan</small>
-      <b>Masuk Dashboard →</b>
+<!-- DASHBOARD STAFF -->
+<section id="dashboard" class="page section">
+  <div class="dashboard-header">
+    <div>
+      <h2 id="dashboardTitle">Dashboard Staff</h2>
+      <p id="dashboardDescription">Selamat bekerja!</p>
+    </div>
+    <button onclick="showPage('staff')" class="back-button">
+      Ganti Role
     </button>
   </div>
+
+  <div id="dashboardContent"></div>
 </section>
 
   <!-- DASHBOARD -->
