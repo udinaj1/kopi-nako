@@ -1,755 +1,626 @@
-"use strict";
-
-// ===================================
-// DATA MENU
-// ===================================
-
-const menus = [
-  {
-    id: 1,
-    name: "Kopi Nako",
-    category: "Kopi",
-    price: 18000,
-    image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=700&q=80",
-    description: "Kopi susu dengan rasa seimbang."
-  },
-  {
-    id: 2,
-    name: "Es Kopi Sayang",
-    category: "Kopi",
-    price: 22000,
-    image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=700&q=80",
-    description: "Kopi susu dingin yang menyegarkan."
-  },
-  {
-    id: 3,
-    name: "Americano",
-    category: "Kopi",
-    price: 16000,
-    image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=700&q=80",
-    description: "Espresso dengan karakter rasa kuat."
-  },
-  {
-    id: 4,
-    name: "Cappuccino",
-    category: "Kopi",
-    price: 22000,
-    image: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?auto=format&fit=crop&w=700&q=80",
-    description: "Espresso dengan susu dan foam."
-  },
-  {
-    id: 5,
-    name: "Matcha Latte",
-    category: "Non Kopi",
-    price: 23000,
-    image: "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=700&q=80",
-    description: "Matcha dan susu yang creamy."
-  },
-  {
-    id: 6,
-    name: "Chocolate",
-    category: "Non Kopi",
-    price: 21000,
-    image: "https://images.unsplash.com/photo-1542990253-0b8be7ec7e8c?auto=format&fit=crop&w=700&q=80",
-    description: "Minuman cokelat yang nikmat."
-  },
-  {
-    id: 7,
-    name: "French Fries",
-    category: "Makanan",
-    price: 18000,
-    image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=700&q=80",
-    description: "Kentang goreng renyah."
-  },
-  {
-    id: 8,
-    name: "Croissant",
-    category: "Makanan",
-    price: 20000,
-    image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=700&q=80",
-    description: "Pastry renyah dan lembut."
-  },
-  {
-    id: 9,
-    name: "Waffle",
-    category: "Makanan",
-    price: 25000,
-    image: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?auto=format&fit=crop&w=700&q=80",
-    description: "Waffle hangat dan lembut."
-  }
-];
-
-// ===================================
-// DATA MEJA
-// ===================================
-
-const tables = [];
-
-["Indoor", "Tengah", "Nongkrong"].forEach((area, index) => {
-  for (let i = 1; i <= 6; i++) {
-    const number = index * 6 + i;
-
-    tables.push({
-      id: String(number).padStart(2, "0"),
-      area: area,
-      status: [4, 9, 15, 18].includes(number)
-        ? "occupied"
-        : "available"
-    });
-  }
-});
-
-// ===================================
-// VARIABEL
-// ===================================
-
-let activeArea = "Indoor";
-let activeCategory = "Semua";
-let selectedTable = "";
-
-let cart = JSON.parse(
-  localStorage.getItem("kopiNakoCart") || "[]"
-);
-
-let orders = JSON.parse(
-  localStorage.getItem("kopiNakoOrders") || "[]"
-);
-
-// ===================================
-// FUNGSI BANTU
-// ===================================
-
-const el = id => document.getElementById(id);
-
-function rupiah(value) {
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    maximumFractionDigits: 0
-  }).format(value);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  })[char]);
+:root {
+    --bg: #101512;
+    --panel: #1b241e;
+    --panel-light: #263329;
+    --green: #a4c78a;
+    --green-dark: #64894f;
+    --white: #f5f5ef;
+    --muted: #a7b0a5;
+    --red: #df7777;
 }
 
-function saveCart() {
-  localStorage.setItem(
-    "kopiNakoCart",
-    JSON.stringify(cart)
-  );
-
-  updateCartCount();
+body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
 }
 
-function saveOrders() {
-  localStorage.setItem(
-    "kopiNakoOrders",
-    JSON.stringify(orders)
-  );
+button, input, select {
+    font: inherit;
 }
 
-function updateCartCount() {
-  const total = cart.reduce(
-    (sum, item) => sum + item.qty,
-    0
-  );
-
-  el("cartCount").textContent = total;
+button {
+    cursor: pointer;
 }
 
-// ===================================
-// NAVIGASI HALAMAN
-// ===================================
-
-function showPage(pageId) {
-  document.querySelectorAll(".page").forEach(page => {
-    page.classList.toggle(
-      "active",
-      page.id === pageId
-    );
-  });
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
-  if (pageId === "menu") renderMenu();
-  if (pageId === "tables") renderTables();
-  if (pageId === "cart") renderCart();
+.navbar {
+    min-height: 75px;
+    padding: 15px 6%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: #151d18;
+    border-bottom: 1px solid #344236;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
-function setupNavigation() {
-  document.querySelectorAll("[data-page]").forEach(button => {
-    button.addEventListener("click", () => {
-      showPage(button.dataset.page);
-    });
-  });
+.logo {
+    color: white;
+    text-decoration: none;
+    font-size: 23px;
+    font-weight: 900;
+    letter-spacing: 2px;
 }
 
-// ===================================
-// TAMPILKAN MEJA
-// ===================================
+.logo span {
+    color: var(--green);
+}
 
-function renderTables() {
-  const grid = el("tableGrid");
+.logo small {
+    display: block;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 5px;
+}
 
-  grid.innerHTML = "";
+nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
 
-  const filtered = tables.filter(
-    table => table.area === activeArea
-  );
+.nav-btn {
+    border: 0;
+    color: var(--muted);
+    background: transparent;
+    padding: 11px 14px;
+    border-radius: 8px;
+}
 
-  filtered.forEach(table => {
-    const card = document.createElement("div");
+.nav-btn:hover,
+.nav-btn.active {
+    color: var(--green);
+    background: #29372c;
+}
 
-    card.className = "table-card";
+#cart-count {
+    background: var(--green);
+    color: #172016;
+    border-radius: 20px;
+    padding: 2px 7px;
+    font-size: 11px;
+    font-weight: bold;
+}
 
-    if (table.status === "occupied") {
-      card.classList.add("occupied");
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 65px 25px;
+}
+
+.hero {
+    min-height: 570px;
+    padding: 80px 10%;
+    display: flex;
+    align-items: center;
+    background:
+        linear-gradient(90deg, rgba(10,18,12,.96), rgba(10,18,12,.45)),
+        linear-gradient(135deg, #354b37, #17241a 60%, #536b43);
+}
+
+.hero-content {
+    max-width: 600px;
+}
+
+.eyebrow {
+    color: var(--green);
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+}
+
+.hero h1 {
+    font-size: clamp(42px, 7vw, 75px);
+    line-height: 1.1;
+    margin-bottom: 22px;
+}
+
+.hero h1 span {
+    color: var(--green);
+}
+
+.hero-content > p:not(.eyebrow) {
+    color: #d0d7ce;
+    line-height: 1.8;
+    margin-bottom: 28px;
+}
+
+.primary-btn,
+.secondary-btn {
+    padding: 13px 21px;
+    border: 0;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.primary-btn {
+    background: var(--green);
+    color: #172016;
+}
+
+.primary-btn:hover {
+    background: #b9d8a5;
+}
+
+.secondary-btn {
+    background: var(--panel-light);
+    color: var(--white);
+    border: 1px solid #465748;
+}
+
+.home-info {
+    padding: 35px 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: var(--panel);
+}
+
+.home-info p {
+    color: var(--muted);
+    margin-top: 10px;
+}
+
+.section-heading {
+    margin-bottom: 35px;
+}
+
+.section-heading h1 {
+    font-size: 38px;
+    margin-bottom: 12px;
+}
+
+.section-heading > p:last-child {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.filter-btn {
+    padding: 10px 18px;
+    border-radius: 30px;
+    border: 1px solid #435344;
+    color: var(--muted);
+    background: var(--panel);
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    background: var(--green);
+    color: #172016;
+    border-color: var(--green);
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.menu-card {
+    overflow: hidden;
+    background: var(--panel);
+    border: 1px solid #344236;
+    border-radius: 14px;
+}
+
+.menu-picture {
+    height: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 65px;
+    background: linear-gradient(135deg, #344b36, #202a22);
+}
+
+.menu-info {
+    padding: 20px;
+}
+
+.menu-info h3 {
+    margin-bottom: 8px;
+}
+
+.menu-category {
+    color: var(--green);
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.menu-description {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 38px;
+}
+
+.menu-bottom {
+    margin-top: 17px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-price {
+    color: var(--green);
+    font-weight: bold;
+}
+
+.menu-quantity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #101812;
+    padding: 5px;
+    border-radius: 30px;
+    border: 1px solid #40513f;
+}
+
+.qty-btn {
+    height: 31px;
+    width: 31px;
+    border: 0;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 19px;
+    background: var(--green);
+    color: #172016;
+}
+
+.qty-number {
+    min-width: 18px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.table-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.table-card {
+    background: var(--panel);
+    border: 1px solid #344236;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.table-card h3 {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.table-card p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.table-card.available {
+    border-color: var(--green-dark);
+}
+
+.table-card.occupied {
+    opacity: .55;
+}
+
+.table-card button {
+    padding: 9px 16px;
+    border: 0;
+    border-radius: 6px;
+    background: var(--green);
+    color: #172016;
+}
+
+.table-card button:disabled {
+    background: #59605a;
+    color: white;
+    cursor: not-allowed;
+}
+
+.available-dot,
+.occupied-dot {
+    display: inline-block;
+    height: 9px;
+    width: 9px;
+    border-radius: 50%;
+    margin: 0 5px 0 15px;
+}
+
+.available-dot {
+    background: var(--green);
+}
+
+.occupied-dot {
+    background: var(--red);
+}
+
+.legend {
+    color: var(--muted);
+    margin-top: 25px;
+    font-size: 13px;
+}
+
+.cart-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 25px;
+    align-items: start;
+}
+
+.cart-items,
+.checkout-box,
+.login-box {
+    background: var(--panel);
+    border: 1px solid #344236;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #344236;
+}
+
+.cart-item h3 {
+    font-size: 15px;
+    margin-bottom: 7px;
+}
+
+.cart-item p {
+    color: var(--green);
+    font-size: 13px;
+}
+
+.cart-item .menu-quantity {
+    flex-shrink: 0;
+}
+
+.empty-message {
+    color: var(--muted);
+    text-align: center;
+    padding: 35px 10px;
+}
+
+.checkout-box h2,
+.login-box h2 {
+    margin-bottom: 22px;
+}
+
+.checkout-box label,
+.login-box label {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    margin: 15px 0 8px;
+}
+
+.checkout-box input,
+.checkout-box select,
+.login-box input {
+    width: 100%;
+    padding: 12px;
+    color: white;
+    background: #101812;
+    border: 1px solid #465748;
+    border-radius: 7px;
+    outline: none;
+}
+
+.total-row {
+    border-top: 1px solid #465748;
+    margin-top: 25px;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.total-row strong {
+    color: var(--green);
+}
+
+.full-btn {
+    width: 100%;
+    margin-top: 12px;
+}
+
+.success-box {
+    max-width: 550px;
+    margin: 40px auto;
+    padding: 35px;
+    text-align: center;
+    background: var(--panel);
+    border: 1px solid #344236;
+    border-radius: 15px;
+}
+
+.success-icon {
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 20px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: #172016;
+    background: var(--green);
+    font-size: 35px;
+}
+
+.success-box > p {
+    color: var(--muted);
+    margin: 12px 0 20px;
+}
+
+#receipt {
+    text-align: left;
+    background: #101812;
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    line-height: 1.8;
+    font-size: 14px;
+}
+
+#receipt hr {
+    border: 0;
+    border-top: 1px solid #465748;
+    margin: 10px 0;
+}
+
+.login-box {
+    max-width: 420px;
+    margin: auto;
+}
+
+.login-hint,
+.message {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 15px;
+}
+
+.message.error {
+    color: var(--red);
+}
+
+.staff-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.order-card {
+    background: var(--panel);
+    border: 1px solid #344236;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.order-card p {
+    color: var(--muted);
+    margin-top: 8px;
+    line-height: 1.6;
+}
+
+.order-card strong {
+    color: var(--green);
+}
+
+footer {
+    padding: 25px;
+    text-align: center;
+    background: #151d18;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 850px) {
+    .navbar {
+        align-items: flex-start;
+        flex-direction: column;
     }
 
-    if (selectedTable === table.id) {
-      card.classList.add("chosen");
+    nav {
+        width: 100%;
     }
 
-    card.innerHTML = `
-      <h3>Meja ${table.id}</h3>
-
-      <span class="status">
-        ${table.status === "available"
-          ? "Tersedia"
-          : "Terisi"}
-      </span>
-    `;
-
-    const button = document.createElement("button");
-
-    button.textContent =
-      table.status === "occupied"
-        ? "Tidak Tersedia"
-        : selectedTable === table.id
-          ? "Dipilih"
-          : "Pilih Meja";
-
-    button.disabled = table.status === "occupied";
-
-    button.addEventListener("click", () => {
-      selectedTable = table.id;
-
-      el("selectedTableText").textContent =
-        "Meja " + table.id + " area " +
-        table.area + " berhasil dipilih.";
-
-      renderTables();
-    });
-
-    card.appendChild(button);
-    grid.appendChild(card);
-  });
-
-  if (selectedTable === "") {
-    el("selectedTableText").textContent =
-      "Belum ada meja dipilih.";
-  }
-}
-
-// ===================================
-// FILTER AREA MEJA
-// ===================================
-
-function setupAreaFilters() {
-  document.querySelectorAll("[data-area]").forEach(button => {
-    button.addEventListener("click", () => {
-      activeArea = button.dataset.area;
-
-      document.querySelectorAll("[data-area]").forEach(btn => {
-        btn.classList.toggle(
-          "selected",
-          btn === button
-        );
-      });
-
-      renderTables();
-    });
-  });
-}
-
-// ===================================
-// TAMPILKAN MENU
-// ===================================
-
-function renderMenu() {
-  const grid = el("menuGrid");
-
-  grid.innerHTML = "";
-
-  const filtered = menus.filter(menu => {
-    return activeCategory === "Semua" ||
-      menu.category === activeCategory;
-  });
-
-  filtered.forEach(menu => {
-    const card = document.createElement("div");
-
-    card.className = "card menu-card";
-
-    card.innerHTML = `
-      <img src="${menu.image}" alt="${menu.name}">
-
-      <div class="menu-content">
-        <h3>${menu.name}</h3>
-
-        <small>${menu.category}</small>
-
-        <p>${menu.description}</p>
-
-        <div class="price">
-          ${rupiah(menu.price)}
-        </div>
-      </div>
-    `;
-
-    const button = document.createElement("button");
-
-    button.className = "primary";
-    button.textContent = "Tambah ke Keranjang";
-
-    button.style.width = "calc(100% - 32px)";
-    button.style.margin = "0 16px 16px";
-
-    button.addEventListener("click", () => {
-      addToCart(menu.id);
-    });
-
-    card.appendChild(button);
-
-    grid.appendChild(card);
-  });
-}
-
-// ===================================
-// FILTER MENU
-// ===================================
-
-function setupMenuFilters() {
-  document.querySelectorAll("[data-category]").forEach(button => {
-    button.addEventListener("click", () => {
-      activeCategory = button.dataset.category;
-
-      document.querySelectorAll("[data-category]").forEach(btn => {
-        btn.classList.toggle(
-          "selected",
-          btn === button
-        );
-      });
-
-      renderMenu();
-    });
-  });
-}
-
-// ===================================
-// TAMBAH MENU
-// ===================================
-
-function addToCart(id) {
-  const item = cart.find(item => item.id === id);
-
-  if (item) {
-    item.qty++;
-  } else {
-    cart.push({
-      id: id,
-      qty: 1
-    });
-  }
-
-  saveCart();
-
-  alert("Menu berhasil ditambahkan ke keranjang!");
-}
-
-// ===================================
-// UBAH JUMLAH PESANAN
-// ===================================
-
-function changeQty(id, amount) {
-  const item = cart.find(item => item.id === id);
-
-  if (!item) return;
-
-  item.qty += amount;
-
-  if (item.qty <= 0) {
-    cart = cart.filter(item => item.id !== id);
-  }
-
-  saveCart();
-  renderCart();
-}
-
-// ===================================
-// TAMPILKAN KERANJANG
-// ===================================
-
-function renderCart() {
-  const container = el("cartItems");
-
-  container.innerHTML = "";
-
-  if (cart.length === 0) {
-    container.innerHTML =
-      "<p>Keranjang masih kosong.</p>";
-
-    const button = document.createElement("button");
-
-    button.textContent = "Lihat Menu";
-    button.className = "primary";
-
-    button.addEventListener("click", () => {
-      showPage("menu");
-    });
-
-    container.appendChild(button);
-
-    el("cartTotal").textContent = rupiah(0);
-
-    return;
-  }
-
-  let total = 0;
-
-  cart.forEach(item => {
-    const menu = menus.find(
-      menu => menu.id === item.id
-    );
-
-    if (!menu) return;
-
-    const subtotal = menu.price * item.qty;
-
-    total += subtotal;
-
-    const line = document.createElement("div");
-
-    line.className = "cart-line";
-
-    line.innerHTML = `
-      <div>
-        <strong>${menu.name}</strong>
-        <p>${rupiah(menu.price)}</p>
-      </div>
-    `;
-
-    const controls = document.createElement("div");
-
-    controls.className = "qty";
-
-    const minus = document.createElement("button");
-    minus.textContent = "-";
-
-    minus.addEventListener("click", () => {
-      changeQty(item.id, -1);
-    });
-
-    const number = document.createElement("strong");
-    number.textContent = item.qty;
-
-    const plus = document.createElement("button");
-    plus.textContent = "+";
-
-    plus.addEventListener("click", () => {
-      changeQty(item.id, 1);
-    });
-
-    controls.append(minus, number, plus);
-
-    const price = document.createElement("strong");
-    price.textContent = rupiah(subtotal);
-
-    line.append(controls, price);
-
-    container.appendChild(line);
-  });
-
-  el("cartTotal").textContent = rupiah(total);
-}
-
-// ===================================
-// KONFIRMASI PESANAN
-// ===================================
-
-function confirmOrder() {
-  if (cart.length === 0) {
-    alert("Keranjang masih kosong!");
-    showPage("menu");
-    return;
-  }
-
-  if (!selectedTable) {
-    alert("Silakan pilih meja terlebih dahulu!");
-    showPage("tables");
-    return;
-  }
-
-  const name = el("customerName").value.trim();
-  const phone = el("customerPhone").value.trim();
-
-  if (!name) {
-    alert("Masukkan nama pemesan!");
-    el("customerName").focus();
-    return;
-  }
-
-  if (!phone) {
-    alert("Masukkan nomor WhatsApp!");
-    el("customerPhone").focus();
-    return;
-  }
-
-  const items = cart.map(item => {
-    const menu = menus.find(
-      menu => menu.id === item.id
-    );
-
-    return {
-      name: menu.name,
-      price: menu.price,
-      qty: item.qty,
-      subtotal: menu.price * item.qty
-    };
-  });
-
-  const total = items.reduce(
-    (sum, item) => sum + item.subtotal,
-    0
-  );
-
-  const order = {
-    code: "KN" + Date.now(),
-    name: name,
-    phone: phone,
-    table: selectedTable,
-    items: items,
-    total: total,
-    payment: el("paymentMethod").value,
-    status: "Menunggu",
-    date: new Date().toLocaleString("id-ID")
-  };
-
-  orders.unshift(order);
-
-  saveOrders();
-
-  // Tandai meja sebagai terisi selama sesi browser ini
-  const table = tables.find(
-    table => table.id === selectedTable
-  );
-
-  if (table) {
-    table.status = "occupied";
-  }
-
-  showReceipt(order);
-
-  cart = [];
-  saveCart();
-
-  selectedTable = "";
-
-  el("customerName").value = "";
-  el("customerPhone").value = "";
-
-  showPage("success");
-}
-
-// ===================================
-// BUKTI PESANAN
-// ===================================
-
-function showReceipt(order) {
-  const container = el("receipt");
-
-  container.innerHTML = `
-    <h3>Terima kasih, ${escapeHTML(order.name)}!</h3>
-
-    <p>Kode pesanan: <strong>${order.code}</strong></p>
-
-    <p>Nomor meja: <strong>${order.table}</strong></p>
-
-    <p>Waktu: ${escapeHTML(order.date)}</p>
-
-    <hr>
-
-    ${order.items.map(item => `
-      <div class="cart-line">
-        <span>${escapeHTML(item.name)} × ${item.qty}</span>
-        <strong>${rupiah(item.subtotal)}</strong>
-      </div>
-    `).join("")}
-
-    <h2 class="total">
-      Total: ${rupiah(order.total)}
-    </h2>
-
-    <p>Metode pembayaran: ${escapeHTML(order.payment)}</p>
-
-    <div class="notice">
-      Status pesanan: Menunggu konfirmasi staff.
-    </div>
-  `;
-}
-
-// ===================================
-// LOGIN STAFF
-// ===================================
-
-function staffLogin() {
-  const username = el("staffUser").value.trim();
-  const password = el("staffPass").value;
-
-  if (username === "staff" && password === "12345") {
-    el("staffLoginPanel").classList.add("hidden");
-    el("staffDashboard").classList.remove("hidden");
-
-    renderStaffOrders();
-  } else {
-    el("loginMessage").textContent =
-      "Username atau password salah!";
-  }
-}
-
-// ===================================
-// DASHBOARD STAFF
-// ===================================
-
-function renderStaffOrders() {
-  const container = el("staffOrders");
-
-  container.innerHTML = "";
-
-  if (orders.length === 0) {
-    container.innerHTML =
-      "<p>Belum ada pesanan.</p>";
-
-    return;
-  }
-
-  orders.forEach(order => {
-    const card = document.createElement("div");
-
-    card.className = "staff-order";
-
-    card.innerHTML = `
-      <h3>${order.code}</h3>
-
-      <p>
-        Nama: ${escapeHTML(order.name)}<br>
-        Nomor meja: ${escapeHTML(order.table)}<br>
-        WhatsApp: ${escapeHTML(order.phone)}<br>
-        Tanggal: ${escapeHTML(order.date)}
-      </p>
-
-      ${order.items.map(item => `
-        <div class="cart-line">
-          <span>${escapeHTML(item.name)} × ${item.qty}</span>
-          <strong>${rupiah(item.subtotal)}</strong>
-        </div>
-      `).join("")}
-
-      <h3 class="total">
-        ${rupiah(order.total)}
-      </h3>
-
-      <p>Status: ${escapeHTML(order.status)}</p>
-    `;
-
-    const button = document.createElement("button");
-
-    button.className = "primary";
-    button.textContent = "Tandai Selesai";
-
-    button.addEventListener("click", () => {
-      order.status = "Selesai";
-
-      saveOrders();
-
-      renderStaffOrders();
-    });
-
-    card.appendChild(button);
-
-    container.appendChild(card);
-  });
-}
-
-// ===================================
-// LOGOUT STAFF
-// ===================================
-
-function staffLogout() {
-  el("staffDashboard").classList.add("hidden");
-  el("staffLoginPanel").classList.remove("hidden");
-
-  el("staffPass").value = "";
-
-  showPage("home");
-}
-
-// ===================================
-// HUBUNGKAN SEMUA TOMBOL
-// ===================================
-
-document.addEventListener("DOMContentLoaded", function() {
-
-  setupNavigation();
-
-  setupAreaFilters();
-
-  setupMenuFilters();
-
-  renderTables();
-
-  renderMenu();
-
-  renderCart();
-
-  updateCartCount();
-
-  // Tombol lanjut ke menu
-  el("continueMenu").addEventListener("click", function() {
-    if (!selectedTable) {
-      alert("Pilih meja terlebih dahulu!");
-      return;
+    .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    showPage("menu");
-  });
+    .table-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
 
-  // Tombol checkout
-  el("checkoutBtn").addEventListener(
-    "click",
-    confirmOrder
-  );
+@media (max-width: 600px) {
+    .navbar {
+        padding: 15px;
+    }
 
-  // Tombol login
-  el("staffLoginBtn").addEventListener(
-    "click",
-    staffLogin
-  );
+    nav {
+        gap: 5px;
+    }
 
-  // Tombol logout
-  el("staffLogoutBtn").addEventListener(
-    "click",
-    staffLogout
-  );
+    .nav-btn {
+        padding: 9px;
+        font-size: 12px;
+    }
 
-});
+    .hero {
+        min-height: 470px;
+        padding: 50px 25px;
+    }
+
+    .home-info {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 30px 25px;
+    }
+
+    .container {
+        padding: 45px 17px;
+    }
+
+    .section-heading h1 {
+        font-size: 30px;
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .table-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cart-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-item {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
