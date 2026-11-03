@@ -3,188 +3,195 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#173c2c">
-  <title>Kopi Nako Solo | Coffee & Eatery</title>
+  <meta name="description" content="Kopi Nako Solo - Ngopi, makan, dan berkumpul.">
+  <title>Kopi Nako Solo</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="#" data-page="home">
-      <span class="brand-mark">KN</span>
-      <span>KOPI NAKO <small>SOLO</small></span>
-    </a>
-    <button class="nav-toggle" id="nav-toggle" aria-label="Buka menu">☰</button>
-    <nav id="main-nav">
-      <button data-page="home">Beranda</button>
-      <button data-page="menu">Menu</button>
-      <button data-page="tables">Pilih Meja</button>
-      <button data-page="cart">Keranjang <span id="cart-count">0</span></button>
-      <button data-page="staff">Staf</button>
-    </nav>
-  </header>
 
-  <main>
-    <!-- BERANDA -->
-    <section id="home" class="page active">
-      <div class="hero">
-        <div class="hero-content">
-          <p class="eyebrow">COFFEE • EATERY • EXPERIENCE</p>
-          <h1>Nikmati Waktu,<br><span>Nikmati Kopi.</span></h1>
-          <p>Temukan pengalaman menikmati kopi dan makanan favoritmu di Kopi Nako Solo.</p>
-          <button class="btn btn-light" data-page="menu">Lihat Menu <span>→</span></button>
+<header class="topbar">
+  <a href="#" class="brand" onclick="showPage('home')">
+    <span class="brand-mark">N</span>
+    <span>KOPI NAKO<small>SOLO</small></span>
+  </a>
+  <nav class="main-nav">
+    <button onclick="showPage('home')">Beranda</button>
+    <button onclick="showPage('menu')">Menu</button>
+    <button onclick="showPage('tables')">Pilih Meja</button>
+    <button onclick="showPage('cart')">Keranjang <span id="cart-count">0</span></button>
+    <button onclick="showPage('staff-login')">Staff Area</button>
+  </nav>
+</header>
+
+<main>
+  <!-- BERANDA -->
+  <section id="home" class="page active">
+    <div class="hero">
+      <div class="hero-content">
+        <span class="eyebrow">KOPI NAKO · SOLO</span>
+        <h1>Good Coffee.<br><em>Good Company.</em></h1>
+        <p>Nikmati kopi favorit, makanan lezat, dan suasana nyaman untuk setiap cerita.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="showPage('menu')">Lihat Menu</button>
+          <button class="btn btn-outline" onclick="showPage('tables')">Pesan Meja</button>
         </div>
-        <div class="hero-stamp">GOOD<br>COFFEE<br>GOOD DAY</div>
       </div>
+      <div class="hero-photo">
+        <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=1000" alt="Suasana kedai kopi"
+          onerror="this.style.display='none'">
+        <div class="photo-caption">A place for every story.</div>
+      </div>
+    </div>
+
+    <div class="section-wrap">
       <div class="section-heading">
-        <div><p class="eyebrow">PILIHAN FAVORIT</p><h2>Menu Pilihan</h2></div>
-        <button class="text-button" data-page="menu">Lihat semua →</button>
+        <span class="eyebrow">OUR FAVORITES</span>
+        <h2>Menu Pilihan</h2>
+        <p>Temukan teman terbaik untuk waktu santaimu.</p>
       </div>
       <div id="featured-menu" class="menu-grid"></div>
-      <div class="info-strip">
-        <div><strong>01</strong><h3>Pilih Menu</h3><p>Pilih kopi dan makanan favorit.</p></div>
-        <div><strong>02</strong><h3>Pilih Meja</h3><p>Tentukan area duduk yang tersedia.</p></div>
-        <div><strong>03</strong><h3>Pesan & Nikmati</h3><p>Selesaikan pesanan dengan mudah.</p></div>
-      </div>
-    </section>
+      <div class="center"><button class="btn btn-primary" onclick="showPage('menu')">Lihat Semua Menu</button></div>
+    </div>
 
-    <!-- MENU -->
-    <section id="menu" class="page">
-      <div class="page-heading">
-        <p class="eyebrow">OUR MENU</p>
-        <h1>Menu Kopi Nako</h1>
-        <p>Pilih menu favoritmu dan masukkan ke keranjang.</p>
-      </div>
-      <div class="filter-bar" id="menu-filters">
-        <button class="filter-btn active" data-category="Semua">Semua</button>
-        <button class="filter-btn" data-category="Kopi">Kopi</button>
-        <button class="filter-btn" data-category="Non Kopi">Non Kopi</button>
-        <button class="filter-btn" data-category="Makanan">Makanan</button>
-      </div>
-      <div id="menu-list" class="menu-grid"></div>
-    </section>
+    <div class="about-strip">
+      <div><span class="eyebrow">KOPI NAKO SOLO</span><h2>Lebih dari sekadar secangkir kopi.</h2></div>
+      <p>Tempat untuk bertemu, berbagi cerita, bekerja, dan menikmati waktu bersama.</p>
+    </div>
+  </section>
 
-    <!-- PILIH MEJA -->
-    <section id="tables" class="page">
-      <div class="page-heading">
-        <p class="eyebrow">TABLE RESERVATION</p>
-        <h1>Pilih Tempat Duduk</h1>
-        <p>Pilih area dan meja yang masih tersedia.</p>
-      </div>
-      <div class="legend">
-        <span><i class="dot available"></i> Tersedia</span>
-        <span><i class="dot selected"></i> Pilihanmu</span>
-        <span><i class="dot occupied"></i> Terisi</span>
-      </div>
-      <div id="table-list" class="table-areas"></div>
-      <div class="selection-summary">
-        <span id="selected-table-label">Belum memilih meja</span>
-        <button class="btn btn-primary" data-page="menu">Lanjut ke Menu →</button>
-      </div>
-    </section>
+  <!-- MENU -->
+  <section id="menu" class="page section-wrap">
+    <div class="section-heading">
+      <span class="eyebrow">EXPLORE OUR MENU</span>
+      <h1>Menu Kopi Nako</h1>
+      <p>Pilih menu favoritmu dan tambahkan ke keranjang.</p>
+    </div>
+    <div class="category-list">
+      <button class="category-btn active" data-category="Semua">Semua</button>
+      <button class="category-btn" data-category="Kopi">Kopi</button>
+      <button class="category-btn" data-category="Non Kopi">Non Kopi</button>
+      <button class="category-btn" data-category="Makanan">Makanan</button>
+    </div>
+    <div id="menu-list" class="menu-grid"></div>
+  </section>
 
-    <!-- KERANJANG -->
-    <section id="cart" class="page">
-      <div class="page-heading">
-        <p class="eyebrow">YOUR ORDER</p>
-        <h1>Keranjang Pesanan</h1>
-        <p>Periksa pesanan sebelum melakukan checkout.</p>
-      </div>
-      <div class="checkout-layout">
-        <div id="cart-items" class="cart-panel"></div>
-        <aside class="summary-panel">
-          <h2>Ringkasan</h2>
-          <div class="summary-line"><span>Total Item</span><strong id="summary-count">0</strong></div>
-          <div class="summary-line total"><span>Total Harga</span><strong id="cart-total">Rp0</strong></div>
-          <button class="btn btn-primary full-width" id="checkout-button">Lanjut Checkout</button>
-        </aside>
-      </div>
-      <div id="checkout-form" class="checkout-form hidden">
-        <h2>Informasi Pemesanan</h2>
-        <form id="order-form">
-          <label>Nama Pemesan<input id="customer-name" required placeholder="Masukkan nama"></label>
-          <label>Tipe Pesanan
-            <select id="order-type" required>
-              <option value="Dine In">Dine In</option>
-              <option value="Take Away">Take Away</option>
-            </select>
-          </label>
-          <label>Nomor Meja <input id="checkout-table" readonly placeholder="Pilih meja jika Dine In"></label>
-          <label>Metode Pembayaran
-            <select id="payment-method" required>
-              <option value="QRIS">QRIS</option>
-              <option value="Tunai">Tunai</option>
-              <option value="Debit">Debit</option>
-            </select>
-          </label>
-          <label>Catatan Pesanan <textarea id="order-note" placeholder="Contoh: es sedikit, gula terpisah"></textarea></label>
-          <button class="btn btn-primary full-width" type="submit">Buat Pesanan</button>
-        </form>
-      </div>
-    </section>
+  <!-- PILIH MEJA -->
+  <section id="tables" class="page section-wrap">
+    <div class="section-heading">
+      <span class="eyebrow">MAKE YOUR VISIT COMFORTABLE</span>
+      <h1>Pilih Area & Meja</h1>
+      <p>Pilih area dan meja sebelum melanjutkan pesanan dine-in.</p>
+    </div>
+    <div class="order-type">
+      <label for="order-type">Jenis Pesanan</label>
+      <select id="order-type">
+        <option value="Dine In">Dine In</option>
+        <option value="Take Away">Take Away</option>
+      </select>
+    </div>
+    <div id="table-selection">
+      <div id="table-areas"></div>
+      <p class="table-note"><span class="dot available"></span> Kosong
+        <span class="dot selected-dot"></span> Dipilih
+        <span class="dot occupied"></span> Terisi
+      </p>
+    </div>
+    <div class="selected-table" id="selected-table">Belum memilih meja.</div>
+    <button class="btn btn-primary" onclick="showPage('menu')">Lanjut Pilih Menu</button>
+  </section>
 
-    <!-- BERHASIL -->
-    <section id="success" class="page">
-      <div class="success-panel">
-        <div class="success-icon">✓</div>
-        <p class="eyebrow">ORDER CONFIRMED</p>
-        <h1>Pesanan Berhasil!</h1>
-        <p>Terima kasih telah memesan di Kopi Nako Solo.</p>
-        <div id="success-detail"></div>
-        <button class="btn btn-primary" data-page="menu">Pesan Lagi</button>
-        <button class="btn btn-outline" data-page="home">Kembali ke Beranda</button>
+  <!-- KERANJANG -->
+  <section id="cart" class="page section-wrap narrow">
+    <div class="section-heading left">
+      <span class="eyebrow">YOUR ORDER</span>
+      <h1>Keranjang</h1>
+      <p>Periksa kembali pesanan sebelum checkout.</p>
+    </div>
+    <div id="cart-items"></div>
+    <div class="cart-summary">
+      <div class="summary-line"><span>Subtotal</span><strong id="cart-subtotal">Rp0</strong></div>
+      <div class="summary-line"><span>Pajak (10%)</span><strong id="cart-tax">Rp0</strong></div>
+      <div class="summary-line total"><span>Total</span><strong id="cart-total">Rp0</strong></div>
+      <button class="btn btn-primary full" onclick="checkout()">Buat Pesanan</button>
+    </div>
+  </section>
+
+  <!-- SUKSES -->
+  <section id="success" class="page section-wrap narrow">
+    <div class="success-card">
+      <div class="success-icon">✓</div>
+      <span class="eyebrow">ORDER RECEIVED</span>
+      <h1>Pesanan Berhasil Dibuat!</h1>
+      <p>Terima kasih telah memesan di Kopi Nako Solo.</p>
+      <div id="success-detail"></div>
+      <button class="btn btn-primary full" onclick="showPage('home')">Kembali ke Beranda</button>
+    </div>
+  </section>
+
+  <!-- LOGIN STAFF / PILIH BAGIAN -->
+  <section id="staff-login" class="page section-wrap">
+    <div class="section-heading">
+      <span class="eyebrow">KOPI NAKO · STAFF AREA</span>
+      <h1>Login Staff</h1>
+      <p>Pilih bagian pekerjaan untuk membuka dashboard. Tidak perlu mengisi nama.</p>
+    </div>
+    <div class="staff-choice-grid">
+      <button class="staff-choice" onclick="openStaff('Kasir')">
+        <span class="staff-icon">▤</span><strong>Kasir</strong><small>Pesanan, pembayaran & laporan</small>
+      </button>
+      <button class="staff-choice" onclick="openStaff('Barista')">
+        <span class="staff-icon">☕</span><strong>Barista</strong><small>Antrean dan persiapan minuman</small>
+      </button>
+      <button class="staff-choice" onclick="openStaff('Kitchen')">
+        <span class="staff-icon">♨</span><strong>Dapur / Kitchen</strong><small>Pesanan makanan & stok bahan</small>
+      </button>
+      <button class="staff-choice" onclick="openStaff('Waiter')">
+        <span class="staff-icon">♧</span><strong>Pelayan / Waiter</strong><small>Meja, pengantaran & kebersihan</small>
+      </button>
+      <button class="staff-choice" onclick="openStaff('Owner')">
+        <span class="staff-icon">▥</span><strong>Owner</strong><small>Laporan dan pemantauan</small>
+      </button>
+    </div>
+    <div class="center"><button class="btn btn-outline" onclick="showPage('home')">← Kembali ke halaman pelanggan</button></div>
+  </section>
+
+  <!-- DASHBOARD STAFF -->
+  <section id="staff-dashboard" class="page staff-layout">
+    <aside class="staff-sidebar">
+      <a class="brand staff-brand" href="#" onclick="showPage('home')">
+        <span class="brand-mark">N</span><span>KOPI NAKO<small>STAFF AREA</small></span>
+      </a>
+      <div class="staff-role-label">BAGIAN PEKERJAAN</div>
+      <div id="staff-role-name" class="staff-role-name">Kasir</div>
+      <nav class="staff-side-nav" id="staff-nav"></nav>
+      <button class="side-back" onclick="showPage('staff-login')">⇦ Ganti Bagian</button>
+      <button class="side-back" onclick="showPage('home')">⌂ Halaman Pelanggan</button>
+    </aside>
+
+    <div class="staff-main">
+      <div class="staff-topline">
+        <div><span class="eyebrow">KOPI NAKO · OPERATIONS</span><h1 id="staff-page-title">Dashboard</h1></div>
+        <span class="shift-pill">Shift Aktif · 08.00–16.00</span>
       </div>
-    </section>
-
-    <!-- STAF -->
-    <section id="staff" class="page">
-      <div class="page-heading">
-        <p class="eyebrow">STAFF MANAGEMENT</p>
-        <h1>Panel Staf</h1>
-        <p>Kelola pesanan, proses minuman, dan pantau penjualan.</p>
+      <div class="welcome-panel">
+        <div><span class="eyebrow">KLOTEN · SOLO</span><h2 id="staff-welcome">Selamat Datang!</h2>
+        <p>Kelola pelayanan dengan rapi, cepat, dan ramah.</p></div>
+        <div class="welcome-mark">N</div>
       </div>
+      <div id="staff-content"></div>
+    </div>
+  </section>
+</main>
 
-      <div id="staff-login" class="login-panel">
-        <h2>Login Staf</h2>
-        <p>Masuk untuk membuka dashboard pengelolaan pesanan.</p>
-        <form id="staff-login-form">
-          <label>Username<input id="staff-username" required placeholder="Username"></label>
-          <label>Password<input id="staff-password" type="password" required placeholder="Password"></label>
-          <button class="btn btn-primary full-width" type="submit">Masuk</button>
-        </form>
-        <small>Demo: username <b>staff</b>, password <b>12345</b>.</small>
-      </div>
+<footer class="footer">
+  <div><strong>KOPI NAKO</strong><span>SOLO</span></div>
+  <p>Ngopi, makan, dan berkumpul kapan saja.</p>
+  <small>Prototipe sistem pemesanan dan operasional Kopi Nako Solo.</small>
+</footer>
 
-      <div id="staff-dashboard" class="hidden">
-        <div class="dashboard-top">
-          <div><h2>Dashboard Pengelola</h2><p>Pantau aktivitas pesanan hari ini.</p></div>
-          <button class="btn btn-outline" id="staff-logout">Keluar</button>
-        </div>
-        <div class="stats-grid">
-          <article class="stat-card"><span>Total Pesanan</span><strong id="stat-orders">0</strong></article>
-          <article class="stat-card"><span>Pesanan Aktif</span><strong id="stat-active">0</strong></article>
-          <article class="stat-card"><span>Omzet Selesai</span><strong id="stat-revenue">Rp0</strong></article>
-          <article class="stat-card"><span>Menu Terlaris</span><strong id="stat-best">-</strong></article>
-        </div>
-
-        <div class="staff-tabs">
-          <button class="staff-tab active" data-staff-tab="orders">Antrean Barista/Dapur</button>
-          <button class="staff-tab" data-staff-tab="sales">Ringkasan Penjualan</button>
-        </div>
-        <div id="staff-orders-panel">
-          <div class="section-heading"><h2>Daftar Pesanan</h2><button class="text-button" id="refresh-orders">Perbarui ↻</button></div>
-          <div id="staff-orders" class="orders-list"></div>
-        </div>
-        <div id="staff-sales-panel" class="hidden">
-          <h2>Ringkasan Menu Terjual</h2>
-          <div id="sales-menu-list" class="sales-list"></div>
-        </div>
-        <p class="demo-warning">Catatan: ini prototype. Data pesanan tersimpan di browser/perangkat yang digunakan dan belum tersinkron otomatis antarperangkat.</p>
-      </div>
-    </section>
-  </main>
-
-  <footer><strong>KOPI NAKO SOLO</strong><p>Tempat cerita, rasa, dan kebersamaan.</p><small>© 2026 Kopi Nako Solo — Prototype UI/UX</small></footer>
-  <div id="toast" class="toast" role="status"></div>
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
