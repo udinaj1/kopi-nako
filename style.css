@@ -1327,3 +1327,92 @@ footer p {
     font-size: 38px;
   }
 }
+
+/* LOGIN STAFF */
+
+.login-staff-btn {
+  background: #173d32 !important;
+  color: white !important;
+  border-radius: 8px;
+}
+
+.login-staff-btn:hover {
+  background: #285b49 !important;
+  color: white !important;
+}
+
+.staff-login-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.staff-login-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  color: var(--green);
+}
+
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  max-width: 1050px;
+  margin: auto;
+}
+
+.role-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  padding: 30px 22px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: var(--green);
+  box-shadow: var(--shadow);
+  transition: .3s;
+}
+
+.role-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--gold);
+  box-shadow: 0 15px 30px rgba(0,0,0,.12);
+}
+
+.role-card span {
+  font-size: 38px;
+}
+
+.role-card strong {
+  font-size: 20px;
+}
+
+.role-card small {
+  color: var(--muted);
+}
+
+.role-card b {
+  color: var(--gold);
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+@media(max-width:650px) {
+  .role-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .role-card {
+    padding: 20px 14px;
+  }
+
+  .role-card strong {
+    font-size: 16px;
+  }
+
+  .staff-login-header h1 {
+    font-size: 32px;
+  }
+}
