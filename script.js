@@ -5,16 +5,16 @@
 // =====================================
 
 const menus = [
-    { id: 1, name: "Kopi Nako", category: "Kopi", price: 18000, icon: "☕", description: "Kopi susu khas dengan rasa nikmat." },
-    { id: 2, name: "Es Kopi Aren", category: "Kopi", price: 20000, icon: "🧋", description: "Perpaduan kopi, susu, dan gula aren." },
-    { id: 3, name: "Americano", category: "Kopi", price: 15000, icon: "☕", description: "Kopi hitam dengan cita rasa khas." },
-    { id: 4, name: "Cappuccino", category: "Kopi", price: 22000, icon: "☕", description: "Espresso dengan susu dan foam." },
-    { id: 5, name: "Matcha Latte", category: "Non Kopi", price: 23000, icon: "🍵", description: "Matcha dengan susu." },
-    { id: 6, name: "Chocolate", category: "Non Kopi", price: 20000, icon: "🍫", description: "Minuman cokelat creamy." },
-    { id: 7, name: "Lemon Tea", category: "Non Kopi", price: 15000, icon: "🍋", description: "Teh segar dengan lemon." },
-    { id: 8, name: "French Fries", category: "Makanan", price: 18000, icon: "🍟", description: "Kentang goreng renyah." },
-    { id: 9, name: "Croissant", category: "Makanan", price: 22000, icon: "🥐", description: "Roti pastry lembut." },
-    { id: 10, name: "Waffle", category: "Makanan", price: 25000, icon: "🧇", description: "Waffle dengan topping pilihan." }
+    { id: 1, name: "Kopi Nako", category: "Kopi", price: 18000, image: "images/kopi-nako.jpg", description: "Kopi susu khas dengan rasa nikmat." },
+    { id: 2, name: "Es Kopi Aren", category: "Kopi", price: 20000, image: "images/kopi-aren.jpg", description: "Perpaduan kopi, susu, dan gula aren." },
+    { id: 3, name: "Americano", category: "Kopi", price: 15000, image: "images/americano.jpg", description: "Kopi hitam dengan cita rasa khas." },
+    { id: 4, name: "Cappuccino", category: "Kopi", price: 22000, image: "images/cappuccino.jpg", description: "Espresso dengan susu dan foam." },
+    { id: 5, name: "Matcha Latte", category: "Non Kopi", price: 23000, image: "images/matcha.jpg", description: "Matcha dengan susu." },
+    { id: 6, name: "Chocolate", category: "Non Kopi", price: 20000, image: "images/chocolate.jpg", description: "Minuman cokelat creamy." },
+    { id: 7, name: "Lemon Tea", category: "Non Kopi", price: 15000, image: "images/lemon-tea.jpg", description: "Teh segar dengan lemon." },
+    { id: 8, name: "French Fries", category: "Makanan", price: 18000, image: "images/french-fries.jpg", description: "Kentang goreng renyah." },
+    { id: 9, name: "Croissant", category: "Makanan", price: 22000, image: "images/croissant.jpg", description: "Roti pastry lembut." },
+    { id: 10, name: "Waffle", category: "Makanan", price: 25000, image: "images/waffle.jpg", description: "Waffle dengan topping pilihan." }
 ];
 
 // =====================================
