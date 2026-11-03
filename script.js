@@ -6,7 +6,7 @@
 
 const menus = [
     { id: 1, name: "Kopi Nako", category: "Kopi", price: 18000, icon: "☕", description: "Kopi susu khas dengan rasa nikmat." },
-    { id: 2, name: "Es Kopi Sayang", category: "Kopi", price: 20000, icon: "🧋", description: "Kopi dan susu yang lembut." },
+    { id: 2, name: "Es Kopi Aren", category: "Kopi", price: 20000, icon: "🧋", description: "Perpaduan kopi, susu, dan gula aren." },
     { id: 3, name: "Americano", category: "Kopi", price: 15000, icon: "☕", description: "Kopi hitam dengan cita rasa khas." },
     { id: 4, name: "Cappuccino", category: "Kopi", price: 22000, icon: "☕", description: "Espresso dengan susu dan foam." },
     { id: 5, name: "Matcha Latte", category: "Non Kopi", price: 23000, icon: "🍵", description: "Matcha dengan susu." },
