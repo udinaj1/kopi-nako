@@ -1416,3 +1416,123 @@ footer p {
     font-size: 32px;
   }
 }
+
+
+
+/* DASHBOARD STAFF KOPI NAKO */
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.dashboard-header h2 {
+  color: #173f32;
+  margin-bottom: 5px;
+}
+
+.dashboard-header p {
+  color: #777;
+}
+
+.role-grid,
+.stat-grid,
+.order-grid,
+.table-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 18px;
+  margin: 25px 0;
+}
+
+.role-card,
+.staff-card,
+.stat-card {
+  background: #fffdf7;
+  border: 1px solid #e7dfce;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 5px 18px rgba(0,0,0,.05);
+}
+
+.role-card {
+  color: #173f32;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.role-card:hover {
+  background: #173f32;
+  color: white;
+  transform: translateY(-4px);
+}
+
+.stat-card p {
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.stat-card h3 {
+  color: #173f32;
+  font-size: 23px;
+}
+
+.dashboard-subtitle {
+  color: #173f32;
+  margin: 30px 0 15px;
+}
+
+.staff-card h3 {
+  color: #173f32;
+  margin-bottom: 10px;
+}
+
+.staff-card p {
+  margin: 8px 0;
+  color: #555;
+}
+
+.staff-card button,
+.back-button {
+  background: #174333;
+  color: white;
+  border: none;
+  border-radius: 9px;
+  padding: 10px 14px;
+  margin: 6px 4px 0 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.staff-card button:hover,
+.back-button:hover {
+  background: #bd9856;
+}
+
+.paid-label {
+  color: #247647;
+  font-weight: bold;
+}
+
+.owner-report {
+  margin-top: 20px;
+}
+
+@media(max-width:600px) {
+  .dashboard-header {
+    align-items: flex-start;
+  }
+
+  .stat-grid,
+  .order-grid,
+  .table-grid,
+  .role-grid {
+    grid-template-columns: 1fr;
+  }
+}
