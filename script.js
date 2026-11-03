@@ -174,7 +174,13 @@ function addToCart(id) {
   const product = menuData.find(item => item.id === Number(id));
   if (!product) return;
 
-  const quantity = menuQuantities[product.id] || 1;
+  const quantity = menuQuantities[product.id] ?? 1;
+
+  if (quantity === 0) {
+    alert("Jumlah menu tidak boleh 0.");
+    return;
+  }
+
   const existing = cart.find(item => item.id === product.id);
 
   if (existing) {
@@ -208,7 +214,7 @@ function changeMenuQuantity(id, change) {
   const currentQty = menuQuantities[productId] || 1;
 
   menuQuantities[productId] = Math.max(
-    1,
+    0,
     currentQty + Number(change)
   );
 
