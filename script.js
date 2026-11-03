@@ -87,7 +87,7 @@ function showPage(pageId) {
 /* MENU */
 
 function createProductCard(product) {
-  const qty = menuQuantities[product.id] || 1;
+  const qty = menuQuantities[product.id] ?? || 1;
 
   return `
     <article class="product-card">
@@ -174,7 +174,11 @@ function addToCart(id) {
   const product = menuData.find(item => item.id === Number(id));
   if (!product) return;
 
-  const quantity = menuQuantities[product.id] || 1;
+  const quantity = menuQuantities[product.id] ?? || 1;
+  
+  if (quantity === 0) {alert("Jumlah menu minimal 1 untuk ditambahkan ke keranjang.");
+  return;
+  }
 
   const existing = cart.find(item => item.id === product.id);
 
@@ -206,12 +210,9 @@ function addToCart(id) {
 
 function changeMenuQuantity(id, change) {
   const productId = Number(id);
-  const currentQty = menuQuantities[productId] || 1;
+  const currentQty = menuQuantities[productId] || 0;
 
-  menuQuantities[productId] = Math.max(
-    1,
-    currentQty + Number(change)
-  );
+  menuQuantities[productId] || 1;
 
   renderMenu();
   renderFeaturedMenu();
