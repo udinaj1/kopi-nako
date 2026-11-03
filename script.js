@@ -5,16 +5,45 @@
 // =====================================
 
 const menus = [
-    { id: 1, name: "Kopi Nako", category: "Kopi", price: 18000, image: "images/kopi-nako.jpg", description: "Kopi susu khas dengan rasa nikmat." },
-    { id: 2, name: "Es Kopi Aren", category: "Kopi", price: 20000, image: "images/kopi-aren.jpg", description: "Perpaduan kopi, susu, dan gula aren." },
-    { id: 3, name: "Americano", category: "Kopi", price: 15000, image: "images/americano.jpg", description: "Kopi hitam dengan cita rasa khas." },
-    { id: 4, name: "Cappuccino", category: "Kopi", price: 22000, image: "images/cappuccino.jpg", description: "Espresso dengan susu dan foam." },
-    { id: 5, name: "Matcha Latte", category: "Non Kopi", price: 23000, image: "images/matcha.jpg", description: "Matcha dengan susu." },
-    { id: 6, name: "Chocolate", category: "Non Kopi", price: 20000, image: "images/chocolate.jpg", description: "Minuman cokelat creamy." },
-    { id: 7, name: "Lemon Tea", category: "Non Kopi", price: 15000, image: "images/lemon-tea.jpg", description: "Teh segar dengan lemon." },
-    { id: 8, name: "French Fries", category: "Makanan", price: 18000, image: "images/french-fries.jpg", description: "Kentang goreng renyah." },
-    { id: 9, name: "Croissant", category: "Makanan", price: 22000, image: "images/croissant.jpg", description: "Roti pastry lembut." },
-    { id: 10, name: "Waffle", category: "Makanan", price: 25000, image: "images/waffle.jpg", description: "Waffle dengan topping pilihan." }
+    { id: 1, name: "Kopi Nako", category: "Kopi", price: 18000,
+      image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600",
+      description: "Kopi susu khas dengan rasa nikmat." },
+
+    { id: 2, name: "Es Kopi Aren", category: "Kopi", price: 20000,
+      image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=600",
+      description: "Perpaduan kopi, susu, dan gula aren." },
+
+    { id: 3, name: "Americano", category: "Kopi", price: 15000,
+      image: "https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600",
+      description: "Kopi hitam dengan cita rasa khas." },
+
+    { id: 4, name: "Cappuccino", category: "Kopi", price: 22000,
+      image: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=600",
+      description: "Espresso dengan susu dan foam." },
+
+    { id: 5, name: "Matcha Latte", category: "Non Kopi", price: 23000,
+      image: "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=600",
+      description: "Matcha dengan susu." },
+
+    { id: 6, name: "Chocolate", category: "Non Kopi", price: 20000,
+      image: "https://images.unsplash.com/photo-1542990253-0b8be9d7c7b7?w=600",
+      description: "Minuman cokelat creamy." },
+
+    { id: 7, name: "Lemon Tea", category: "Non Kopi", price: 15000,
+      image: "https://images.unsplash.com/photo-1513558161293-cdaf765edfd4?w=600",
+      description: "Teh segar dengan lemon." },
+
+    { id: 8, name: "French Fries", category: "Makanan", price: 18000,
+      image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600",
+      description: "Kentang goreng renyah." },
+
+    { id: 9, name: "Croissant", category: "Makanan", price: 22000,
+      image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600",
+      description: "Roti pastry lembut." },
+
+    { id: 10, name: "Waffle", category: "Makanan", price: 25000,
+      image: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=600",
+      description: "Waffle dengan topping pilihan." }
 ];
 
 // =====================================
@@ -147,9 +176,13 @@ function renderMenu() {
         return `
             <article class="menu-card">
                 <div class="menu-picture">
-    <img src="${menu.image}" alt="${menu.name}"
-         onerror="this.src='https://placehold.co/600x400?text=Foto+Menu'">
-</div>
+                    <img
+                        src="${menu.image}"
+                        alt="${menu.name}"
+                        loading="lazy"
+                        onerror="this.onerror=null;this.src='https://placehold.co/600x400?text=Foto+Menu';"
+                    >
+                </div>
 
                 <div class="menu-info">
                     <p class="menu-category">${menu.category}</p>
@@ -179,6 +212,8 @@ function renderMenu() {
     }).join("");
 }
 
+ 
+           
 function addToCart(menuId) {
     const menu = menus.find(item => item.id === menuId);
     if (!menu) return;
