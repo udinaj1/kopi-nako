@@ -146,7 +146,10 @@ function renderMenu() {
 
         return `
             <article class="menu-card">
-                <div class="menu-picture">${menu.icon}</div>
+                <div class="menu-picture">
+    <img src="${menu.image}" alt="${menu.name}"
+         onerror="this.src='https://placehold.co/600x400?text=Foto+Menu'">
+</div>
 
                 <div class="menu-info">
                     <p class="menu-category">${menu.category}</p>
