@@ -14,12 +14,16 @@
   <button class="menu-toggle" id="menuToggle" type="button" aria-label="Buka menu">☰</button>
 
   <nav id="navMenu">
-    <button type="button" data-page="home">Beranda</button>
-    <button type="button" data-page="menu">Menu</button>
-    <button type="button" data-page="tables">Pilih Meja</button>
-    <button type="button" data-page="cart">Keranjang (<span id="cartCount">0</span>)</button>
-    <button type="button" data-page="staff">Karyawan</button>
-  </nav>
+ <button type="button" data-page="home">Beranda</button>
+  <button type="button" data-page="menu">Menu</button>
+  <button type="button" data-page="tables">Pilih Meja</button>
+  <button type="button" data-page="cart">
+    Keranjang (<span id="cartCount">0</span>)
+  </button>
+  <button type="button" data-page="staff" class="login-staff-btn">
+    Login Staff
+  </button>
+</nav>
 </header>
 
 <main>
@@ -139,38 +143,60 @@
   </section>
 
   <!-- KARYAWAN -->
-  <section id="staff" class="page section">
-    <p class="eyebrow">AREA INTERNAL</p>
-    <h1>Area Karyawan</h1>
-    <p class="muted">Pilih peran untuk membuka dashboard.</p>
+   <section id="staff" class="page section">
 
-    <div class="role-grid">
-      <button type="button" class="role-card" data-role="Kasir">
-        <span>💳</span><strong>Kasir</strong>
-        <small>Pesanan dan pembayaran</small>
-      </button>
+  <div class="staff-login-header">
+    <p class="eyebrow">KOPI NAKO SOLO</p>
+    <h1>Login Staff</h1>
+    <p class="muted">
+      Silakan pilih bagian pekerjaan untuk masuk
+      ke dashboard karyawan.
+    </p>
+  </div>
 
-      <button type="button" class="role-card" data-role="Barista">
-        <span>☕</span><strong>Barista</strong>
-        <small>Pembuatan minuman</small>
-      </button>
+  <div class="role-grid">
 
-      <button type="button" class="role-card" data-role="Dapur">
-        <span>🍳</span><strong>Dapur / Kitchen</strong>
-        <small>Pembuatan makanan</small>
-      </button>
+    <button type="button" class="role-card"
+      data-role="Barista">
+      <span>☕</span>
+      <strong>Barista</strong>
+      <small>Kelola pembuatan minuman</small>
+      <b>Masuk Dashboard →</b>
+    </button>
 
-      <button type="button" class="role-card" data-role="Waiter">
-        <span>🛎️</span><strong>Waiter</strong>
-        <small>Pelayanan pelanggan</small>
-      </button>
+    <button type="button" class="role-card"
+      data-role="Kasir">
+      <span>💳</span>
+      <strong>Kasir</strong>
+      <small>Kelola pesanan dan pembayaran</small>
+      <b>Masuk Dashboard →</b>
+    </button>
 
-      <button type="button" class="role-card" data-role="Owner">
-        <span>📊</span><strong>Owner</strong>
-        <small>Laporan penjualan</small>
-      </button>
-    </div>
-  </section>
+    <button type="button" class="role-card"
+      data-role="Dapur">
+      <span>🍳</span>
+      <strong>Dapur / Kitchen</strong>
+      <small>Kelola pembuatan makanan</small>
+      <b>Masuk Dashboard →</b>
+    </button>
+
+    <button type="button" class="role-card"
+      data-role="Waiter">
+      <span>🛎️</span>
+      <strong>Waiter</strong>
+      <small>Kelola pelayanan pelanggan</small>
+      <b>Masuk Dashboard →</b>
+    </button>
+
+    <button type="button" class="role-card"
+      data-role="Owner">
+      <span>📊</span>
+      <strong>Owner</strong>
+      <small>Lihat laporan penjualan</small>
+      <b>Masuk Dashboard →</b>
+    </button>
+  </div>
+</section>
 
   <!-- DASHBOARD -->
   <section id="dashboard" class="page section">
