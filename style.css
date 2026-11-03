@@ -188,3 +188,45 @@ footer small{color:#aebdaf;font-size:11px}
   .success-panel{padding:25px 17px}
   .receipt p{font-size:12px}
 }
+
+
+.menu-quantity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #f4f6f0;
+  border-radius: 9px;
+  padding: 7px 10px;
+  margin-top: 12px;
+}
+
+.quantity-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 7px;
+  background: #173c2c;
+  color: white;
+  font-size: 22px;
+  font-weight: 600;
+  display: grid;
+  place-items: center;
+}
+
+.quantity-btn:disabled {
+  background: #d8ded7;
+  color: #929b92;
+  cursor: not-allowed;
+}
+
+.menu-quantity strong {
+  font-size: 16px;
+  color: #173c2c;
+  min-width: 20px;
+  text-align: center;
+}
+
+.menu-info .menu-quantity {
+  width: 100%;
+}
