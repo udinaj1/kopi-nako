@@ -45,6 +45,17 @@ let currentRole="Kasir";
 let currentCategory="Semua";
 let currentTab="orders";
 let menuQuantities = {};
+  1: 0,
+  2: 0,
+  3: 0,
+  4: 0,
+  5: 0,
+  6: 0,
+  7: 0,
+  8: 0,
+  9: 0,
+  10: 0
+};
 
 function saveData() {
   localStorage.setItem("kopinako_cart",JSON.stringify(cart));
