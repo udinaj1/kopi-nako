@@ -133,7 +133,6 @@ function createProductCard(product) {
     </article>
   `;
 }
-      
 
 function renderFeaturedMenu() {
   document.getElementById("featuredMenu").innerHTML=
@@ -188,20 +187,6 @@ function addToCart(id) {
     });
   }
 
-
-  function changeMenuQuantity(id, change) {
-  const productId = Number(id);
-
-  const currentQty = menuQuantities[productId] || 1;
-
-  menuQuantities[productId] = Math.max(
-    1,
-    currentQty + Number(change)
-  );
-
-  renderMenu();
-  renderFeaturedMenu();
-}
   menuQuantities[product.id] = 1;
 
   saveData();
@@ -217,7 +202,20 @@ function addToCart(id) {
   }
 }
 
+/* FUNGSI TOMBOL + DAN - PADA KARTU MENU */
 
+function changeMenuQuantity(id, change) {
+  const productId = Number(id);
+  const currentQty = menuQuantities[productId] || 1;
+
+  menuQuantities[productId] = Math.max(
+    1,
+    currentQty + Number(change)
+  );
+
+  renderMenu();
+  renderFeaturedMenu();
+}
 
 function renderCart() {
   const container=document.getElementById("cartItems");
@@ -491,15 +489,15 @@ document.addEventListener("click",function(event) {
     return;
   }
 
-  const menuQty = event.target.closest("[data-menu-qty]");
-
-if (menuQty) {
-  changeMenuQuantity(
-    menuQty.dataset.id,
-    menuQty.dataset.menuQty
-  );
-  return;
-}
+  /* EVENT TOMBOL + DAN - KARTU MENU */
+  const menuQty=event.target.closest("[data-menu-qty]");
+  if(menuQty) {
+    changeMenuQuantity(
+      menuQty.dataset.id,
+      menuQty.dataset.menuQty
+    );
+    return;
+  }
 
   const qty=event.target.closest("[data-qty]");
   if(qty) {
