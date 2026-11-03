@@ -222,12 +222,22 @@ nav {
 }
 
 .menu-picture {
-    height: 160px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 65px;
-    background: linear-gradient(135deg, #344b36, #202a22);
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background: #263329;
+}
+
+.menu-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.menu-card:hover .menu-picture img {
+    transform: scale(1.05);
 }
 
 .menu-info {
