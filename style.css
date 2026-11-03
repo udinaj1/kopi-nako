@@ -41,6 +41,7 @@ select {
 
 button {
   cursor: pointer;
+  pointer-events: auto;
 }
 
 img {
@@ -137,7 +138,6 @@ img {
 
 /* ==============================
    4. BERANDA / HERO
-   GAMBAR DI BELAKANG TEKS
 ============================== */
 
 .hero {
@@ -153,7 +153,6 @@ img {
 .hero-background {
   position: absolute;
   inset: 0;
-
   background-image:
     linear-gradient(
       90deg,
@@ -162,10 +161,10 @@ img {
       rgba(12,31,24,.30) 100%
     ),
     url("https://nagantour.com/wp-content/uploads/2025/06/Kopi-Nako-Solo-2.webp");
-
   background-size: cover;
   background-position: center;
   z-index: 0;
+  pointer-events: none;
 }
 
 .hero-content {
@@ -223,6 +222,8 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 2;
 }
 
 .btn:hover {
@@ -382,8 +383,6 @@ img {
 
 /* ==============================
    8. KATEGORI MENU
-   KOPI, NON KOPI, MAKANAN
-   TOMBOL PLUS DAN MINUS
 ============================== */
 
 .product-categories {
@@ -460,7 +459,6 @@ img {
 
 /* ==============================
    10. PILIH AREA MEJA
-   INDOOR / OUTDOOR / LANTAI 2
 ============================== */
 
 .area-grid {
@@ -695,10 +693,30 @@ img {
 
 .dashboard-heading {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 15px;
+  gap: 20px;
   flex-wrap: wrap;
+}
+
+.dashboard-heading > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.dashboard-heading .eyebrow {
+  margin-bottom: 0;
+}
+
+.dashboard-heading h1 {
+  margin: 0;
+  line-height: 1.3;
+}
+
+.dashboard-heading .muted {
+  margin: 0;
 }
 
 .stats-grid {
@@ -899,6 +917,8 @@ footer p {
 
   .menu-toggle {
     display: block;
+    position: relative;
+    z-index: 1002;
   }
 
   .navbar nav {
@@ -907,6 +927,9 @@ footer p {
     flex-direction: column;
     align-items: stretch;
     padding: 12px 0;
+    position: relative;
+    z-index: 1001;
+    background: white;
   }
 
   .navbar nav.open {
@@ -915,6 +938,9 @@ footer p {
 
   .navbar nav button {
     text-align: left;
+    width: 100%;
+    position: relative;
+    z-index: 1002;
   }
 
   .hero {
@@ -996,6 +1022,10 @@ footer p {
     align-items: flex-start;
   }
 
+  .dashboard-heading > div {
+    gap: 10px;
+  }
+
   .footer-inner {
     flex-direction: column;
     align-items: flex-start;
@@ -1021,126 +1051,9 @@ footer p {
   }
 }
 
-
-/* ==================================
-   TOMBOL + DAN - KATEGORI MENU
-   KOPI, NON KOPI, MAKANAN
-================================== */
-
-.product-categories {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  margin-top: 25px;
-}
-
-.menu-category {
-  background: #ffffff;
-  border: 1px solid #e7e5dc;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-/* Baris nama kategori */
-
-.category-heading {
-  width: 100%;
-  min-height: 65px;
-  padding: 15px 22px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  background: #ffffff;
-  color: #173d32;
-  border: none;
-
-  font-family: inherit;
-  font-size: 20px;
-  font-weight: 700;
-  text-align: left;
-
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.category-heading:hover {
-  background: #f7f4ec;
-}
-
-/* Tombol plus dan minus */
-
-.category-toggle {
-  width: 36px;
-  height: 36px;
-  min-width: 36px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background: #173d32;
-  color: #ffffff;
-
-  border-radius: 50%;
-  font-size: 25px;
-  font-weight: 400;
-  line-height: 1;
-
-  transition: background 0.2s ease;
-}
-
-.category-heading:hover .category-toggle {
-  background: #c69a54;
-}
-
-/* Daftar produk kategori */
-
-.category-products {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 18px;
-  padding: 0 20px 20px;
-}
-
-/* Menyembunyikan produk saat tombol + / - ditekan */
-
-.category-products.closed {
-  display: none;
-}
-
-/* Tampilan tablet */
-
-@media (max-width: 900px) {
-  .category-products {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-/* Tampilan HP */
-
-@media (max-width: 500px) {
-  .category-heading {
-    min-height: 58px;
-    padding: 12px 16px;
-    font-size: 18px;
-  }
-
-  .category-toggle {
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-    font-size: 22px;
-  }
-
-  .category-products {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    padding: 0 10px 15px;
-  }
-}
-
-/* TOMBOL JUMLAH MENU */
+/* ==============================
+   19. TOMBOL JUMLAH MENU
+============================== */
 
 .menu-quantity {
   display: flex;
@@ -1165,6 +1078,8 @@ footer p {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 2;
 }
 
 .quantity-btn:hover {
@@ -1182,7 +1097,8 @@ footer p {
 .menu-add-btn {
   width: 100%;
   margin-top: 10px;
-  padding: 11px;
+  position: relative;
+  z-index: 2;
 }
 
 @media (max-width: 650px) {
