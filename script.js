@@ -74,6 +74,9 @@ document.getElementById("nav-toggle").addEventListener("click",()=>{
 });
 
 function menuCard(item){
+  const cartItem = cart.find(product => product.id === item.id);
+  const qty = cartItem ? cartItem.qty : 0;
+
   return `
     <article class="menu-card">
       <div class="menu-picture">
@@ -84,7 +87,16 @@ function menuCard(item){
       <div class="menu-info">
         <h3>${item.name}</h3>
         <p>${rupiah(item.price)}</p>
-        <button class="btn btn-primary add-menu" data-id="${item.id}">+ Tambah</button>
+
+        <div class="menu-quantity">
+          <button class="quantity-btn menu-minus"
+            data-id="${item.id}" ${qty === 0 ? "disabled" : ""}>−</button>
+
+          <strong>${qty}</strong>
+
+          <button class="quantity-btn menu-plus"
+            data-id="${item.id}">+</button>
+        </div>
       </div>
     </article>`;
 }
@@ -94,6 +106,37 @@ function renderMenu(){
   document.getElementById("menu-list").innerHTML = filtered.map(menuCard).join("");
   document.getElementById("featured-menu").innerHTML = menuData.slice(0,4).map(menuCard).join("");
 }
+
+document.addEventListener("click", event => {
+  const plus = event.target.closest(".menu-plus");
+  const minus = event.target.closest(".menu-minus");
+
+  if (!plus && !minus) return;
+
+  const id = Number((plus || minus).dataset.id);
+  const product = menuData.find(item => item.id === id);
+  if (!product) return;
+
+  const existing = cart.find(item => item.id === id);
+
+  if (plus) {
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push({...product, qty: 1});
+    }
+  }
+
+  if (minus && existing) {
+    existing.qty--;
+    if (existing.qty <= 0) {
+      cart = cart.filter(item => item.id !== id);
+    }
+  }
+
+  saveCart();
+  renderMenu();
+});
 
 document.getElementById("menu-filters").addEventListener("click",event=>{
   const button = event.target.closest("[data-category]");
