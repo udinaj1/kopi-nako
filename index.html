@@ -4,33 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kopi Nako Solo</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./script.js" defer></script>
 </head>
 <body>
 
 <header class="navbar">
   <a href="#" class="logo" data-page="home">KOPI <span>NAKO.</span></a>
-
-  <button class="menu-toggle" id="menuToggle" aria-label="Buka menu">☰</button>
+  <button class="menu-toggle" id="menuToggle">☰</button>
 
   <nav id="navMenu">
     <button data-page="home">Beranda</button>
     <button data-page="menu">Menu</button>
     <button data-page="tables">Pilih Meja</button>
-    <button data-page="cart">Keranjang <span id="cartCount">0</span></button>
+    <button data-page="cart">Keranjang (<span id="cartCount">0</span>)</button>
     <button data-page="staff">Karyawan</button>
   </nav>
 </header>
 
 <main>
+
   <!-- BERANDA -->
   <section id="home" class="page active">
     <div class="hero">
       <div class="hero-content">
         <p class="eyebrow">SELAMAT DATANG DI KOPI NAKO SOLO</p>
         <h1>Tempat Cerita,<br><span>Secangkir Kopi.</span></h1>
-        <p>Nikmati waktu santai bersama kopi dan hidangan favorit di Kopi Nako Solo.</p>
+        <p>Nikmati waktu santai bersama kopi dan hidangan favorit.</p>
+
         <div class="hero-actions">
           <button class="btn btn-primary" data-page="menu">Lihat Menu</button>
           <button class="btn btn-outline" data-page="tables">Pilih Meja</button>
@@ -41,7 +42,7 @@
         <img
           src="https://nagantour.com/wp-content/uploads/2025/06/Kopi-Nako-Solo-2.webp"
           alt="Suasana Kopi Nako Solo"
-          onerror="this.style.display='none'; this.parentElement.classList.add('image-fallback')"
+          onerror="this.parentElement.classList.add('image-fallback');this.remove()"
         >
         <div class="image-caption">COFFEE • FOOD • GOOD MOMENT</div>
       </div>
@@ -57,7 +58,7 @@
     </section>
 
     <section class="info-strip">
-      <div><strong>Fresh Coffee</strong><span>Disajikan untuk menemani harimu</span></div>
+      <div><strong>Fresh Coffee</strong><span>Menemani aktivitas harianmu</span></div>
       <div><strong>Good Place</strong><span>Tempat nyaman untuk berkumpul</span></div>
       <div><strong>Good Moment</strong><span>Ciptakan cerita bersama</span></div>
     </section>
@@ -69,7 +70,8 @@
     <h1>Menu Kopi Nako</h1>
     <p class="muted">Pilih menu favorit dan tambahkan ke keranjang.</p>
 
-    <input type="search" id="searchMenu" class="search-box" placeholder="Cari menu...">
+    <input type="search" id="searchMenu" class="search-box"
+      placeholder="Cari nama menu...">
 
     <div class="filter-list">
       <button class="filter-btn active" data-category="Semua">Semua</button>
@@ -81,11 +83,11 @@
     <div class="product-grid" id="menuList"></div>
   </section>
 
-  <!-- PILIH MEJA -->
+  <!-- MEJA -->
   <section id="tables" class="page section">
-    <p class="eyebrow">PILIH TEMPAT DUDUK</p>
+    <p class="eyebrow">TEMPAT DUDUK</p>
     <h1>Pilih Meja</h1>
-    <p class="muted">Pilih meja yang tersedia sebelum melakukan checkout.</p>
+    <p class="muted">Silakan pilih meja yang masih tersedia.</p>
 
     <div class="table-legend">
       <span><i class="dot available"></i> Tersedia</span>
@@ -94,7 +96,7 @@
     </div>
 
     <div class="table-grid" id="tableList"></div>
-    <p id="selectedTableText" class="selected-info">Belum ada meja yang dipilih.</p>
+    <p id="selectedTableText" class="selected-info"></p>
     <button class="btn btn-primary" data-page="cart">Lanjut ke Keranjang</button>
   </section>
 
@@ -102,39 +104,68 @@
   <section id="cart" class="page section">
     <p class="eyebrow">PESANAN ANDA</p>
     <h1>Keranjang Belanja</h1>
+
     <div id="cartItems"></div>
 
     <div class="cart-summary">
-      <div class="summary-row"><span>Total Pesanan</span><strong id="cartTotal">Rp0</strong></div>
+      <div class="summary-row">
+        <span>Total Pesanan</span>
+        <strong id="cartTotal">Rp0</strong>
+      </div>
+
       <p id="cartTableInfo" class="muted">Meja belum dipilih.</p>
-      <button class="btn btn-primary full" id="checkoutBtn">Checkout Sekarang</button>
-      <button class="btn btn-outline full" data-page="menu">Tambah Menu</button>
+
+      <button class="btn btn-primary full" id="checkoutBtn">
+        Checkout Sekarang
+      </button>
+      <button class="btn btn-outline full" data-page="menu">
+        Tambah Menu
+      </button>
     </div>
   </section>
 
-  <!-- SUKSES -->
+  <!-- PESANAN BERHASIL -->
   <section id="success" class="page section success-page">
     <div class="success-icon">✓</div>
     <p class="eyebrow">PESANAN BERHASIL</p>
     <h1>Terima Kasih!</h1>
-    <p>Pesanan Anda berhasil dibuat dalam prototipe ini.</p>
+    <p>Pesanan Anda berhasil dibuat.</p>
     <div class="success-card" id="successDetail"></div>
     <button class="btn btn-primary" data-page="home">Kembali ke Beranda</button>
     <button class="btn btn-outline" data-page="menu">Pesan Lagi</button>
   </section>
 
-  <!-- AREA KARYAWAN -->
+  <!-- KARYAWAN -->
   <section id="staff" class="page section">
     <p class="eyebrow">AREA INTERNAL</p>
     <h1>Area Karyawan</h1>
-    <p class="muted">Pilih peran untuk membuka tampilan dashboard prototipe.</p>
+    <p class="muted">Pilih peran untuk membuka dashboard.</p>
 
     <div class="role-grid">
-      <button class="role-card" data-role="Kasir"><span>💳</span><strong>Kasir</strong><small>Pesanan dan pembayaran</small></button>
-      <button class="role-card" data-role="Barista"><span>☕</span><strong>Barista</strong><small>Status pembuatan minuman</small></button>
-      <button class="role-card" data-role="Dapur"><span>🍳</span><strong>Dapur / Kitchen</strong><small>Status makanan</small></button>
-      <button class="role-card" data-role="Waiter"><span>🛎️</span><strong>Waiter</strong><small>Informasi pesanan dan meja</small></button>
-      <button class="role-card" data-role="Owner"><span>📊</span><strong>Owner</strong><small>Laporan dan ringkasan</small></button>
+      <button class="role-card" data-role="Kasir">
+        <span>💳</span><strong>Kasir</strong>
+        <small>Pesanan dan pembayaran</small>
+      </button>
+
+      <button class="role-card" data-role="Barista">
+        <span>☕</span><strong>Barista</strong>
+        <small>Pembuatan minuman</small>
+      </button>
+
+      <button class="role-card" data-role="Dapur">
+        <span>🍳</span><strong>Dapur / Kitchen</strong>
+        <small>Pembuatan makanan</small>
+      </button>
+
+      <button class="role-card" data-role="Waiter">
+        <span>🛎️</span><strong>Waiter</strong>
+        <small>Pelayanan pelanggan</small>
+      </button>
+
+      <button class="role-card" data-role="Owner">
+        <span>📊</span><strong>Owner</strong>
+        <small>Laporan penjualan</small>
+      </button>
     </div>
   </section>
 
@@ -150,10 +181,18 @@
     </div>
 
     <div class="stats-grid">
-      <div class="stat-card"><span>Total Pesanan</span><strong id="statOrders">0</strong></div>
-      <div class="stat-card"><span>Menunggu</span><strong id="statWaiting">0</strong></div>
-      <div class="stat-card"><span>Selesai</span><strong id="statDone">0</strong></div>
-      <div class="stat-card"><span>Penjualan</span><strong id="statSales">Rp0</strong></div>
+      <div class="stat-card">
+        <span>Total Pesanan</span><strong id="statOrders">0</strong>
+      </div>
+      <div class="stat-card">
+        <span>Menunggu</span><strong id="statWaiting">0</strong>
+      </div>
+      <div class="stat-card">
+        <span>Selesai</span><strong id="statDone">0</strong>
+      </div>
+      <div class="stat-card">
+        <span>Penjualan</span><strong id="statSales">Rp0</strong>
+      </div>
     </div>
 
     <div class="dashboard-tabs">
@@ -164,6 +203,7 @@
 
     <div id="dashboardContent"></div>
   </section>
+
 </main>
 
 <footer>
