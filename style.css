@@ -1020,3 +1020,122 @@ footer p {
     padding: 11px 15px;
   }
 }
+
+
+/* ==================================
+   TOMBOL + DAN - KATEGORI MENU
+   KOPI, NON KOPI, MAKANAN
+================================== */
+
+.product-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 25px;
+}
+
+.menu-category {
+  background: #ffffff;
+  border: 1px solid #e7e5dc;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Baris nama kategori */
+
+.category-heading {
+  width: 100%;
+  min-height: 65px;
+  padding: 15px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #ffffff;
+  color: #173d32;
+  border: none;
+
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: left;
+
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.category-heading:hover {
+  background: #f7f4ec;
+}
+
+/* Tombol plus dan minus */
+
+.category-toggle {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #173d32;
+  color: #ffffff;
+
+  border-radius: 50%;
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1;
+
+  transition: background 0.2s ease;
+}
+
+.category-heading:hover .category-toggle {
+  background: #c69a54;
+}
+
+/* Daftar produk kategori */
+
+.category-products {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  padding: 0 20px 20px;
+}
+
+/* Menyembunyikan produk saat tombol + / - ditekan */
+
+.category-products.closed {
+  display: none;
+}
+
+/* Tampilan tablet */
+
+@media (max-width: 900px) {
+  .category-products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Tampilan HP */
+
+@media (max-width: 500px) {
+  .category-heading {
+    min-height: 58px;
+    padding: 12px 16px;
+    font-size: 18px;
+  }
+
+  .category-toggle {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    font-size: 22px;
+  }
+
+  .category-products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding: 0 10px 15px;
+  }
+}
