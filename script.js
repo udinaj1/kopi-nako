@@ -26,11 +26,11 @@ const menus = [
       description: "Matcha dengan susu." },
 
     { id: 6, name: "Chocolate", category: "Non Kopi", price: 20000,
-      image: "https://images.unsplash.com/photo-1542990253-0b8be9d7c7b7?w=600",
+      image: "https://images.pexels.com/photos/12642348/pexels-photo-12642348.jpeg?auto=compress&cs=tinysrgb&w=800",
       description: "Minuman cokelat creamy." },
 
     { id: 7, name: "Lemon Tea", category: "Non Kopi", price: 15000,
-      image: "https://images.unsplash.com/photo-1513558161293-cdaf765edfd4?w=600",
+      image: "https://images.pexels.com/photos/30254785/pexels-photo-30254785.jpeg?auto=compress&cs=tinysrgb&w=800",
       description: "Teh segar dengan lemon." },
 
     { id: 8, name: "French Fries", category: "Makanan", price: 18000,
