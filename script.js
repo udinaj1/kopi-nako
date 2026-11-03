@@ -44,6 +44,7 @@ let selectedTable=loadData("kopinako_selected_table",null);
 let currentRole="Kasir";
 let currentCategory="Semua";
 let currentTab="orders";
+let menuQuantities = {};
 
 function saveData() {
   localStorage.setItem("kopinako_cart",JSON.stringify(cart));
@@ -86,6 +87,8 @@ function showPage(pageId) {
 /* MENU */
 
 function createProductCard(product) {
+  const qty = menuQuantities[product.id] || 1;
+
   return `
     <article class="product-card">
       <div class="product-visual">
@@ -96,17 +99,41 @@ function createProductCard(product) {
           onerror="this.onerror=null;this.src='https://placehold.co/600x400/f1eee5/173d32?text=Foto+Menu'"
         >
       </div>
+
       <div class="product-info">
         <h3>${product.name}</h3>
         <p>${product.category}</p>
+
         <div class="product-bottom">
           <span class="price">${rupiah(product.price)}</span>
-          <button class="add-btn" data-add="${product.id}">+ Tambah</button>
         </div>
+
+        <div class="menu-quantity">
+          <button
+            class="quantity-btn"
+            data-menu-qty="-1"
+            data-id="${product.id}"
+            aria-label="Kurangi jumlah ${product.name}"
+          >−</button>
+
+          <span class="quantity-number">${qty}</span>
+
+          <button
+            class="quantity-btn"
+            data-menu-qty="1"
+            data-id="${product.id}"
+            aria-label="Tambah jumlah ${product.name}"
+          >+</button>
+        </div>
+
+        <button class="add-btn menu-add-btn" data-add="${product.id}">
+          Tambah ke Keranjang
+        </button>
       </div>
     </article>
   `;
 }
+      
 
 function renderFeaturedMenu() {
   document.getElementById("featuredMenu").innerHTML=
@@ -145,22 +172,52 @@ function updateCartCount() {
 }
 
 function addToCart(id) {
-  const product=menuData.find(item=>item.id===Number(id));
-  if(!product) return;
+  const product = menuData.find(item => item.id === Number(id));
+  if (!product) return;
 
-  const existing=cart.find(item=>item.id===product.id);
+  const quantity = menuQuantities[product.id] || 1;
 
-  if(existing) existing.qty++;
-  else cart.push({...product,qty:1});
+  const existing = cart.find(item => item.id === product.id);
+
+  if (existing) {
+    existing.qty += quantity;
+  } else {
+    cart.push({
+      ...product,
+      qty: quantity
+    });
+  }
+
+
+  function changeMenuQuantity(id, change) {
+  const productId = Number(id);
+
+  const currentQty = menuQuantities[productId] || 1;
+
+  menuQuantities[productId] = Math.max(
+    1,
+    currentQty + Number(change)
+  );
+
+  renderMenu();
+  renderFeaturedMenu();
+}
+  menuQuantities[product.id] = 1;
 
   saveData();
   updateCartCount();
-  alert(product.name+" berhasil ditambahkan.");
 
-  if(document.getElementById("cart").classList.contains("active")) {
+  renderMenu();
+  renderFeaturedMenu();
+
+  alert(quantity + " " + product.name + " berhasil ditambahkan.");
+
+  if (document.getElementById("cart").classList.contains("active")) {
     renderCart();
   }
 }
+
+
 
 function renderCart() {
   const container=document.getElementById("cartItems");
@@ -433,6 +490,16 @@ document.addEventListener("click",function(event) {
     addToCart(add.dataset.add);
     return;
   }
+
+  const menuQty = event.target.closest("[data-menu-qty]");
+
+if (menuQty) {
+  changeMenuQuantity(
+    menuQty.dataset.id,
+    menuQty.dataset.menuQty
+  );
+  return;
+}
 
   const qty=event.target.closest("[data-qty]");
   if(qty) {
