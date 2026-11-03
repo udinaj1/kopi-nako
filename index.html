@@ -1,236 +1,845 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kopi Nako Solo - Full Browser Integrated System</title>
-    <style>
-        :root {
-            --bg-color: #121212;
-            --surface-color: #1E1E1E;
-            --text-color: #FFFFFF;
-            --accent-color: #2E5A44; /* Forest Green dari Prompt Figma */
-            --accent-light: #3D7A5D;
-            --text-muted: #8A8A8A;
-            --danger-color: #FF453A;
-            --gold-color: #D4AF37;
-            --neon-green: #00E676;
-            --border-color: #2A2A2A;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kopi Nako Solo - Cek Meja</title>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
+<style>
+:root {
+    --bg: #121212;
+    --card: #1e1e1e;
+    --green: #2e5a44;
+    --light-green: #00e676;
+    --red: #e05a5a;
+    --gold: #d4af37;
+    --white: #ffffff;
+    --muted: #999999;
+}
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
 
-        /* TOP NAVIGATION BAR - FULL WIDTH */
-        header {
-            background-color: var(--surface-color);
-            padding: 16px 30px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+body {
+    background: var(--bg);
+    color: var(--white);
+    min-height: 100vh;
+}
 
-        header h1 { font-size: 22px; font-weight: 800; letter-spacing: 0.5px; }
-        header span { color: var(--neon-green); font-weight: bold; font-size: 12px; }
+header {
+    padding: 22px 5%;
+    background: var(--card);
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
 
-        /* MULTI-ROLE TAB SWITCHER */
-        .role-switcher {
-            display: flex;
-            gap: 8px;
-            background: #121212;
-            padding: 4px;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-        }
+header h2 {
+    font-size: 23px;
+}
 
-        .role-btn {
-            padding: 8px 16px;
-            border-radius: 6px;
-            border: none;
-            background: transparent;
-            color: var(--text-muted);
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+header p {
+    color: var(--light-green);
+    font-size: 12px;
+    margin-top: 6px;
+}
 
-        .role-btn.active {
-            background: var(--accent-color);
-            color: white;
-        }
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 30px auto;
+}
 
-        /* MAIN CONTENT AREA - FULL SCREEN EXPANDED */
-        .main-container {
-            flex: 1;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
+.heading {
+    margin-bottom: 25px;
+}
 
-        .card {
-            background-color: var(--surface-color);
-            border-radius: 16px;
-            padding: 24px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 20px;
-        }
+.heading h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
 
-        /* UTILITY BUTTONS */
-        .btn-primary {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 16px 24px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            transition: background 0.2s;
-        }
-        .btn-primary:hover { background-color: var(--accent-light); }
+.heading p {
+    color: var(--muted);
+}
 
-        .badge-gold {
-            background: rgba(212, 175, 55, 0.12);
-            color: var(--gold-color);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            border: 1px solid rgba(212, 175, 55, 0.25);
-            margin-bottom: 15px;
-        }
+.summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
 
-        /* SCREEN 1: FULL HERO BANNER */
-        .hero-banner {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.9)), url('https://unsplash.com');
-            background-size: cover;
-            background-position: center;
-            border-radius: 18px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            margin-bottom: 24px;
-            border: 1px solid var(--border-color);
-        }
+.summary-card {
+    background: var(--card);
+    padding: 22px;
+    border-radius: 14px;
+    border: 1px solid #333;
+}
 
-        /* SCREEN 2: FLOOR PLAN GRID */
-        .grid-tables {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .card-table {
-            background-color: var(--bg-color);
-            border: 1.5px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .card-table.available { border-color: var(--neon-green); }
-        .card-table.available:hover { background-color: #142F22; }
-        .card-table.selected-active { background-color: #142F22 !important; border-color: var(--neon-green) !important; }
-        .card-table.occupied { opacity: 0.4; cursor: not-allowed; }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+.summary-card h2 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
 
-        /* SCREEN 3: MENU ITEMS */
-        .search-bar {
-            background-color: var(--bg-color);
-            padding: 16px;
-            border-radius: 12px;
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
-            width: 100%;
-        }
-        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-        .menu-item-row { display: flex; justify-content: space-between; align-items: center; background: var(--bg-dark); padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); }
-        .btn-plus { background: var(--accent-color); color: white; border: none; width: 32px; height: 32px; border-radius: 50%; font-weight: bold; cursor: pointer; font-size: 16px; }
+.summary-card p {
+    color: var(--muted);
+    font-size: 13px;
+}
 
-        /* SCREEN 4: TIMELINE STEPPER */
-        .stepper-timeline { margin-top: 20px; border-left: 2px solid var(--border-color); padding-left: 20px; position: relative; }
-        .stepper-item { position: relative; margin-bottom: 24px; }
-        .step-circle { width: 14px; height: 14px; background-color: #333; border-radius: 50%; position: absolute; left: -28px; top: 4px; display: flex; align-items: center; justify-content: center; font-size: 8px; }
-        .stepper-item.checked .step-circle { background-color: var(--neon-green); color: black; font-weight: bold; }
+.green-text { color: var(--light-green); }
+.red-text { color: var(--red); }
+.gold-text { color: var(--gold); }
 
-        /* SCREEN 5: METRICS & CHART */
-        .metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px; }
-        .chart-container { display: flex; justify-content: space-between; align-items: flex-end; height: 140px; margin-top: 20px; padding-bottom: 5px; border-bottom: 1px solid var(--border-color); }
-        .bar { width: 30px; background-color: #2A2A2A; border-radius: 6px 6px 0 0; }
-        .bar.peak { background-color: var(--accent-light); }
-        .alert-card { background: var(--bg-color); padding: 14px; border-radius: 12px; border-left: 4px solid var(--gold-color); font-size: 13px; margin-top: 10px; }
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    background: var(--card);
+    padding: 17px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    color: var(--muted);
+    font-size: 13px;
+}
 
-        .hidden { display: none !important; }
-    </style>
+.dot {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.dot.green { background: var(--light-green); }
+.dot.red { background: var(--red); }
+.dot.gold { background: var(--gold); }
+
+.area {
+    background: var(--card);
+    border: 1px solid #333;
+    padding: 22px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+}
+
+.area h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.area p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.table-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.table {
+    background: #173323;
+    border: 2px solid #278c57;
+    padding: 20px;
+    border-radius: 13px;
+    cursor: pointer;
+    text-align: left;
+    color: white;
+    transition: .2s;
+}
+
+.table:hover {
+    transform: translateY(-3px);
+    background: #204b32;
+}
+
+.table.selected {
+    background: #55451d;
+    border-color: var(--gold);
+}
+
+.table.occupied {
+    background: #292929;
+    border-color: #555;
+    cursor: not-allowed;
+    opacity: .65;
+}
+
+.table .number {
+    font-size: 30px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.table .status {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.table .info {
+    color: #aaa;
+    font-size: 12px;
+    margin-top: 10px;
+    display: block;
+}
+
+.actions {
+    background: var(--card);
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 22px;
+    margin-top: 25px;
+}
+
+.selected-list {
+    background: #121212;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 15px 0;
+    color: var(--light-green);
+    min-height: 50px;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+button.action {
+    border: none;
+    padding: 14px 20px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.btn-green {
+    background: var(--green);
+    color: white;
+}
+
+.btn-green:hover {
+    background: #3d7a5d;
+}
+
+.btn-gray {
+    background: #333;
+    color: white;
+}
+
+.btn-gold {
+    background: var(--gold);
+    color: #111;
+}
+
+button:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+@media(max-width:650px) {
+    .container {
+        width: 92%;
+    }
+
+    .heading h1 {
+        font-size: 25px;
+    }
+
+    .summary {
+        grid-template-columns: 1fr;
+    }
+
+    .table-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .table {
+        padding: 14px;
+    }
+
+    .table .number {
+        font-size: 25px;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+
+    button.action {
+        width: 100%;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <!-- SYSTEM GLOBAL HEADER -->
-    <header>
-        <div>
-            <h1>Kopi Nako Solo</h1>
-            <span>UTS UI/UX Ecosystem Framework • Full Layout Mode</span>
+<header>
+    <div>
+        <h2>☕ KOPI NAKO SOLO</h2>
+        <p>PREMIUM CUSTOMER DASHBOARD</p>
+    </div>
+
+    <button class="action btn-green"
+        onclick="alert('Silakan masuk melalui halaman login staff.')">
+        Login Staff
+    </button>
+</header>
+
+<div class="container">
+
+    <div class="heading">
+        <h1>Peta Meja Real-time</h1>
+        <p>Pilih meja favoritmu sebelum menikmati kopi di Kopi Nako Solo.</p>
+    </div>
+
+    <!-- RINGKASAN MEJA -->
+
+    <div class="summary">
+
+        <div class="summary-card">
+            <h2 class="green-text" id="availableCount">0</h2>
+            <p>Meja Kosong</p>
         </div>
-        <div class="role-switcher">
-            <button class="role-btn active" id="tab-cust" onclick="switchMainRole('customer')">🧑‍💻 Dasbor Pengguna</button>
-            <button class="role-btn" id="tab-staff" onclick="switchMainRole('staff')">📋 Dasbor Staf & Owner</button>
+
+        <div class="summary-card">
+            <h2 class="red-text" id="occupiedCount">0</h2>
+            <p>Meja Terisi</p>
         </div>
-    </header>
 
-    <main class="main-container">
+        <div class="summary-card">
+            <h2 class="gold-text" id="selectedCount">0</h2>
+            <p>Meja Dipilih</p>
+        </div>
 
-        <!-- ================= HALAMAN UTAMA: DASBOR PENGGUNA (CUSTOMER PLATFORM) ================= -->
-        <div id="view-customer-platform">
-            
-            <!-- SCREEN 1: PREMIUM HOME SCREEN -->
-            <div id="screen-home" class="card">
-                <p style="color: var(--text-muted); font-size: 12px; font-weight: 700; letter-spacing: 0.5px;">KOPI NAKO / SOLO</p>
-                <h2 style="margin-top: 4px; font-size: 28px;">Halo, Budi</h2>
-                <div class="badge-gold">✨ Nako Club Gold: 1.200 XP</div>
-                
-                <div class="hero-banner">
-                    <span style="background: rgba(0,0,0,0.6); padding: 4px 12px; border-radius: 20px; font-size: 11px; align-self: flex-start; margin-bottom: auto; font-weight: 600;">● Buka hingga 23.00</span>
-                    <p style="color: var(--text-muted); font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;">RUANG UNTUK JEDA</p>
-                    <h3 style="font-size: 26px; font-weight: 800; margin: 6px 0; line-height: 1.3;">Kopi yang baik.<br>Ruang yang berarti.</h3>
-                    <p style="font-size: 13px; color: #D1D1D6;">Temukan sudut favoritmu di Nako Solo.</p>
-                </div>
+    </div>
 
-                <!-- TOMBOL IJO SEKARANG BISA DITEKAN SECARA LIVE -->
-                <button class="btn-primary" onclick="switchToSubScreen('screen-table')">
-                    <span>Pesan Tanpa Antre & Cek Meja</span>
-                    <span style="font-size: 18px;">→</span>
+    <!-- KETERANGAN STATUS -->
+
+    <div class="legend">
+        <span><i class="dot green"></i> Kosong</span>
+        <span><i class="dot red"></i> Terisi</span>
+        <span><i class="dot gold"></i> Dipilih</span>
+    </div>
+
+    <!-- DAFTAR AREA MEJA -->
+
+    <div id="tableAreas"></div>
+
+    <!-- RINGKASAN PILIHAN -->
+
+    <div class="actions">
+
+        <h2>Ringkasan Pilihan Meja</h2>
+
+        <p style="color:#999;margin-top:8px">
+            Kamu dapat memilih lebih dari satu meja.
+        </p>
+
+        <div class="selected-list" id="selectedList">
+            Belum ada meja dipilih.
+        </div>
+
+        <div class="buttons">
+
+            <button class="action btn-green"
+                onclick="selectAllAvailable()">
+                Pilih Semua Meja Kosong
+            </button>
+
+            <button class="action btn-gray"
+                onclick="clearSelection()">
+                Batalkan Pilihan
+            </button>
+
+            <button class="action btn-gold"
+                id="orderButton"
+                onclick="confirmBooking()"
+                disabled>
+                Lanjutkan Pemesanan →
+            </button>
+
+        </div>
+
+        <button class="action btn-gray"
+            style="margin-top:15px"
+            onclick="resetSimulation()">
+            Reset Simulasi Meja
+        </button>
+
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Kopi Nako Solo | Customer Reservation System
+</footer>
+
+
+<script>
+
+// ==================================
+// DATA JSON MEJA KOPI NAKO
+// ==================================
+
+const defaultTables = [
+    {
+        id: 1,
+        area: "Indoor",
+        number: "01",
+        capacity: 2,
+        status: "available"
+    },
+    {
+        id: 2,
+        area: "Indoor",
+        number: "02",
+        capacity: 2,
+        status: "available"
+    },
+    {
+        id: 3,
+        area: "Indoor",
+        number: "03",
+        capacity: 4,
+        status: "available"
+    },
+    {
+        id: 4,
+        area: "Indoor",
+        number: "04",
+        capacity: 2,
+        status: "occupied"
+    },
+    {
+        id: 5,
+        area: "Indoor",
+        number: "05",
+        capacity: 4,
+        status: "available"
+    },
+    {
+        id: 6,
+        area: "Indoor",
+        number: "06",
+        capacity: 2,
+        status: "available"
+    },
+
+    {
+        id: 7,
+        area: "Tengah",
+        number: "07",
+        capacity: 4,
+        status: "available"
+    },
+    {
+        id: 8,
+        area: "Tengah",
+        number: "08",
+        capacity: 2,
+        status: "available"
+    },
+    {
+        id: 9,
+        area: "Tengah",
+        number: "09",
+        capacity: 4,
+        status: "occupied"
+    },
+    {
+        id: 10,
+        area: "Tengah",
+        number: "10",
+        capacity: 2,
+        status: "available"
+    },
+    {
+        id: 11,
+        area: "Tengah",
+        number: "11",
+        capacity: 4,
+        status: "available"
+    },
+    {
+        id: 12,
+        area: "Tengah",
+        number: "12",
+        capacity: 2,
+        status: "available"
+    },
+
+    {
+        id: 13,
+        area: "Nongkrong",
+        number: "13",
+        capacity: 4,
+        status: "available"
+    },
+    {
+        id: 14,
+        area: "Nongkrong",
+        number: "14",
+        capacity: 6,
+        status: "available"
+    },
+    {
+        id: 15,
+        area: "Nongkrong",
+        number: "15",
+        capacity: 4,
+        status: "occupied"
+    },
+    {
+        id: 16,
+        area: "Nongkrong",
+        number: "16",
+        capacity: 6,
+        status: "available"
+    },
+    {
+        id: 17,
+        area: "Nongkrong",
+        number: "17",
+        capacity: 4,
+        status: "available"
+    },
+    {
+        id: 18,
+        area: "Nongkrong",
+        number: "18",
+        capacity: 6,
+        status: "occupied"
+    }
+];
+
+
+// ==================================
+// PENYIMPANAN DATA
+// ==================================
+
+let tables = JSON.parse(
+    localStorage.getItem("kopinako_tables")
+) || JSON.parse(JSON.stringify(defaultTables));
+
+let selectedTables = [];
+
+
+// ==================================
+// SIMPAN DATA
+// ==================================
+
+function saveData() {
+    localStorage.setItem(
+        "kopinako_tables",
+        JSON.stringify(tables)
+    );
+}
+
+
+// ==================================
+// TAMPILKAN SEMUA AREA
+// ==================================
+
+function renderTables() {
+
+    const container = document.getElementById("tableAreas");
+
+    container.innerHTML = "";
+
+    const areas = ["Indoor", "Tengah", "Nongkrong"];
+
+    areas.forEach(area => {
+
+        const areaTables = tables.filter(
+            table => table.area === area
+        );
+
+        let html = `
+            <div class="area">
+
+                <h2>Area ${area}</h2>
+
+                <p>
+                    ${areaTables.filter(t => t.status === "available").length}
+                    meja tersedia dari ${areaTables.length} meja
+                </p>
+
+                <div class="table-grid">
+        `;
+
+        areaTables.forEach(table => {
+
+            const selected = selectedTables.includes(table.id);
+
+            const occupied = table.status === "occupied";
+
+            let className = "table";
+
+            if (occupied) {
+                className += " occupied";
+            }
+
+            if (selected) {
+                className += " selected";
+            }
+
+            let statusText = occupied
+                ? "● Terisi"
+                : selected
+                ? "★ Dipilih"
+                : "● Kosong";
+
+            html += `
+                <button
+                    class="${className}"
+                    onclick="toggleTable(${table.id})"
+                    ${occupied ? "disabled" : ""}
+                >
+
+                    <span class="number">
+                        ${table.number}
+                    </span>
+
+                    <span class="status">
+                        ${statusText}
+                    </span>
+
+                    <span class="info">
+                        ${table.capacity} Kursi · ⚡ Stopkontak
+                    </span>
+
                 </button>
-            </div>
+            `;
 
-            <!-- SCREEN 2: INTERACTIVE LIVE TABLE FLOOR PLAN -->
-            <div id="screen-table" class="card hidden">
-                <h2>Peta Meja Real-time</h2>
-                <p style="color: var(--neon-green); font-size: 14px; font-weight: 600; margin-bottom: 16px;">🟢 3 dari 6 meja tersedia</p>
-                
-                <div style="display: flex; gap: 16px; font-size: 12px; color: var(--text-muted); background: var(--bg-color); padding: 12px; border-radius: 10px; margin-bottom: 20px; width: max-content; border: 1px solid var(--border-color);">
+        });
+
+        html += `
+                </div>
+            </div>
+        `;
+
+        container.innerHTML += html;
+
+    });
+
+    updateSummary();
+}
+
+
+// ==================================
+// PILIH / BATALKAN MEJA
+// ==================================
+
+function toggleTable(id) {
+
+    const table = tables.find(t => t.id === id);
+
+    if (!table || table.status === "occupied") {
+        return;
+    }
+
+    if (selectedTables.includes(id)) {
+
+        selectedTables = selectedTables.filter(
+            item => item !== id
+        );
+
+    } else {
+
+        selectedTables.push(id);
+
+    }
+
+    renderTables();
+}
+
+
+// ==================================
+// PILIH SEMUA MEJA KOSONG
+// ==================================
+
+function selectAllAvailable() {
+
+    selectedTables = tables
+        .filter(t => t.status === "available")
+        .map(t => t.id);
+
+    renderTables();
+
+}
+
+
+// ==================================
+// BATALKAN SEMUA PILIHAN
+// ==================================
+
+function clearSelection() {
+
+    selectedTables = [];
+
+    renderTables();
+
+}
+
+
+// ==================================
+// PERBARUI RINGKASAN
+// ==================================
+
+function updateSummary() {
+
+    const available = tables.filter(
+        t => t.status === "available"
+    ).length;
+
+    const occupied = tables.filter(
+        t => t.status === "occupied"
+    ).length;
+
+    document.getElementById("availableCount")
+        .textContent = available;
+
+    document.getElementById("occupiedCount")
+        .textContent = occupied;
+
+    document.getElementById("selectedCount")
+        .textContent = selectedTables.length;
+
+    const selected = tables.filter(
+        t => selectedTables.includes(t.id)
+    );
+
+    const list = document.getElementById("selectedList");
+
+    if (selected.length === 0) {
+
+        list.textContent = "Belum ada meja dipilih.";
+
+    } else {
+
+        list.innerHTML = selected.map(t =>
+            `Meja ${t.number} (${t.area})`
+        ).join("<br>");
+
+    }
+
+    document.getElementById("orderButton").disabled =
+        selected.length === 0;
+
+}
+
+
+// ==================================
+// KONFIRMASI PEMESANAN
+// ==================================
+
+function confirmBooking() {
+
+    if (selectedTables.length === 0) {
+
+        alert("Silakan pilih meja terlebih dahulu.");
+
+        return;
+    }
+
+    const selected = tables.filter(
+        t => selectedTables.includes(t.id)
+    );
+
+    const names = selected.map(
+        t => t.number
+    ).join(", ");
+
+    const confirmOrder = confirm(
+        "Konfirmasi pemesanan meja: " + names +
+        "?\n\nMeja yang dipilih akan berubah menjadi TERISI."
+    );
+
+    if (!confirmOrder) {
+        return;
+    }
+
+    selected.forEach(table => {
+
+        table.status = "occupied";
+
+    });
+
+    saveData();
+
+    selectedTables = [];
+
+    renderTables();
+
+    alert(
+        "Pemesanan berhasil!\nMeja " +
+        names +
+        " sekarang berstatus TERISI."
+    );
+
+}
+
+
+// ==================================
+// RESET SIMULASI
+// ==================================
+
+function resetSimulation() {
+
+    const confirmReset = confirm(
+        "Kembalikan semua meja ke data awal?"
+    );
+
+    if (!confirmReset) {
+        return;
+    }
+
+    tables = JSON.parse(
+        JSON.stringify(defaultTables)
+    );
+
+    selectedTables = [];
+
+    saveData();
+
+    renderTables();
+
+    alert("Data meja berhasil direset.");
+
+}
+
+
+// ==================================
+// JALANKAN APLIKASI
+// ==================================
+
+renderTables();
+
+</script>
+
+</body>
+</html>
