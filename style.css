@@ -7,9 +7,8 @@
 :root {
     --bg: #101512;
     --panel: #1b241e;
-    --panel-light: #263329;
+    --panel2: #263329;
     --green: #a4c78a;
-    --green-dark: #64894f;
     --white: #f5f5ef;
     --muted: #a7b0a5;
     --red: #df7777;
@@ -18,8 +17,7 @@
 body {
     background: var(--bg);
     color: var(--white);
-    font-family: Arial, Helvetica, sans-serif;
-    min-height: 100vh;
+    font-family: Arial, sans-serif;
 }
 
 button, input, select {
@@ -41,14 +39,14 @@ button {
     border-bottom: 1px solid #344236;
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 100;
 }
 
 .logo {
     color: white;
     text-decoration: none;
     font-size: 23px;
-    font-weight: 900;
+    font-weight: bold;
     letter-spacing: 2px;
 }
 
@@ -65,17 +63,16 @@ button {
 
 nav {
     display: flex;
-    align-items: center;
-    gap: 8px;
     flex-wrap: wrap;
+    gap: 8px;
 }
 
 .nav-btn {
+    padding: 11px 14px;
     border: 0;
+    border-radius: 8px;
     color: var(--muted);
     background: transparent;
-    padding: 11px 14px;
-    border-radius: 8px;
 }
 
 .nav-btn:hover,
@@ -85,11 +82,7 @@ nav {
 }
 
 #cart-count {
-    background: var(--green);
-    color: #172016;
-    border-radius: 20px;
-    padding: 2px 7px;
-    font-size: 11px;
+    color: var(--green);
     font-weight: bold;
 }
 
@@ -104,7 +97,7 @@ nav {
 .container {
     max-width: 1200px;
     margin: auto;
-    padding: 65px 25px;
+    padding: 60px 25px;
 }
 
 .hero {
@@ -112,9 +105,7 @@ nav {
     padding: 80px 10%;
     display: flex;
     align-items: center;
-    background:
-        linear-gradient(90deg, rgba(10,18,12,.96), rgba(10,18,12,.45)),
-        linear-gradient(135deg, #354b37, #17241a 60%, #536b43);
+    background: linear-gradient(110deg, #101a13, #344b37, #17241a);
 }
 
 .hero-content {
@@ -159,12 +150,12 @@ nav {
 }
 
 .primary-btn:hover {
-    background: #b9d8a5;
+    background: #c0dda9;
 }
 
 .secondary-btn {
-    background: var(--panel-light);
-    color: var(--white);
+    color: white;
+    background: var(--panel2);
     border: 1px solid #465748;
 }
 
@@ -215,7 +206,6 @@ nav {
 .filter-btn:hover {
     background: var(--green);
     color: #172016;
-    border-color: var(--green);
 }
 
 .menu-grid {
@@ -285,8 +275,8 @@ nav {
 }
 
 .qty-btn {
-    height: 31px;
-    width: 31px;
+    height: 32px;
+    width: 32px;
     border: 0;
     border-radius: 50%;
     font-weight: bold;
@@ -327,7 +317,7 @@ nav {
 }
 
 .table-card.available {
-    border-color: var(--green-dark);
+    border-color: #64894f;
 }
 
 .table-card.occupied {
@@ -406,16 +396,6 @@ nav {
     font-size: 13px;
 }
 
-.cart-item .menu-quantity {
-    flex-shrink: 0;
-}
-
-.empty-message {
-    color: var(--muted);
-    text-align: center;
-    padding: 35px 10px;
-}
-
 .checkout-box h2,
 .login-box h2 {
     margin-bottom: 22px;
@@ -438,7 +418,6 @@ nav {
     background: #101812;
     border: 1px solid #465748;
     border-radius: 7px;
-    outline: none;
 }
 
 .total-row {
@@ -456,6 +435,12 @@ nav {
 .full-btn {
     width: 100%;
     margin-top: 12px;
+}
+
+.empty-message {
+    color: var(--muted);
+    text-align: center;
+    padding: 35px 10px;
 }
 
 .success-box {
@@ -536,7 +521,7 @@ nav {
 .order-card p {
     color: var(--muted);
     margin-top: 8px;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
 .order-card strong {
@@ -559,10 +544,6 @@ footer {
     .navbar {
         align-items: flex-start;
         flex-direction: column;
-    }
-
-    nav {
-        width: 100%;
     }
 
     .menu-grid {
