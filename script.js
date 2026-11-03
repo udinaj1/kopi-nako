@@ -1,626 +1,530 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --bg: #101512;
-    --panel: #1b241e;
-    --panel-light: #263329;
-    --green: #a4c78a;
-    --green-dark: #64894f;
-    --white: #f5f5ef;
-    --muted: #a7b0a5;
-    --red: #df7777;
-}
-
-body {
-    background: var(--bg);
-    color: var(--white);
-    font-family: Arial, Helvetica, sans-serif;
-    min-height: 100vh;
-}
-
-button, input, select {
-    font: inherit;
-}
-
-button {
-    cursor: pointer;
-}
-
-.navbar {
-    min-height: 75px;
-    padding: 15px 6%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    background: #151d18;
-    border-bottom: 1px solid #344236;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.logo {
-    color: white;
-    text-decoration: none;
-    font-size: 23px;
-    font-weight: 900;
-    letter-spacing: 2px;
-}
-
-.logo span {
-    color: var(--green);
-}
-
-.logo small {
-    display: block;
-    text-align: center;
-    font-size: 10px;
-    letter-spacing: 5px;
-}
-
-nav {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.nav-btn {
-    border: 0;
-    color: var(--muted);
-    background: transparent;
-    padding: 11px 14px;
-    border-radius: 8px;
-}
-
-.nav-btn:hover,
-.nav-btn.active {
-    color: var(--green);
-    background: #29372c;
-}
-
-#cart-count {
-    background: var(--green);
-    color: #172016;
-    border-radius: 20px;
-    padding: 2px 7px;
-    font-size: 11px;
-    font-weight: bold;
-}
-
-.page {
-    display: none;
-}
-
-.page.active {
-    display: block;
-}
-
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 65px 25px;
-}
-
-.hero {
-    min-height: 570px;
-    padding: 80px 10%;
-    display: flex;
-    align-items: center;
-    background:
-        linear-gradient(90deg, rgba(10,18,12,.96), rgba(10,18,12,.45)),
-        linear-gradient(135deg, #354b37, #17241a 60%, #536b43);
-}
-
-.hero-content {
-    max-width: 600px;
-}
-
-.eyebrow {
-    color: var(--green);
-    font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 3px;
-    margin-bottom: 16px;
-}
-
-.hero h1 {
-    font-size: clamp(42px, 7vw, 75px);
-    line-height: 1.1;
-    margin-bottom: 22px;
-}
-
-.hero h1 span {
-    color: var(--green);
-}
-
-.hero-content > p:not(.eyebrow) {
-    color: #d0d7ce;
-    line-height: 1.8;
-    margin-bottom: 28px;
-}
-
-.primary-btn,
-.secondary-btn {
-    padding: 13px 21px;
-    border: 0;
-    border-radius: 8px;
-    font-weight: bold;
-}
-
-.primary-btn {
-    background: var(--green);
-    color: #172016;
-}
-
-.primary-btn:hover {
-    background: #b9d8a5;
-}
-
-.secondary-btn {
-    background: var(--panel-light);
-    color: var(--white);
-    border: 1px solid #465748;
-}
-
-.home-info {
-    padding: 35px 10%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    background: var(--panel);
-}
-
-.home-info p {
-    color: var(--muted);
-    margin-top: 10px;
-}
-
-.section-heading {
-    margin-bottom: 35px;
-}
-
-.section-heading h1 {
-    font-size: 38px;
-    margin-bottom: 12px;
-}
-
-.section-heading > p:last-child {
-    color: var(--muted);
-    line-height: 1.6;
-}
-
-.filter-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 30px;
-}
-
-.filter-btn {
-    padding: 10px 18px;
-    border-radius: 30px;
-    border: 1px solid #435344;
-    color: var(--muted);
-    background: var(--panel);
-}
-
-.filter-btn.active,
-.filter-btn:hover {
-    background: var(--green);
-    color: #172016;
-    border-color: var(--green);
-}
-
-.menu-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 22px;
-}
-
-.menu-card {
-    overflow: hidden;
-    background: var(--panel);
-    border: 1px solid #344236;
-    border-radius: 14px;
-}
-
-.menu-picture {
-    height: 160px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 65px;
-    background: linear-gradient(135deg, #344b36, #202a22);
-}
-
-.menu-info {
-    padding: 20px;
-}
-
-.menu-info h3 {
-    margin-bottom: 8px;
-}
-
-.menu-category {
-    color: var(--green);
-    font-size: 12px;
-    margin-bottom: 12px;
-}
-
-.menu-description {
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.5;
-    min-height: 38px;
-}
-
-.menu-bottom {
-    margin-top: 17px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-}
-
-.menu-price {
-    color: var(--green);
-    font-weight: bold;
-}
-
-.menu-quantity {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #101812;
-    padding: 5px;
-    border-radius: 30px;
-    border: 1px solid #40513f;
-}
-
-.qty-btn {
-    height: 31px;
-    width: 31px;
-    border: 0;
-    border-radius: 50%;
-    font-weight: bold;
-    font-size: 19px;
-    background: var(--green);
-    color: #172016;
-}
-
-.qty-number {
-    min-width: 18px;
-    text-align: center;
-    font-weight: bold;
-}
-
-.table-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-}
-
-.table-card {
-    background: var(--panel);
-    border: 1px solid #344236;
-    padding: 25px;
-    border-radius: 12px;
-    text-align: center;
-}
-
-.table-card h3 {
-    font-size: 25px;
-    margin-bottom: 10px;
-}
-
-.table-card p {
-    color: var(--muted);
-    font-size: 13px;
-    margin-bottom: 15px;
-}
-
-.table-card.available {
-    border-color: var(--green-dark);
-}
-
-.table-card.occupied {
-    opacity: .55;
-}
-
-.table-card button {
-    padding: 9px 16px;
-    border: 0;
-    border-radius: 6px;
-    background: var(--green);
-    color: #172016;
-}
-
-.table-card button:disabled {
-    background: #59605a;
-    color: white;
-    cursor: not-allowed;
-}
-
-.available-dot,
-.occupied-dot {
-    display: inline-block;
-    height: 9px;
-    width: 9px;
-    border-radius: 50%;
-    margin: 0 5px 0 15px;
-}
-
-.available-dot {
-    background: var(--green);
-}
-
-.occupied-dot {
-    background: var(--red);
-}
-
-.legend {
-    color: var(--muted);
-    margin-top: 25px;
-    font-size: 13px;
-}
-
-.cart-layout {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: 25px;
-    align-items: start;
-}
-
-.cart-items,
-.checkout-box,
-.login-box {
-    background: var(--panel);
-    border: 1px solid #344236;
-    border-radius: 12px;
-    padding: 24px;
-}
-
-.cart-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    padding: 15px 0;
-    border-bottom: 1px solid #344236;
-}
-
-.cart-item h3 {
-    font-size: 15px;
-    margin-bottom: 7px;
-}
-
-.cart-item p {
-    color: var(--green);
-    font-size: 13px;
-}
-
-.cart-item .menu-quantity {
-    flex-shrink: 0;
-}
-
-.empty-message {
-    color: var(--muted);
-    text-align: center;
-    padding: 35px 10px;
-}
-
-.checkout-box h2,
-.login-box h2 {
-    margin-bottom: 22px;
-}
-
-.checkout-box label,
-.login-box label {
-    display: block;
-    color: var(--muted);
-    font-size: 13px;
-    margin: 15px 0 8px;
-}
-
-.checkout-box input,
-.checkout-box select,
-.login-box input {
-    width: 100%;
-    padding: 12px;
-    color: white;
-    background: #101812;
-    border: 1px solid #465748;
-    border-radius: 7px;
-    outline: none;
-}
-
-.total-row {
-    border-top: 1px solid #465748;
-    margin-top: 25px;
-    padding: 20px 0;
-    display: flex;
-    justify-content: space-between;
-}
-
-.total-row strong {
-    color: var(--green);
-}
-
-.full-btn {
-    width: 100%;
-    margin-top: 12px;
-}
-
-.success-box {
-    max-width: 550px;
-    margin: 40px auto;
-    padding: 35px;
-    text-align: center;
-    background: var(--panel);
-    border: 1px solid #344236;
-    border-radius: 15px;
-}
-
-.success-icon {
-    width: 65px;
-    height: 65px;
-    margin: 0 auto 20px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    color: #172016;
-    background: var(--green);
-    font-size: 35px;
-}
-
-.success-box > p {
-    color: var(--muted);
-    margin: 12px 0 20px;
-}
-
-#receipt {
-    text-align: left;
-    background: #101812;
-    padding: 18px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    line-height: 1.8;
-    font-size: 14px;
-}
-
-#receipt hr {
-    border: 0;
-    border-top: 1px solid #465748;
-    margin: 10px 0;
-}
-
-.login-box {
-    max-width: 420px;
-    margin: auto;
-}
-
-.login-hint,
-.message {
-    color: var(--muted);
-    font-size: 12px;
-    margin-top: 15px;
-}
-
-.message.error {
-    color: var(--red);
-}
-
-.staff-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-.order-card {
-    background: var(--panel);
-    border: 1px solid #344236;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 15px;
-}
-
-.order-card p {
-    color: var(--muted);
-    margin-top: 8px;
-    line-height: 1.6;
-}
-
-.order-card strong {
-    color: var(--green);
-}
-
-footer {
-    padding: 25px;
-    text-align: center;
-    background: #151d18;
-    color: var(--muted);
-    font-size: 13px;
-}
-
-[hidden] {
-    display: none !important;
-}
-
-@media (max-width: 850px) {
-    .navbar {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    nav {
-        width: 100%;
-    }
-
-    .menu-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .table-grid {
-        grid-template-columns: repeat(3, 1fr);
+"use strict";
+
+// =====================================
+// DATA MENU
+// =====================================
+
+const menus = [
+    { id: 1, name: "Kopi Nako", category: "Kopi", price: 18000, icon: "☕", description: "Kopi susu khas dengan rasa nikmat." },
+    { id: 2, name: "Es Kopi Sayang", category: "Kopi", price: 20000, icon: "🧋", description: "Kopi dan susu yang lembut." },
+    { id: 3, name: "Americano", category: "Kopi", price: 15000, icon: "☕", description: "Kopi hitam dengan cita rasa khas." },
+    { id: 4, name: "Cappuccino", category: "Kopi", price: 22000, icon: "☕", description: "Espresso dengan susu dan foam." },
+    { id: 5, name: "Matcha Latte", category: "Non Kopi", price: 23000, icon: "🍵", description: "Matcha dengan susu." },
+    { id: 6, name: "Chocolate", category: "Non Kopi", price: 20000, icon: "🍫", description: "Minuman cokelat creamy." },
+    { id: 7, name: "Lemon Tea", category: "Non Kopi", price: 15000, icon: "🍋", description: "Teh segar dengan lemon." },
+    { id: 8, name: "French Fries", category: "Makanan", price: 18000, icon: "🍟", description: "Kentang goreng renyah." },
+    { id: 9, name: "Croissant", category: "Makanan", price: 22000, icon: "🥐", description: "Roti pastry lembut." },
+    { id: 10, name: "Waffle", category: "Makanan", price: 25000, icon: "🧇", description: "Waffle dengan topping pilihan." }
+];
+
+// =====================================
+// DATA MEJA
+// =====================================
+
+const tables = [
+    ...Array.from({ length: 6 }, (_, i) => ({
+        id: i + 1,
+        area: "Indoor"
+    })),
+    ...Array.from({ length: 6 }, (_, i) => ({
+        id: i + 7,
+        area: "Outdoor"
+    })),
+    ...Array.from({ length: 6 }, (_, i) => ({
+        id: i + 13,
+        area: "Lantai 2"
+    }))
+];
+
+const occupiedTables = [4, 9, 15, 18];
+
+// =====================================
+// DATA PENYIMPANAN
+// =====================================
+
+function readStorage(key, fallback) {
+    try {
+        const value = JSON.parse(localStorage.getItem(key));
+        return value ?? fallback;
+    } catch {
+        return fallback;
     }
 }
 
-@media (max-width: 600px) {
-    .navbar {
-        padding: 15px;
-    }
+let cart = readStorage("kopiNakoCart", []);
+let orders = readStorage("kopiNakoOrders", []);
 
-    nav {
-        gap: 5px;
-    }
+let activeCategory = "Semua";
+let activeArea = "Semua";
+let selectedTable = null;
+let isStaffLoggedIn = false;
 
-    .nav-btn {
-        padding: 9px;
-        font-size: 12px;
-    }
+// =====================================
+// FUNGSI UMUM
+// =====================================
 
-    .hero {
-        min-height: 470px;
-        padding: 50px 25px;
-    }
-
-    .home-info {
-        align-items: flex-start;
-        flex-direction: column;
-        padding: 30px 25px;
-    }
-
-    .container {
-        padding: 45px 17px;
-    }
-
-    .section-heading h1 {
-        font-size: 30px;
-    }
-
-    .menu-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .table-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .cart-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .cart-item {
-        align-items: flex-start;
-        flex-direction: column;
-    }
+function rupiah(number) {
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        maximumFractionDigits: 0
+    }).format(number);
 }
+
+function saveCart() {
+    localStorage.setItem("kopiNakoCart", JSON.stringify(cart));
+    updateCartCount();
+}
+
+function updateCartCount() {
+    const total = cart.reduce((sum, item) => sum + item.qty, 0);
+    document.getElementById("cart-count").textContent = total;
+}
+
+// =====================================
+// NAVIGASI
+// =====================================
+
+function showPage(pageId) {
+    const target = document.getElementById(pageId);
+
+    if (!target) {
+        console.error("Halaman tidak ditemukan:", pageId);
+        return;
+    }
+
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
+
+    target.classList.add("active");
+
+    document.querySelectorAll(".nav-btn").forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.dataset.page === pageId
+        );
+    });
+
+    if (pageId === "menu") renderMenu();
+    if (pageId === "tables") renderTables();
+    if (pageId === "cart") renderCart();
+    if (pageId === "staff") renderStaff();
+
+    window.scrollTo(0, 0);
+}
+
+function setupNavigation() {
+    document.addEventListener("click", event => {
+        const button = event.target.closest("[data-page]");
+
+        if (!button) return;
+
+        event.preventDefault();
+        showPage(button.dataset.page);
+    });
+}
+
+// =====================================
+// MENU
+// =====================================
+
+function getCartQty(menuId) {
+    const item = cart.find(item => item.id === menuId);
+    return item ? item.qty : 0;
+}
+
+function renderMenu() {
+    const container = document.getElementById("menu-list");
+
+    const filteredMenus = activeCategory === "Semua"
+        ? menus
+        : menus.filter(menu => menu.category === activeCategory);
+
+    container.innerHTML = filteredMenus.map(menu => {
+        const qty = getCartQty(menu.id);
+
+        return `
+            <article class="menu-card">
+                <div class="menu-picture">${menu.icon}</div>
+
+                <div class="menu-info">
+                    <p class="menu-category">${menu.category}</p>
+                    <h3>${menu.name}</h3>
+                    <p class="menu-description">${menu.description}</p>
+
+                    <div class="menu-bottom">
+                        <span class="menu-price">${rupiah(menu.price)}</span>
+
+                        <div class="menu-quantity">
+                            <button type="button"
+                                class="qty-btn"
+                                data-menu-action="minus"
+                                data-id="${menu.id}">−</button>
+
+                            <span class="qty-number">${qty}</span>
+
+                            <button type="button"
+                                class="qty-btn"
+                                data-menu-action="plus"
+                                data-id="${menu.id}">+</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        `;
+    }).join("");
+}
+
+function addToCart(menuId) {
+    const menu = menus.find(item => item.id === menuId);
+    if (!menu) return;
+
+    const existing = cart.find(item => item.id === menuId);
+
+    if (existing) {
+        existing.qty++;
+    } else {
+        cart.push({
+            id: menu.id,
+            name: menu.name,
+            price: menu.price,
+            qty: 1
+        });
+    }
+
+    saveCart();
+}
+
+function changeQty(menuId, amount) {
+    const item = cart.find(item => item.id === menuId);
+
+    if (!item && amount > 0) {
+        addToCart(menuId);
+    } else if (item) {
+        item.qty += amount;
+
+        if (item.qty <= 0) {
+            cart = cart.filter(item => item.id !== menuId);
+        }
+    }
+
+    saveCart();
+    renderMenu();
+    renderCart();
+}
+
+function setupMenu() {
+    document.getElementById("menu-filters").addEventListener("click", event => {
+        const button = event.target.closest("[data-category]");
+        if (!button) return;
+
+        activeCategory = button.dataset.category;
+
+        document.querySelectorAll("[data-category]").forEach(btn => {
+            btn.classList.toggle("active", btn === button);
+        });
+
+        renderMenu();
+    });
+
+    document.getElementById("menu-list").addEventListener("click", event => {
+        const button = event.target.closest("[data-menu-action]");
+        if (!button) return;
+
+        const id = Number(button.dataset.id);
+
+        if (button.dataset.menuAction === "plus") {
+            addToCart(id);
+        } else {
+            changeQty(id, -1);
+        }
+
+        renderMenu();
+    });
+}
+
+// =====================================
+// MEJA
+// =====================================
+
+function renderTables() {
+    const container = document.getElementById("table-list");
+
+    const filtered = activeArea === "Semua"
+        ? tables
+        : tables.filter(table => table.area === activeArea);
+
+    container.innerHTML = filtered.map(table => {
+        const occupied = occupiedTables.includes(table.id);
+        const selected = selectedTable === table.id;
+
+        return `
+            <div class="table-card ${occupied ? "occupied" : "available"}">
+                <h3>Meja ${String(table.id).padStart(2, "0")}</h3>
+                <p>${table.area}</p>
+                <p>${occupied ? "Sedang Terisi" : selected ? "Dipilih" : "Tersedia"}</p>
+
+                <button type="button"
+                    data-table-id="${table.id}"
+                    ${occupied ? "disabled" : ""}>
+                    ${occupied ? "Tidak Tersedia" : selected ? "Dipilih ✓" : "Pilih Meja"}
+                </button>
+            </div>
+        `;
+    }).join("");
+}
+
+function setupTables() {
+    document.getElementById("table-filters").addEventListener("click", event => {
+        const button = event.target.closest("[data-area]");
+        if (!button) return;
+
+        activeArea = button.dataset.area;
+
+        document.querySelectorAll("[data-area]").forEach(btn => {
+            btn.classList.toggle("active", btn === button);
+        });
+
+        renderTables();
+    });
+
+    document.getElementById("table-list").addEventListener("click", event => {
+        const button = event.target.closest("[data-table-id]");
+        if (!button || button.disabled) return;
+
+        selectedTable = Number(button.dataset.tableId);
+        renderTables();
+    });
+}
+
+// =====================================
+// KERANJANG
+// =====================================
+
+function calculateTotal() {
+    return cart.reduce((sum, item) => {
+        return sum + item.price * item.qty;
+    }, 0);
+}
+
+function renderCart() {
+    const container = document.getElementById("cart-items");
+
+    if (cart.length === 0) {
+        container.innerHTML = `
+            <div class="empty-message">
+                <h3>Keranjang masih kosong</h3>
+                <p>Silakan pilih menu terlebih dahulu.</p>
+                <button type="button" class="primary-btn" data-page="menu">
+                    Lihat Menu
+                </button>
+            </div>
+        `;
+    } else {
+        container.innerHTML = cart.map(item => `
+            <div class="cart-item">
+                <div>
+                    <h3>${item.name}</h3>
+                    <p>${rupiah(item.price * item.qty)}</p>
+                </div>
+
+                <div class="menu-quantity">
+                    <button type="button" class="qty-btn"
+                        data-cart-action="minus" data-id="${item.id}">−</button>
+
+                    <span class="qty-number">${item.qty}</span>
+
+                    <button type="button" class="qty-btn"
+                        data-cart-action="plus" data-id="${item.id}">+</button>
+                </div>
+            </div>
+        `).join("");
+    }
+
+    document.getElementById("cart-total").textContent = rupiah(calculateTotal());
+    updateCartCount();
+}
+
+function setupCart() {
+    document.getElementById("cart-items").addEventListener("click", event => {
+        const button = event.target.closest("[data-cart-action]");
+        if (!button) return;
+
+        const id = Number(button.dataset.id);
+
+        if (button.dataset.cartAction === "plus") {
+            addToCart(id);
+        } else {
+            changeQty(id, -1);
+        }
+
+        renderCart();
+    });
+
+    document.getElementById("checkout-btn").addEventListener("click", checkout);
+}
+
+// =====================================
+// CHECKOUT
+// =====================================
+
+function checkout() {
+    if (cart.length === 0) {
+        alert("Keranjang masih kosong.");
+        return;
+    }
+
+    const name = document.getElementById("customer-name").value.trim();
+
+    if (!name) {
+        alert("Masukkan nama pelanggan.");
+        document.getElementById("customer-name").focus();
+        return;
+    }
+
+    const type = document.getElementById("order-type").value;
+
+    if (type === "Dine In" && !selectedTable) {
+        alert("Silakan pilih meja terlebih dahulu.");
+        showPage("tables");
+        return;
+    }
+
+    const payment = document.getElementById("payment-method").value;
+
+    const order = {
+        id: "KN-" + Date.now(),
+        customer: name,
+        type,
+        table: type === "Dine In" ? selectedTable : null,
+        payment,
+        items: cart.map(item => ({ ...item })),
+        total: calculateTotal(),
+        date: new Date().toLocaleString("id-ID"),
+        status: "Menunggu"
+    };
+
+    orders.unshift(order);
+    localStorage.setItem("kopiNakoOrders", JSON.stringify(orders));
+
+    document.getElementById("receipt").innerHTML = `
+        <strong>Nomor Pesanan:</strong> ${order.id}<br>
+        <strong>Nama:</strong> ${order.customer}<br>
+        <strong>Jenis:</strong> ${order.type}<br>
+        ${order.table ? `<strong>Meja:</strong> ${order.table}<br>` : ""}
+        <strong>Pembayaran:</strong> ${order.payment}<br>
+        <strong>Waktu:</strong> ${order.date}
+        <hr>
+        ${order.items.map(item => `
+            ${item.name} x ${item.qty}
+            <span style="float:right">${rupiah(item.price * item.qty)}</span><br>
+        `).join("")}
+        <hr>
+        <strong>Total: ${rupiah(order.total)}</strong>
+    `;
+
+    cart = [];
+    selectedTable = null;
+    saveCart();
+
+    document.getElementById("customer-name").value = "";
+
+    showPage("success");
+}
+
+// =====================================
+// STAFF
+// =====================================
+
+function setupStaff() {
+    document.getElementById("staff-login-btn").addEventListener("click", () => {
+        const username = document.getElementById("staff-username").value.trim();
+        const password = document.getElementById("staff-password").value;
+        const message = document.getElementById("login-message");
+
+        if (username === "staff" && password === "12345") {
+            isStaffLoggedIn = true;
+            message.textContent = "";
+            renderStaff();
+        } else {
+            message.textContent = "Username atau password salah.";
+            message.className = "message error";
+        }
+    });
+
+    document.getElementById("staff-logout-btn").addEventListener("click", () => {
+        isStaffLoggedIn = false;
+        renderStaff();
+    });
+}
+
+function renderStaff() {
+    const login = document.getElementById("staff-login");
+    const dashboard = document.getElementById("staff-dashboard");
+
+    login.hidden = isStaffLoggedIn;
+    dashboard.hidden = !isStaffLoggedIn;
+
+    if (!isStaffLoggedIn) return;
+
+    const container = document.getElementById("staff-orders");
+
+    if (orders.length === 0) {
+        container.innerHTML = `
+            <p class="empty-message">Belum ada pesanan.</p>
+        `;
+        return;
+    }
+
+    container.innerHTML = orders.map(order => `
+        <div class="order-card">
+            <h3>${order.id}</h3>
+            <p>
+                Pelanggan: ${order.customer}<br>
+                Waktu: ${order.date}<br>
+                Jenis: ${order.type}<br>
+                ${order.table ? `Meja: ${order.table}<br>` : ""}
+                Pembayaran: ${order.payment}<br>
+                Status: <strong>${order.status}</strong>
+            </p>
+
+            <p>
+                ${order.items.map(item =>
+                    `${item.name} x ${item.qty}`
+                ).join("<br>")}
+            </p>
+
+            <p><strong>Total: ${rupiah(order.total)}</strong></p>
+        </div>
+    `).join("");
+}
+
+// =====================================
+// TOMBOL PESAN LAGI
+// =====================================
+
+document.getElementById("new-order-btn").addEventListener("click", () => {
+    showPage("menu");
+});
+
+// =====================================
+// MULAI APLIKASI
+// =====================================
+
+function init() {
+    setupNavigation();
+    setupMenu();
+    setupTables();
+    setupCart();
+    setupStaff();
+
+    renderMenu();
+    renderTables();
+    renderCart();
+    updateCartCount();
+
+    showPage("home");
+}
+
+init();
