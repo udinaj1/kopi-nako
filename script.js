@@ -174,12 +174,7 @@ function addToCart(id) {
   const product = menuData.find(item => item.id === Number(id));
   if (!product) return;
 
-  const quantity = menuQuantities[product.id] ?? || 1;
-  
-  if (quantity === 0) {alert("Jumlah menu minimal 1 untuk ditambahkan ke keranjang.");
-  return;
-  }
-
+  const quantity = menuQuantities[product.id] || 1;
   const existing = cart.find(item => item.id === product.id);
 
   if (existing) {
@@ -206,13 +201,32 @@ function addToCart(id) {
   }
 }
 
+  
+  menuQuantities[product.id] = 1;
+
+  saveData();
+  updateCartCount();
+
+  renderMenu();
+  renderFeaturedMenu();
+
+  alert(quantity + " " + product.name + " berhasil ditambahkan.");
+
+  if (document.getElementById("cart").classList.contains("active")) {
+    renderCart();
+  }
+}
+
 /* FUNGSI TOMBOL + DAN - PADA KARTU MENU */
 
 function changeMenuQuantity(id, change) {
   const productId = Number(id);
-  const currentQty = menuQuantities[productId] || 0;
+  const currentQty = menuQuantities[productId] || 1;
 
-  menuQuantities[productId] || 1;
+  menuQuantities[productId] = Math.max(
+    1,
+    currentQty + Number(change)
+    );
 
   renderMenu();
   renderFeaturedMenu();
