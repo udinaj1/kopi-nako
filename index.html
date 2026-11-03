@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kopi Nako Solo - Pemesanan</title>
+    <title>Kopi Nako Solo | Pemesanan</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="navbar">
-    <a href="#" class="logo" data-page="home">
+    <a href="#home" class="logo" data-page="home">
         <span>KOPI</span> NAKO
         <small>SOLO</small>
     </a>
 
     <nav>
-        <button class="nav-btn active" data-page="home">Beranda</button>
-        <button class="nav-btn" data-page="tables">Meja</button>
-        <button class="nav-btn" data-page="menu">Menu</button>
-        <button class="nav-btn" data-page="cart">
-            Keranjang <span id="cart-count">0</span>
+        <button type="button" class="nav-btn active" data-page="home">Beranda</button>
+        <button type="button" class="nav-btn" data-page="tables">Meja</button>
+        <button type="button" class="nav-btn" data-page="menu">Menu</button>
+        <button type="button" class="nav-btn" data-page="cart">
+            Keranjang (<span id="cart-count">0</span>)
         </button>
-        <button class="nav-btn" data-page="staff">Staff</button>
+        <button type="button" class="nav-btn" data-page="staff">Staff</button>
     </nav>
 </header>
 
@@ -31,13 +31,13 @@
     <section id="home" class="page active">
         <div class="hero">
             <div class="hero-content">
-                <p class="eyebrow">SELAMAT DATANG DI KOPI NAKO</p>
+                <p class="eyebrow">WELCOME TO KOPI NAKO SOLO</p>
                 <h1>Tempat Cerita,<br><span>Tempat Ngopi.</span></h1>
                 <p>
-                    Nikmati kopi dan makanan favoritmu dengan suasana
-                    nyaman bersama Kopi Nako Solo.
+                    Nikmati berbagai pilihan kopi, minuman non kopi,
+                    dan makanan bersama orang-orang terdekat.
                 </p>
-                <button class="primary-btn" data-page="menu">
+                <button type="button" class="primary-btn" data-page="menu">
                     Pesan Sekarang
                 </button>
             </div>
@@ -45,28 +45,28 @@
 
         <div class="home-info">
             <div>
-                <h2>Selamat Menikmati</h2>
-                <p>Pilih menu, tentukan jumlah pesanan, lalu lakukan checkout.</p>
+                <h2>Selamat Datang di Kopi Nako</h2>
+                <p>Pilih menu favorit dan lakukan pemesanan dengan mudah.</p>
             </div>
-            <button class="secondary-btn" data-page="tables">
+            <button type="button" class="secondary-btn" data-page="tables">
                 Pilih Meja
             </button>
         </div>
     </section>
 
-    <!-- PILIH MEJA -->
+    <!-- MEJA -->
     <section id="tables" class="page container">
         <div class="section-heading">
             <p class="eyebrow">TEMPAT DUDUK</p>
             <h1>Pilih Meja</h1>
-            <p>Pilih meja yang tersedia sebelum memesan.</p>
+            <p>Pilih meja yang masih tersedia.</p>
         </div>
 
         <div class="filter-row" id="table-filters">
-            <button class="filter-btn active" data-area="Semua">Semua</button>
-            <button class="filter-btn" data-area="Indoor">Indoor</button>
-            <button class="filter-btn" data-area="Outdoor">Outdoor</button>
-            <button class="filter-btn" data-area="Lantai 2">Lantai 2</button>
+            <button type="button" class="filter-btn active" data-area="Semua">Semua</button>
+            <button type="button" class="filter-btn" data-area="Indoor">Indoor</button>
+            <button type="button" class="filter-btn" data-area="Outdoor">Outdoor</button>
+            <button type="button" class="filter-btn" data-area="Lantai 2">Lantai 2</button>
         </div>
 
         <div id="table-list" class="table-grid"></div>
@@ -80,16 +80,16 @@
     <!-- MENU -->
     <section id="menu" class="page container">
         <div class="section-heading">
-            <p class="eyebrow">MENU KAMI</p>
-            <h1>Pilih Menu Favoritmu</h1>
-            <p>Atur jumlah setiap menu menggunakan tombol + dan −.</p>
+            <p class="eyebrow">OUR MENU</p>
+            <h1>Menu Kopi Nako</h1>
+            <p>Pilih kategori dan atur jumlah pesanan menggunakan tombol + dan −.</p>
         </div>
 
         <div class="filter-row" id="menu-filters">
-            <button class="filter-btn active" data-category="Semua">Semua</button>
-            <button class="filter-btn" data-category="Kopi">Kopi</button>
-            <button class="filter-btn" data-category="Non Kopi">Non Kopi</button>
-            <button class="filter-btn" data-category="Makanan">Makanan</button>
+            <button type="button" class="filter-btn active" data-category="Semua">Semua</button>
+            <button type="button" class="filter-btn" data-category="Kopi">Kopi</button>
+            <button type="button" class="filter-btn" data-category="Non Kopi">Non Kopi</button>
+            <button type="button" class="filter-btn" data-category="Makanan">Makanan</button>
         </div>
 
         <div id="menu-list" class="menu-grid"></div>
@@ -98,9 +98,9 @@
     <!-- KERANJANG -->
     <section id="cart" class="page container">
         <div class="section-heading">
-            <p class="eyebrow">PESANAN KAMU</p>
-            <h1>Keranjang</h1>
-            <p>Periksa kembali pesanan sebelum checkout.</p>
+            <p class="eyebrow">YOUR ORDER</p>
+            <h1>Keranjang Pesanan</h1>
+            <p>Periksa pesanan sebelum melakukan checkout.</p>
         </div>
 
         <div class="cart-layout">
@@ -126,28 +126,31 @@
                 </select>
 
                 <div class="total-row">
-                    <span>Total</span>
+                    <span>Total Pembayaran</span>
                     <strong id="cart-total">Rp0</strong>
                 </div>
 
-                <button id="checkout-btn" class="primary-btn full-btn">
+                <button type="button" id="checkout-btn" class="primary-btn full-btn">
                     Checkout Pesanan
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- SUKSES -->
+    <!-- STRUK -->
     <section id="success" class="page container">
         <div class="success-box">
             <div class="success-icon">✓</div>
             <h1>Pesanan Berhasil!</h1>
             <p>Terima kasih telah memesan di Kopi Nako Solo.</p>
+
             <div id="receipt"></div>
-            <button class="primary-btn" data-page="home">
+
+            <button type="button" class="primary-btn" data-page="home">
                 Kembali ke Beranda
             </button>
-            <button id="new-order-btn" class="secondary-btn">
+
+            <button type="button" id="new-order-btn" class="secondary-btn">
                 Pesan Lagi
             </button>
         </div>
@@ -156,30 +159,32 @@
     <!-- STAFF -->
     <section id="staff" class="page container">
         <div class="section-heading">
-            <p class="eyebrow">HALAMAN STAFF</p>
+            <p class="eyebrow">STAFF AREA</p>
             <h1>Dashboard Staff</h1>
-            <p>Masuk untuk melihat pesanan pada browser ini.</p>
+            <p>Login untuk melihat daftar pesanan.</p>
         </div>
 
         <div id="staff-login" class="login-box">
             <h2>Login Staff</h2>
+
             <label for="staff-username">Username</label>
             <input id="staff-username" type="text" placeholder="Username">
 
             <label for="staff-password">Password</label>
             <input id="staff-password" type="password" placeholder="Password">
 
-            <button id="staff-login-btn" class="primary-btn full-btn">
+            <button type="button" id="staff-login-btn" class="primary-btn full-btn">
                 Login
             </button>
-            <p class="login-hint">Demo: staff / 12345</p>
+
+            <p class="login-hint">Demo login: staff / 12345</p>
             <p id="login-message" class="message"></p>
         </div>
 
         <div id="staff-dashboard" hidden>
             <div class="staff-top">
                 <h2>Daftar Pesanan</h2>
-                <button id="staff-logout-btn" class="secondary-btn">Logout</button>
+                <button type="button" id="staff-logout-btn" class="secondary-btn">Logout</button>
             </div>
             <div id="staff-orders"></div>
         </div>
