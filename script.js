@@ -1,113 +1,144 @@
+// ==========================================
+// KOPI NAKO SOLO - JAVASCRIPT
+// ==========================================
+
 const menuData = [
-  {id:1,name:"Kopi Nako",category:"Kopi",price:18000,image:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600"},
-  {id:2,name:"Es Kopi Aren",category:"Kopi",price:20000,image:"https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=600"},
-  {id:3,name:"Americano",category:"Kopi",price:15000,image:"https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600"},
-  {id:4,name:"Cappuccino",category:"Kopi",price:22000,image:"https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=600"},
-  {id:5,name:"Matcha Latte",category:"Non Kopi",price:23000,image:"https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=600"},
-  {id:6,name:"Chocolate",category:"Non Kopi",price:20000,image:"https://images.pexels.com/photos/12642348/pexels-photo-12642348.jpeg?auto=compress&cs=tinysrgb&w=800"},
-  {id:7,name:"Lemon Tea",category:"Non Kopi",price:15000,image:"https://images.pexels.com/photos/30254785/pexels-photo-30254785.jpeg?auto=compress&cs=tinysrgb&w=800"},
-  {id:8,name:"French Fries",category:"Makanan",price:18000,image:"https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600"},
-  {id:9,name:"Croissant",category:"Makanan",price:22000,image:"https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600"},
-  {id:10,name:"Waffle",category:"Makanan",price:25000,image:"https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=600"}
+  { id: 1, name: "Kopi Nako", category: "Kopi", price: 18000, image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600" },
+  { id: 2, name: "Es Kopi Aren", category: "Kopi", price: 20000, image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=600" },
+  { id: 3, name: "Americano", category: "Kopi", price: 15000, image: "https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600" },
+  { id: 4, name: "Cappuccino", category: "Kopi", price: 22000, image: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=600" },
+  { id: 5, name: "Matcha Latte", category: "Non Kopi", price: 23000, image: "https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=600" },
+  { id: 6, name: "Chocolate", category: "Non Kopi", price: 20000, image: "https://images.pexels.com/photos/12642348/pexels-photo-12642348.jpeg?auto=compress&cs=tinysrgb&w=800" },
+  { id: 7, name: "Lemon Tea", category: "Non Kopi", price: 15000, image: "https://images.pexels.com/photos/30254785/pexels-photo-30254785.jpeg?auto=compress&cs=tinysrgb&w=800" },
+  { id: 8, name: "French Fries", category: "Makanan", price: 18000, image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600" },
+  { id: 9, name: "Croissant", category: "Makanan", price: 22000, image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600" },
+  { id: 10, name: "Waffle", category: "Makanan", price: 25000, image: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=600" }
 ];
 
 const areas = [
-  {name:"Indoor",tables:[1,2,3,4,5,6]},
-  {name:"Outdoor",tables:[7,8,9,10,11,12]},
-  {name:"Lantai 2",tables:[13,14,15,16,17,18]}
+  { name: "Indoor", prefix: "IN", count: 6 },
+  { name: "Outdoor", prefix: "OUT", count: 6 },
+  { name: "Lantai 2", prefix: "L2", count: 6 }
 ];
 
-const occupiedTables = [4,9,15,18];
-const STATUS = ["Menunggu","Diproses","Siap Diambil","Selesai"];
+const occupiedTables = ["IN-04", "OUT-03", "L2-05"];
+const statuses = ["Menunggu", "Diproses", "Siap Diambil", "Selesai"];
 
 let cart = JSON.parse(localStorage.getItem("kopiNakoCart") || "[]");
-let selectedTable = null;
+let orders = JSON.parse(localStorage.getItem("kopiNakoOrders") || "[]");
+let selectedTable = "";
+let orderType = "Dine In";
 let activeCategory = "Semua";
-let lastOrderId = null;
+let currentStaff = "Kasir";
+let currentStaffTab = "dashboard";
 
-function rupiah(value){
-  return new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(value);
+// ==========================================
+// UTILITAS
+// ==========================================
+
+function rupiah(number) {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0
+  }).format(number);
 }
-function getOrders(){
-  return JSON.parse(localStorage.getItem("kopiNakoOrders") || "[]");
-}
-function saveOrders(orders){
-  localStorage.setItem("kopiNakoOrders",JSON.stringify(orders));
-}
-function saveCart(){
-  localStorage.setItem("kopiNakoCart",JSON.stringify(cart));
+
+function saveCart() {
+  localStorage.setItem("kopiNakoCart", JSON.stringify(cart));
   updateCartCount();
 }
-function updateCartCount(){
-  const count = cart.reduce((sum,item)=>sum+item.qty,0);
+
+function saveOrders() {
+  localStorage.setItem("kopiNakoOrders", JSON.stringify(orders));
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
+}
+
+function today() {
+  const date = new Date();
+  const offset = date.getTimezoneOffset();
+  return new Date(date.getTime() - offset * 60000).toISOString().slice(0, 10);
+}
+
+function formatDate(value) {
+  return new Date(value).toLocaleString("id-ID", {
+    dateStyle: "short",
+    timeStyle: "short"
+  });
+}
+
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active");
+  });
+
+  const target = document.getElementById(pageId);
+  if (target) target.classList.add("active");
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  if (pageId === "menu") renderMenu();
+  if (pageId === "tables") renderTables();
+  if (pageId === "cart") renderCart();
+  if (pageId === "staff-dashboard") renderStaff();
+  if (pageId === "staff-login") currentStaffTab = "dashboard";
+}
+
+function updateCartCount() {
+  const count = cart.reduce((sum, item) => sum + item.qty, 0);
   document.getElementById("cart-count").textContent = count;
 }
-function showToast(message){
-  const toast = document.getElementById("toast");
-  toast.textContent = message;
-  toast.classList.add("show");
-  setTimeout(()=>toast.classList.remove("show"),2500);
-}
-function showPage(pageId){
-  document.querySelectorAll(".page").forEach(page=>page.classList.remove("active"));
-  const page = document.getElementById(pageId);
-  if(page) page.classList.add("active");
-  document.getElementById("main-nav").classList.remove("open");
 
-  if(pageId==="tables") renderTables();
-  if(pageId==="cart") renderCart();
-  if(pageId==="staff") renderStaff();
-  window.scrollTo({top:0,behavior:"smooth"});
-}
+// ==========================================
+// MENU PELANGGAN
+// ==========================================
 
-document.addEventListener("click",event=>{
-  const nav = event.target.closest("[data-page]");
-  if(nav){
-    const target = nav.dataset.page;
-    if(target==="cart") renderCart();
-    showPage(target);
-  }
-});
-
-document.getElementById("nav-toggle").addEventListener("click",()=>{
-  document.getElementById("main-nav").classList.toggle("open");
-});
-
-function menuCard(item){
+function menuCard(item) {
   const cartItem = cart.find(product => product.id === item.id);
   const qty = cartItem ? cartItem.qty : 0;
 
   return `
     <article class="menu-card">
       <div class="menu-picture">
-        <img src="${item.image}" alt="${item.name}" loading="lazy"
-          onerror="this.style.display='none';this.parentElement.classList.add('image-fallback');this.parentElement.textContent='☕';">
-        <span class="category-tag">${item.category}</span>
+        <img src="${item.image}" alt="${escapeHTML(item.name)}" loading="lazy"
+          onerror="this.style.display='none';this.parentElement.style.background='#e9e9df';this.parentElement.insertAdjacentHTML('beforeend','<span style=&quot;display:grid;place-items:center;height:100%;font-size:45px&quot;>☕</span>')">
+        <span class="category-tag">${escapeHTML(item.category)}</span>
       </div>
       <div class="menu-info">
-        <h3>${item.name}</h3>
+        <h3>${escapeHTML(item.name)}</h3>
         <p>${rupiah(item.price)}</p>
-
         <div class="menu-quantity">
-          <button class="quantity-btn menu-minus"
-            data-id="${item.id}" ${qty === 0 ? "disabled" : ""}>−</button>
-
+          <button class="quantity-btn menu-minus" data-id="${item.id}" ${qty === 0 ? "disabled" : ""}>−</button>
           <strong>${qty}</strong>
-
-          <button class="quantity-btn menu-plus"
-            data-id="${item.id}">+</button>
+          <button class="quantity-btn menu-plus" data-id="${item.id}">+</button>
         </div>
       </div>
-    </article>`;
+    </article>
+  `;
 }
 
-function renderMenu(){
-  const filtered = activeCategory==="Semua" ? menuData : menuData.filter(item=>item.category===activeCategory);
-  document.getElementById("menu-list").innerHTML = filtered.map(menuCard).join("");
-  document.getElementById("featured-menu").innerHTML = menuData.slice(0,4).map(menuCard).join("");
+function renderMenu() {
+  const filtered = activeCategory === "Semua"
+    ? menuData
+    : menuData.filter(item => item.category === activeCategory);
+
+  document.getElementById("menu-list").innerHTML =
+    filtered.map(menuCard).join("");
+
+  document.getElementById("featured-menu").innerHTML =
+    menuData.slice(0, 4).map(menuCard).join("");
 }
 
-document.addEventListener("click", event => {
+document.addEventListener("click", function(event) {
   const plus = event.target.closest(".menu-plus");
   const minus = event.target.closest(".menu-minus");
 
@@ -123,7 +154,7 @@ document.addEventListener("click", event => {
     if (existing) {
       existing.qty++;
     } else {
-      cart.push({...product, qty: 1});
+      cart.push({ ...product, qty: 1 });
     }
   }
 
@@ -136,257 +167,464 @@ document.addEventListener("click", event => {
 
   saveCart();
   renderMenu();
-});
-
-document.getElementById("menu-filters").addEventListener("click",event=>{
-  const button = event.target.closest("[data-category]");
-  if(!button) return;
-  activeCategory = button.dataset.category;
-  document.querySelectorAll(".filter-btn").forEach(btn=>btn.classList.toggle("active",btn===button));
-  renderMenu();
-});
-
-document.addEventListener("click",event=>{
-  const add = event.target.closest(".add-menu");
-  if(!add) return;
-  const id = Number(add.dataset.id);
-  const product = menuData.find(item=>item.id===id);
-  const existing = cart.find(item=>item.id===id);
-  if(existing) existing.qty++;
-  else cart.push({...product,qty:1});
-  saveCart();
-  showToast(product.name+" ditambahkan ke keranjang");
-});
-
-function renderTables(){
-  const container = document.getElementById("table-list");
-  container.innerHTML = areas.map(area=>`
-    <div class="area-card">
-      <div class="area-heading"><h2>${area.name}</h2><span>${area.tables.length} Meja</span></div>
-      <div class="floor-plan">
-        <div class="floor-label">AREA ${area.name.toUpperCase()}</div>
-        <div class="table-grid">
-          ${area.tables.map(id=>{
-            const occupied = occupiedTables.includes(id);
-            const selected = selectedTable===id;
-            return `<button class="table-card ${occupied?"occupied":""} ${selected?"selected":""}"
-              data-table-id="${id}" ${occupied?"disabled":""}>
-              <span class="chair">●</span><strong>Meja ${id}</strong><span class="chair">●</span>
-            </button>`;
-          }).join("")}
-        </div>
-        <div class="floor-footer">JALUR PELANGGAN</div>
-      </div>
-    </div>`).join("");
-  updateTableLabel();
-}
-
-function updateTableLabel(){
-  const label = selectedTable ? "Meja "+selectedTable+" dipilih" : "Belum memilih meja";
-  document.getElementById("selected-table-label").textContent = label;
-  document.getElementById("checkout-table").value = selectedTable ? "Meja "+selectedTable : "";
-}
-
-document.getElementById("table-list").addEventListener("click",event=>{
-  const button = event.target.closest("[data-table-id]");
-  if(!button || button.disabled) return;
-  selectedTable = Number(button.dataset.tableId);
-  renderTables();
-  showToast("Meja "+selectedTable+" berhasil dipilih");
-});
-
-function renderCart(){
-  const container = document.getElementById("cart-items");
-  if(cart.length===0){
-    container.innerHTML = `<div class="empty-state"><span>🛒</span><h3>Keranjang masih kosong</h3><p>Silakan pilih menu terlebih dahulu.</p><button class="btn btn-primary" data-page="menu">Pilih Menu</button></div>`;
-  }else{
-    container.innerHTML = cart.map(item=>`
-      <div class="cart-item">
-        <div><h3>${item.name}</h3><p>${rupiah(item.price)} / item</p></div>
-        <div class="quantity-control">
-          <button data-cart-action="minus" data-id="${item.id}">−</button>
-          <strong>${item.qty}</strong>
-          <button data-cart-action="plus" data-id="${item.id}">+</button>
-        </div>
-        <strong>${rupiah(item.price*item.qty)}</strong>
-      </div>`).join("");
-  }
-  const count = cart.reduce((sum,item)=>sum+item.qty,0);
-  const total = cart.reduce((sum,item)=>sum+item.price*item.qty,0);
-  document.getElementById("summary-count").textContent = count+" item";
-  document.getElementById("cart-total").textContent = rupiah(total);
-  document.getElementById("checkout-form").classList.add("hidden");
-}
-
-document.getElementById("cart-items").addEventListener("click",event=>{
-  const button = event.target.closest("[data-cart-action]");
-  if(!button) return;
-  const id = Number(button.dataset.id);
-  const item = cart.find(product=>product.id===id);
-  if(!item) return;
-  if(button.dataset.cartAction==="plus") item.qty++;
-  else item.qty--;
-  cart = cart.filter(product=>product.qty>0);
-  saveCart();
   renderCart();
 });
 
-document.getElementById("checkout-button").addEventListener("click",()=>{
-  if(cart.length===0) return showToast("Keranjang masih kosong");
-  document.getElementById("checkout-form").classList.remove("hidden");
-  document.getElementById("checkout-form").scrollIntoView({behavior:"smooth"});
+// Filter kategori
+document.querySelectorAll(".category-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    activeCategory = button.dataset.category;
+
+    document.querySelectorAll(".category-btn").forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    renderMenu();
+  });
 });
 
-document.getElementById("order-type").addEventListener("change",event=>{
-  const isDineIn = event.target.value==="Dine In";
-  document.getElementById("checkout-table").closest("label").style.display=isDineIn?"grid":"none";
-  if(!isDineIn) selectedTable=null;
+// ==========================================
+// MEJA
+// ==========================================
+
+function renderTables() {
+  const container = document.getElementById("table-areas");
+
+  container.innerHTML = areas.map(area => {
+    let tableHTML = "";
+
+    for (let i = 1; i <= area.count; i++) {
+      const number = String(i).padStart(2, "0");
+      const tableId = `${area.prefix}-${number}`;
+      const occupied = occupiedTables.includes(tableId);
+      const selected = selectedTable === tableId;
+
+      tableHTML += `
+        <button class="table-card ${occupied ? "occupied" : ""} ${selected ? "selected" : ""}"
+          ${occupied ? "disabled" : ""}
+          onclick="selectTable('${tableId}')">
+          <strong>${tableId}</strong>
+          <small>${occupied ? "Terisi" : selected ? "Dipilih" : "Kosong"}</small>
+        </button>
+      `;
+    }
+
+    return `
+      <div class="table-area">
+        <h3>${area.name}</h3>
+        <div class="table-grid">${tableHTML}</div>
+      </div>
+    `;
+  }).join("");
+
+  document.getElementById("selected-table").textContent =
+    orderType === "Take Away"
+      ? "Pesanan Take Away - tidak menggunakan meja."
+      : selectedTable
+        ? `Meja yang dipilih: ${selectedTable}`
+        : "Belum memilih meja.";
+}
+
+function selectTable(tableId) {
+  if (occupiedTables.includes(tableId)) return;
+  selectedTable = tableId;
+  renderTables();
+}
+
+document.getElementById("order-type").addEventListener("change", event => {
+  orderType = event.target.value;
+  if (orderType === "Take Away") selectedTable = "";
+  renderTables();
 });
 
-document.getElementById("order-form").addEventListener("submit",event=>{
-  event.preventDefault();
-  if(cart.length===0) return showToast("Keranjang masih kosong");
-  const type = document.getElementById("order-type").value;
-  if(type==="Dine In" && !selectedTable){
-    showToast("Silakan pilih meja terlebih dahulu");
+// ==========================================
+// KERANJANG DAN CHECKOUT
+// ==========================================
+
+function cartSubtotal() {
+  return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+}
+
+function renderCart() {
+  const container = document.getElementById("cart-items");
+
+  if (cart.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <h3>Keranjang masih kosong</h3>
+        <p>Silakan pilih menu terlebih dahulu.</p>
+        <button class="btn btn-primary" onclick="showPage('menu')">Pilih Menu</button>
+      </div>
+    `;
+  } else {
+    container.innerHTML = cart.map(item => `
+      <div class="cart-row">
+        <div>
+          <h3>${escapeHTML(item.name)}</h3>
+          <p>${rupiah(item.price)} × ${item.qty}</p>
+        </div>
+        <div class="cart-controls">
+          <button onclick="changeCartQty(${item.id},-1)">−</button>
+          <strong>${item.qty}</strong>
+          <button onclick="changeCartQty(${item.id},1)">+</button>
+        </div>
+        <strong>${rupiah(item.price * item.qty)}</strong>
+      </div>
+    `).join("");
+  }
+
+  const subtotal = cartSubtotal();
+  const tax = Math.round(subtotal * 0.10);
+
+  document.getElementById("cart-subtotal").textContent = rupiah(subtotal);
+  document.getElementById("cart-tax").textContent = rupiah(tax);
+  document.getElementById("cart-total").textContent = rupiah(subtotal + tax);
+}
+
+function changeCartQty(id, change) {
+  const item = cart.find(product => product.id === id);
+  if (!item) return;
+
+  item.qty += change;
+
+  if (item.qty <= 0) {
+    cart = cart.filter(product => product.id !== id);
+  }
+
+  saveCart();
+  renderCart();
+  renderMenu();
+}
+
+function checkout() {
+  if (cart.length === 0) {
+    alert("Keranjang masih kosong.");
+    return;
+  }
+
+  if (orderType === "Dine In" && !selectedTable) {
+    alert("Silakan pilih meja terlebih dahulu.");
     showPage("tables");
     return;
   }
 
-  const orders = getOrders();
-  const order = {
-    id:"KN"+Date.now().toString().slice(-7),
-    name:document.getElementById("customer-name").value.trim(),
-    type,
-    table:type==="Dine In" ? selectedTable : null,
-    payment:document.getElementById("payment-method").value,
-    note:document.getElementById("order-note").value.trim(),
-    items:cart.map(item=>({...item})),
-    total:cart.reduce((sum,item)=>sum+item.price*item.qty,0),
-    status:"Menunggu",
-    createdAt:new Date().toISOString()
-  };
-  orders.unshift(order);
-  saveOrders(orders);
-  lastOrderId=order.id;
-  cart=[];
-  selectedTable=null;
-  saveCart();
-  document.getElementById("order-form").reset();
-  document.getElementById("success-detail").innerHTML=`
-    <div class="receipt">
-      <p>Nomor Pesanan <strong>${order.id}</strong></p>
-      <p>Nama <strong>${order.name}</strong></p>
-      <p>Tipe <strong>${order.type}</strong></p>
-      <p>Meja <strong>${order.table||"—"}</strong></p>
-      <p>Pembayaran <strong>${order.payment}</strong></p>
-      <p>Total <strong>${rupiah(order.total)}</strong></p>
-      <p>Status <strong>${order.status}</strong></p>
-    </div>`;
-  showPage("success");
-});
+  const subtotal = cartSubtotal();
+  const tax = Math.round(subtotal * 0.10);
+  const total = subtotal + tax;
 
-function renderStaff(){
-  const loggedIn=sessionStorage.getItem("kopiNakoStaff")==="true";
-  document.getElementById("staff-login").classList.toggle("hidden",loggedIn);
-  document.getElementById("staff-dashboard").classList.toggle("hidden",!loggedIn);
-  if(loggedIn) renderDashboard();
+  const order = {
+    id: "KN-" + Date.now().toString().slice(-7),
+    date: new Date().toISOString(),
+    customer: "Pelanggan",
+    items: cart.map(item => ({ ...item })),
+    orderType,
+    table: orderType === "Dine In" ? selectedTable : "-",
+    subtotal,
+    tax,
+    total,
+    status: "Menunggu",
+    paymentStatus: "Belum Dibayar",
+    paymentMethod: "-",
+    paidAt: null
+  };
+
+  orders.unshift(order);
+  saveOrders();
+
+  document.getElementById("success-detail").innerHTML = `
+    <strong>Nomor Pesanan:</strong> ${order.id}<br>
+    <strong>Jenis:</strong> ${order.orderType}<br>
+    <strong>Meja:</strong> ${order.table}<br>
+    <strong>Total:</strong> ${rupiah(order.total)}<br>
+    <strong>Status:</strong> Menunggu pembayaran<br><br>
+    ${order.items.map(item =>
+      `${escapeHTML(item.name)} × ${item.qty}`
+    ).join("<br>")}
+  `;
+
+  cart = [];
+  selectedTable = "";
+  saveCart();
+  renderMenu();
+  showPage("success");
 }
 
-document.getElementById("staff-login-form").addEventListener("submit",event=>{
-  event.preventDefault();
-  const username=document.getElementById("staff-username").value;
-  const password=document.getElementById("staff-password").value;
-  if(username==="staff" && password==="12345"){
-    sessionStorage.setItem("kopiNakoStaff","true");
-    renderStaff();
-    showToast("Berhasil masuk");
-  }else showToast("Username atau password salah");
-});
+// ==========================================
+// STAFF AREA
+// ==========================================
 
-document.getElementById("staff-logout").addEventListener("click",()=>{
-  sessionStorage.removeItem("kopiNakoStaff");
+const staffMenus = {
+  Kasir: [
+    ["dashboard", "⌂ Dashboard"],
+    ["orders", "▤ Pesanan Masuk"],
+    ["reports", "▥ Laporan Penjualan"],
+    ["tables", "▦ Meja & Area"]
+  ],
+  Barista: [
+    ["dashboard", "⌂ Dashboard"],
+    ["orders", "☕ Antrean Minuman"]
+  ],
+  Kitchen: [
+    ["dashboard", "⌂ Dashboard"],
+    ["orders", "♨ Pesanan Makanan"],
+    ["stock", "▦ Stok Bahan"]
+  ],
+  Waiter: [
+    ["dashboard", "⌂ Dashboard"],
+    ["orders", "▤ Pengantaran"],
+    ["tables", "▦ Meja & Area"]
+  ],
+  Owner: [
+    ["dashboard", "⌂ Dashboard"],
+    ["orders", "▤ Semua Pesanan"],
+    ["reports", "▥ Laporan Penjualan"],
+    ["tables", "▦ Meja & Area"],
+    ["stock", "▦ Stok Bahan"]
+  ]
+};
+
+function openStaff(role) {
+  currentStaff = role;
+  currentStaffTab = "dashboard";
+  showPage("staff-dashboard");
+}
+
+function staffNavigate(tab) {
+  currentStaffTab = tab;
   renderStaff();
-  showToast("Berhasil keluar");
-});
+}
 
-function renderDashboard(){
-  const orders=getOrders();
-  const active=orders.filter(order=>order.status!=="Selesai");
-  const completed=orders.filter(order=>order.status==="Selesai");
-  const revenue=completed.reduce((sum,order)=>sum+order.total,0);
-  const itemCounts={};
-  orders.forEach(order=>order.items.forEach(item=>{
-    itemCounts[item.name]=(itemCounts[item.name]||0)+item.qty;
-  }));
-  const best=Object.entries(itemCounts).sort((a,b)=>b[1]-a[1])[0];
+function getActiveOrders() {
+  return orders.filter(order => order.status !== "Selesai");
+}
 
-  document.getElementById("stat-orders").textContent=orders.length;
-  document.getElementById("stat-active").textContent=active.length;
-  document.getElementById("stat-revenue").textContent=rupiah(revenue);
-  document.getElementById("stat-best").textContent=best?best[0]:"-";
+function getPaidOrders() {
+  return orders.filter(order => order.paymentStatus === "Lunas");
+}
 
-  const container=document.getElementById("staff-orders");
-  container.innerHTML=orders.length?orders.map(order=>`
-    <article class="order-card">
-      <div class="order-card-head">
-        <div><strong>${order.id}</strong><p>${escapeHTML(order.name)} • ${order.type}${order.table?" • Meja "+order.table:""}</p></div>
-        <span class="status status-${order.status.replaceAll(" ","-").toLowerCase()}">${order.status}</span>
+function getSales() {
+  return getPaidOrders().reduce((sum, order) => sum + order.total, 0);
+}
+
+function renderStaff() {
+  document.getElementById("staff-role-name").textContent = currentStaff;
+  document.getElementById("staff-welcome").textContent =
+    `Selamat Datang, ${currentStaff}!`;
+
+  const nav = staffMenus[currentStaff] || staffMenus.Kasir;
+
+  document.getElementById("staff-nav").innerHTML = nav.map(item => `
+    <button class="${currentStaffTab === item[0] ? "active" : ""}"
+      onclick="staffNavigate('${item[0]}')">${item[1]}</button>
+  `).join("");
+
+  const titles = {
+    dashboard: "Dashboard",
+    orders: "Pesanan Masuk",
+    reports: "Laporan Penjualan",
+    tables: "Meja & Area",
+    stock: "Stok Bahan"
+  };
+
+  document.getElementById("staff-page-title").textContent =
+    titles[currentStaffTab] || "Dashboard";
+
+  const content = document.getElementById("staff-content");
+
+  if (currentStaffTab === "dashboard") {
+    content.innerHTML = renderStaffDashboard();
+  } else if (currentStaffTab === "orders") {
+    content.innerHTML = renderStaffOrders();
+  } else if (currentStaffTab === "reports") {
+    content.innerHTML = renderReports();
+  } else if (currentStaffTab === "tables") {
+    content.innerHTML = renderStaffTables();
+  } else if (currentStaffTab === "stock") {
+    content.innerHTML = renderStock();
+  }
+}
+
+function renderStaffDashboard() {
+  const pending = orders.filter(order => order.paymentStatus !== "Lunas").length;
+  const paid = getPaidOrders().length;
+  const sales = getSales();
+  const active = getActiveOrders().length;
+
+  return `
+    <div class="stat-grid">
+      <div class="stat-card"><span>Pesanan Aktif</span><strong>${active}</strong></div>
+      <div class="stat-card"><span>Transaksi Lunas</span><strong>${paid}</strong></div>
+      <div class="stat-card"><span>Penjualan</span><strong>${rupiah(sales)}</strong></div>
+      <div class="stat-card"><span>Belum Dibayar</span><strong>${pending}</strong></div>
+    </div>
+
+    <div class="dashboard-section">
+      <h2>Pesanan Terbaru</h2>
+      ${orders.length ? orders.slice(0, 5).map(orderCard).join("") : `
+        <div class="staff-panel">
+          <h3>Belum ada pesanan</h3>
+          <p>Pesanan pelanggan akan tampil di sini setelah pelanggan melakukan checkout.</p>
+        </div>
+      `}
+    </div>
+
+    <div class="dashboard-section">
+      <h2>Ringkasan Shift</h2>
+      <div class="staff-panel">
+        <p>Shift aktif: <strong>Shift 1 · Pagi (08.00–16.00)</strong></p>
+        <p>Jumlah transaksi lunas: <strong>${paid}</strong></p>
+        <p>Total penjualan: <strong>${rupiah(sales)}</strong></p>
       </div>
-      <div class="order-products">
-        ${order.items.map(item=>`<p>${escapeHTML(item.name)} × ${item.qty}</p>`).join("")}
+    </div>
+  `;
+}
+
+function orderCard(order) {
+  const items = order.items.map(item =>
+    `${escapeHTML(item.name)} × ${item.qty}`
+  ).join("<br>");
+
+  return `
+    <div class="order-card">
+      <div class="order-head">
+        <strong>${escapeHTML(order.id)}</strong>
+        <span class="status ${order.status === "Selesai" ? "selesai" : order.status === "Diproses" ? "diproses" : ""}">
+          ${escapeHTML(order.status)}
+        </span>
       </div>
-      ${order.note?`<p class="order-note">Catatan: ${escapeHTML(order.note)}</p>`:""}
-      <div class="order-card-bottom">
-        <strong>${rupiah(order.total)}</strong>
-        <label class="status-control">Ubah status
-          <select data-order-status="${order.id}">
-            ${STATUS.map(status=>`<option value="${status}" ${order.status===status?"selected":""}>${status}</option>`).join("")}
+      <p>
+        ${items}<br>
+        ${escapeHTML(order.orderType)} · ${escapeHTML(order.table)}<br>
+        ${formatDate(order.date)}<br>
+        Total: <strong>${rupiah(order.total)}</strong><br>
+        Pembayaran: <strong>${escapeHTML(order.paymentStatus)}</strong>
+      </p>
+      ${staffOrderActions(order)}
+    </div>
+  `;
+}
+
+function staffOrderActions(order) {
+  let html = "";
+
+  if (currentStaff === "Kasir" || currentStaff === "Owner") {
+    html += `
+      <label style="font-size:11px;color:#778078">Pembayaran</label>
+      <select onchange="updatePayment('${order.id}',this.value)">
+        <option value="Belum Dibayar" ${order.paymentStatus === "Belum Dibayar" ? "selected" : ""}>Belum Dibayar</option>
+        <option value="Lunas" ${order.paymentStatus === "Lunas" ? "selected" : ""}>Lunas</option>
+      </select>
+      <select onchange="updatePaymentMethod('${order.id}',this.value)">
+        <option value="-" ${order.paymentMethod === "-" ? "selected" : ""}>Metode pembayaran</option>
+        <option value="Tunai" ${order.paymentMethod === "Tunai" ? "selected" : ""}>Tunai</option>
+        <option value="QRIS" ${order.paymentMethod === "QRIS" ? "selected" : ""}>QRIS</option>
+        <option value="Transfer" ${order.paymentMethod === "Transfer" ? "selected" : ""}>Transfer</option>
+      </select>
+    `;
+  }
+
+  if (["Kasir", "Barista", "Kitchen", "Waiter", "Owner"].includes(currentStaff)) {
+    html += `
+      <label style="font-size:11px;color:#778078">Status pesanan</label>
+      <select onchange="updateOrderStatus('${order.id}',this.value)">
+        ${statuses.map(status => `
+          <option value="${status}" ${order.status === status ? "selected" : ""}>${status}</option>
+        `).join("")}
+      </select>
+    `;
+  }
+
+  return html;
+}
+
+function updateOrderStatus(id, status) {
+  const order = orders.find(item => item.id === id);
+  if (!order) return;
+
+  order.status = status;
+  saveOrders();
+  renderStaff();
+}
+
+function updatePayment(id, status) {
+  const order = orders.find(item => item.id === id);
+  if (!order) return;
+
+  if (status === "Lunas" && order.paymentMethod === "-") {
+    alert("Pilih metode pembayaran terlebih dahulu.");
+    renderStaff();
+    return;
+  }
+
+  order.paymentStatus = status;
+  order.paidAt = status === "Lunas" ? new Date().toISOString() : null;
+  saveOrders();
+  renderStaff();
+}
+
+function updatePaymentMethod(id, method) {
+  const order = orders.find(item => item.id === id);
+  if (!order) return;
+
+  order.paymentMethod = method;
+  saveOrders();
+  renderStaff();
+}
+
+// ==========================================
+// LAPORAN
+// ==========================================
+
+function renderReports() {
+  const paid = getPaidOrders();
+
+  return `
+    <div class="dashboard-section">
+      <h2>Laporan Penjualan</h2>
+      <div class="report-filter">
+        <label>Mulai
+          <input type="date" id="report-start" value="${today()}" onchange="filterReports()">
+        </label>
+        <label>Sampai
+          <input type="date" id="report-end" value="${today()}" onchange="filterReports()">
+        </label>
+        <label>Metode
+          <select id="report-method" onchange="filterReports()">
+            <option value="Semua">Semua</option>
+            <option value="Tunai">Tunai</option>
+            <option value="QRIS">QRIS</option>
+            <option value="Transfer">Transfer</option>
           </select>
         </label>
       </div>
-    </article>`).join(""):`<div class="empty-state"><h3>Belum ada pesanan</h3><p>Pesanan pelanggan akan tampil di sini.</p></div>`;
-
-  const sales=document.getElementById("sales-menu-list");
-  const sorted=Object.entries(itemCounts).sort((a,b)=>b[1]-a[1]);
-  sales.innerHTML=sorted.length?sorted.map(([name,qty])=>`
-    <div class="sales-row"><span>${escapeHTML(name)}</span><strong>${qty} terjual</strong></div>
-  `).join(""):`<p>Belum ada data penjualan.</p>`;
+      <div id="report-results">${reportResults(paid)}</div>
+    </div>
+  `;
 }
 
-function escapeHTML(value){
-  return String(value).replace(/[&<>"']/g,char=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[char]));
+function filterReports() {
+  const start = document.getElementById("report-start").value;
+  const end = document.getElementById("report-end").value;
+  const method = document.getElementById("report-method").value;
+
+  let filtered = getPaidOrders();
+
+  if (start) filtered = filtered.filter(order => order.paidAt && order.paidAt.slice(0, 10) >= start);
+  if (end) filtered = filtered.filter(order => order.paidAt && order.paidAt.slice(0, 10) <= end);
+  if (method !== "Semua") filtered = filtered.filter(order => order.paymentMethod === method);
+
+  document.getElementById("report-results").innerHTML = reportResults(filtered);
 }
 
-document.getElementById("staff-orders").addEventListener("change",event=>{
-  const select=event.target.closest("[data-order-status]");
-  if(!select) return;
-  const orders=getOrders();
-  const order=orders.find(item=>item.id===select.dataset.orderStatus);
-  if(!order) return;
-  order.status=select.value;
-  saveOrders(orders);
-  renderDashboard();
-  showToast("Status pesanan diperbarui");
-});
+function reportResults(data) {
+  const total = data.reduce((sum, order) => sum + order.total, 0);
+  const subtotal = data.reduce((sum, order) => sum + order.subtotal, 0);
+  const tax = data.reduce((sum, order) => sum + order.tax, 0);
 
-document.getElementById("refresh-orders").addEventListener("click",renderDashboard);
-
-document.querySelectorAll("[data-staff-tab]").forEach(button=>{
-  button.addEventListener("click",()=>{
-    document.querySelectorAll(".staff-tab").forEach(tab=>tab.classList.toggle("active",tab===button));
-    const sales=button.dataset.staffTab==="sales";
-    document.getElementById("staff-orders-panel").classList.toggle("hidden",sales);
-    document.getElementById("staff-sales-panel").classList.toggle("hidden",!sales);
-  });
-});
-
-function init(){
-  renderMenu();
-  updateCartCount();
-  renderTables();
-  renderCart();
-}
-init();
+  return `
+    <div class="stat-grid">
+      <div class="stat-card"><span>Total Penjualan</span><strong>${rupiah(total)}</strong></div>
+      <div class="stat-card"><span>Subtotal</span><strong>${rupiah(subtotal)}</strong></div>
+      <div class="stat-card"><span>Pajak</span><strong>${rupiah(tax)}</strong></div>
+      <div class="stat-card"><span>Transaksi Lunas</span><strong>${data.length}</stro
