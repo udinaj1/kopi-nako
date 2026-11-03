@@ -1139,3 +1139,63 @@ footer p {
     padding: 0 10px 15px;
   }
 }
+
+/* TOMBOL JUMLAH MENU */
+
+.menu-quantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+  padding: 8px;
+  background: var(--cream);
+  border-radius: 8px;
+}
+
+.quantity-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 7px;
+  background: var(--green);
+  color: white;
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity-btn:hover {
+  background: var(--gold);
+}
+
+.quantity-number {
+  min-width: 25px;
+  text-align: center;
+  color: var(--green);
+  font-weight: 800;
+  font-size: 17px;
+}
+
+.menu-add-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 11px;
+}
+
+@media (max-width: 650px) {
+  .menu-quantity {
+    gap: 12px;
+  }
+
+  .quantity-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .menu-add-btn {
+    font-size: 12px;
+  }
+}
